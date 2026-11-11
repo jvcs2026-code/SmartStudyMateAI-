@@ -117,7 +117,6 @@ def home():
 def favicon():
     return send_from_directory(BASE_DIR, "favicon.ico", mimetype="image/vnd.microsoft.icon")
 
-
 # ==================================================
 # 5. UNIFIED AI TUTOR & VOICE TUTOR
 # ==================================================
