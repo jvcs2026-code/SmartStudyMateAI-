@@ -106,11 +106,16 @@ def generate_local_mcqs(subject, portion, number):
 
 
 # ==================================================
-# 4. HOME PAGE
+# 4. HOME PAGE & FAVICON ROUTE
 # ==================================================
 @app.route("/")
 def home():
     return send_from_directory(BASE_DIR, "index.html")
+
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory(BASE_DIR, "favicon.ico", mimetype="image/vnd.microsoft.icon")
 
 
 # ==================================================
