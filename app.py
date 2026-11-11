@@ -21,12 +21,12 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 app = Flask(__name__)
 API_KEY = os.getenv("GEMINI_API_KEY")
-MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
+MODEL = os.getenv("GEMINI_MODEL", os.getenv("MODEL_NAME", "gemini-3.5-flash-lite"))
 client = genai.Client(api_key=API_KEY) if API_KEY else None
 TASK_FILE = os.path.join(BASE_DIR, "study_tasks.json")
 
 # ==================================================
-# 2. GEMINI HELPERS (EXISTING)
+# 2. GEMINI HELPERS
 # ==================================================
 def require_client():
     if client is None:
@@ -76,7 +76,7 @@ def extract_json(text):
 
 
 # ==================================================
-# 3. LOCAL MCQ QUESTION BANK (EXISTING)
+# 3. LOCAL MCQ QUESTION BANK
 # ==================================================
 LOCAL_MCQ_BANK = [
     {"question": "Which symbol is used to create a list in Python?", "options": ["( )", "{ }", "[ ]", "< >"], "answer_index": 2, "explanation": "Square brackets are used to create a Python list."},
@@ -106,7 +106,7 @@ def generate_local_mcqs(subject, portion, number):
 
 
 # ==================================================
-# 4. HOME PAGE (EXISTING)
+# 4. HOME PAGE
 # ==================================================
 @app.route("/")
 def home():
@@ -114,7 +114,7 @@ def home():
 
 
 # ==================================================
-# 5. AI TUTOR (UPDATED FORMATTING)
+# 5. UNIFIED AI TUTOR & VOICE TUTOR
 # ==================================================
 @app.route("/api/ask", methods=["POST"])
 def ask_tutor():
@@ -122,10 +122,18 @@ def ask_tutor():
         require_client()
         data = request.get_json(silent=True) or {}
         question = str(data.get("question", "")).strip()
+        voice_mode = bool(data.get("voice_mode", False))
         if not question:
-            return jsonify({"error": "Please enter a question."}), 400
-        prompt = f"""You are SmartStudyMate AI, a helpful school study tutor.
+            return jsonify({"error": "Please enter or speak a question."}), 400
+
+        voice_instruction = (
+            "The student is using Voice Tutor mode. Keep sentences clear, conversational, and easy to follow when read aloud."
+            if voice_mode else ""
+        )
+
+        prompt = f"""You are SmartStudyMate AI, a helpful school study and voice tutor.
 Explain the answer clearly and accurately in clean plain text only.
+{voice_instruction}
 
 IMPORTANT FORMATTING RULES:
 - Do NOT use markdown asterisks (**bold** or *italic*).
@@ -155,7 +163,7 @@ Student question:
 
 
 # ==================================================
-# 6. ONE-MARK MCQ GENERATOR (EXISTING)
+# 6. ONE-MARK MCQ GENERATOR
 # ==================================================
 @app.route("/api/one-mark", methods=["POST"])
 def one_mark():
@@ -221,7 +229,195 @@ Generate exactly {number} questions.
 
 
 # ==================================================
-# 7. SMART TASK MANAGEMENT (NEW)
+# 7. AI QUESTION PAPER GENERATOR (NEW)
+# ==================================================
+@app.route("/api/generate-question-paper", methods=["POST"])
+def generate_question_paper():
+    try:
+        require_client()
+        data = request.get_json(silent=True) or {}
+        class_name = str(data.get("class", "")).strip()
+        subject = str(data.get("subject", "")).strip()
+        chapters = str(data.get("chapters", "")).strip()
+        difficulty = str(data.get("difficulty", "Medium")).strip()
+        duration = str(data.get("duration", "3 Hours")).strip()
+        try:
+            total_marks = int(data.get("total_marks", 80))
+        except (ValueError, TypeError):
+            return jsonify({"error": "Total marks must be a valid number."}), 400
+
+        if not class_name or not subject or not chapters:
+            return jsonify({"error": "Please select class, subject, and enter the chapters/topics."}), 400
+        if not 10 <= total_marks <= 100:
+            return jsonify({"error": "Total marks must be between 10 and 100."}), 400
+
+        prompt = f"""You are a senior CBSE/school board examination paper setter.
+Generate a complete, well-structured examination question paper with a complete answer key.
+
+CLASS: {class_name}
+SUBJECT: {subject}
+CHAPTERS / SYLLABUS: {chapters}
+TOTAL MARKS: {total_marks}
+DIFFICULTY LEVEL: {difficulty}
+TIME ALLOWED: {duration}
+
+Rules:
+1. Divide the paper into logical sections (e.g., Section A: 1-mark Objective/MCQ, Section B: 2-mark Short Answer, Section C: 3-mark Short Answer, Section D: 5-mark Long Answer / Case Study) so that the sum of all question marks equals EXACTLY {total_marks}.
+2. Match the difficulty level ({difficulty}) and class standard ({class_name}).
+3. Every single question MUST have a clear, accurate marking-scheme answer in the answer key.
+4. Do NOT use LaTeX $ symbols; write formulas in clean readable plain text.
+
+Return ONLY valid JSON in this exact format:
+{{
+  "paper_title": "{class_name} - {subject} Examination Paper",
+  "total_marks": {total_marks},
+  "duration": "{duration}",
+  "difficulty": "{difficulty}",
+  "general_instructions": [
+    "All questions are compulsory.",
+    "Marks for each question are indicated against it."
+  ],
+  "sections": [
+    {{
+      "section_name": "Section A - Objective Type Questions",
+      "section_instructions": "Attempt all questions. Each question carries 1 mark.",
+      "questions": [
+        {{
+          "q_no": 1,
+          "question": "Question text here",
+          "marks": 1,
+          "answer": "Complete marking-scheme answer / key points"
+        }}
+      ]
+    }}
+  ]
+}}
+"""
+        config = types.GenerateContentConfig(response_mime_type="application/json")
+        response = generate_with_retry(prompt, config=config)
+        result = extract_json(response.text)
+        if not isinstance(result.get("sections"), list) or not result["sections"]:
+            raise ValueError("Invalid question paper format returned by AI.")
+        return jsonify(result)
+    except Exception as exc:
+        return handle_error(exc, "AI Question Paper Generator")
+
+
+# ==================================================
+# 8. AI REVISION ASSISTANT (NEW)
+# ==================================================
+@app.route("/api/revision-assistant", methods=["POST"])
+def revision_assistant():
+    try:
+        require_client()
+        data = request.get_json(silent=True) or {}
+        class_name = str(data.get("class", "")).strip()
+        subject = str(data.get("subject", "")).strip()
+        chapter = str(data.get("chapter", "")).strip()
+        custom_notes = str(data.get("notes", "")).strip()
+
+        if not class_name or not subject or not chapter:
+            return jsonify({"error": "Please enter class, subject, and chapter name."}), 400
+
+        extra_context = f"\nSTUDENT'S REFERENCE NOTES:\n{custom_notes[:4000]}" if custom_notes else ""
+
+        prompt = f"""You are SmartStudyMate AI, an expert exam revision coach.
+Generate a complete, high-impact revision kit for the chapter below.
+
+CLASS: {class_name}
+SUBJECT: {subject}
+CHAPTER / TOPIC: {chapter}
+{extra_context}
+
+Rules:
+1. Automatic Chapter Summary: Clear, structured overview of core concepts in student-friendly language.
+2. Important Questions: Include 6-8 high-probability exam questions (1-mark, 2-mark, 3-mark, and 5-mark) with concise model answers.
+3. Last-Minute Revision Notes: Crisp bullet points, key formulas/syntax, definitions, and common exam mistakes to avoid.
+4. Do NOT use LaTeX $ signs; write math/code cleanly in plain text.
+
+Return ONLY valid JSON:
+{{
+  "chapter_title": "{chapter}",
+  "summary": "Detailed yet clear chapter summary text...",
+  "important_questions": [
+    {{
+      "question": "Important exam question",
+      "marks": "3 Marks",
+      "answer": "Concise key points for full marks"
+    }}
+  ],
+  "last_minute_notes": [
+    "Key point / formula / rule 1",
+    "Key point / formula / rule 2"
+  ],
+  "common_mistakes": [
+    "Common mistake students make in exams and how to avoid it"
+  ]
+}}
+"""
+        config = types.GenerateContentConfig(response_mime_type="application/json")
+        response = generate_with_retry(prompt, config=config)
+        result = extract_json(response.text)
+        if not result.get("summary"):
+            raise ValueError("Invalid revision guide returned by AI.")
+        return jsonify(result)
+    except Exception as exc:
+        return handle_error(exc, "AI Revision Assistant")
+
+
+# ==================================================
+# 9. STUDENT PERFORMANCE ANALYTICS (NEW)
+# ==================================================
+@app.route("/api/performance-analytics", methods=["POST"])
+def performance_analytics():
+    try:
+        require_client()
+        data = request.get_json(silent=True) or {}
+        tasks = data.get("tasks", load_tasks())
+        quiz_history = data.get("quiz_history", [])
+        notes_count = int(data.get("notes_count", 0))
+
+        prompt = f"""You are SmartStudyMate AI, an academic performance data analyst.
+Evaluate the student's study tasks and quiz performance history below.
+
+STUDY TASKS: {json.dumps(tasks[:100], ensure_ascii=False)}
+QUIZ PERFORMANCE HISTORY: {json.dumps(quiz_history[:50], ensure_ascii=False)}
+SAVED REVISION NOTES COUNT: {notes_count}
+
+Analyze:
+1. Overall performance trajectory (weekly and monthly study consistency).
+2. Subject-wise strengths and weak areas.
+3. Specific chapters or topics that need urgent revision based on pending tasks or lower quiz accuracy.
+4. Actionable 7-day improvement strategy.
+
+Return ONLY valid JSON:
+{{
+  "executive_summary": "Clear, encouraging summary of overall performance",
+  "weekly_report": "Summary of recent 7-day study and quiz momentum",
+  "monthly_outlook": "Longer-term exam readiness and consistency report",
+  "topics_needing_revision": [
+    {{
+      "subject": "Subject name",
+      "topic": "Chapter/topic name",
+      "reason": "Why it needs attention (e.g., pending task or low quiz score)"
+    }}
+  ],
+  "action_plan": [
+    "Specific actionable step 1",
+    "Specific actionable step 2"
+  ]
+}}
+"""
+        config = types.GenerateContentConfig(response_mime_type="application/json")
+        response = generate_with_retry(prompt, config=config)
+        result = extract_json(response.text)
+        return jsonify(result)
+    except Exception as exc:
+        return handle_error(exc, "Student Performance Analytics")
+
+
+# ==================================================
+# 10. SMART TASK MANAGEMENT
 # ==================================================
 def load_tasks():
     if not os.path.exists(TASK_FILE):
@@ -319,7 +515,7 @@ def update_task(task_id):
 
 
 # ==================================================
-# 8. AI STUDY SCHEDULE GENERATOR (NEW)
+# 11. AI STUDY SCHEDULE GENERATOR
 # ==================================================
 @app.route("/api/study-schedule", methods=["POST"])
 def study_schedule():
@@ -368,7 +564,7 @@ Return ONLY JSON:
 
 
 # ==================================================
-# 9. AI PROGRESS ANALYSIS (NEW)
+# 12. AI PROGRESS ANALYSIS
 # ==================================================
 @app.route("/api/progress-analysis", methods=["POST"])
 def progress_analysis():
@@ -405,155 +601,69 @@ Do not invent marks, grades or academic results.
 
 
 # ==================================================
-# 10. EXAM PREPARATION MODE (UPDATED: CLASSES 1-12)
+# 13. EXAM PREPARATION MODE
 # ==================================================
 @app.route("/api/exam-preparation", methods=["POST"])
 def exam_preparation():
     try:
         data = request.get_json(silent=True) or {}
-
         raw_class = str(data.get("class", "")).strip()
         exam_date = str(data.get("exam_date", "")).strip()
         subjects = data.get("subjects", [])
         chapters = data.get("chapters", [])
 
-        # Accept values such as "5", "Class 5", "12", "Class 12"
-        match = re.fullmatch(
-            r"(?:class\s*)?(1[0-2]|[1-9])",
-            raw_class,
-            flags=re.IGNORECASE
-        )
-
+        match = re.fullmatch(r"(?:class\s*)?(1[0-2]|[1-9])", raw_class, flags=re.IGNORECASE)
         if not match:
-            return jsonify({
-                "error": "Please select a class between Class 1 and Class 12."
-            }), 400
+            return jsonify({"error": "Please select a class between Class 1 and Class 12."}), 400
 
         class_number = int(match.group(1))
         class_name = f"Class {class_number}"
 
-        # Validate subjects
-        if (
-            not isinstance(subjects, list)
-            or not subjects
-            or not all(isinstance(x, str) and x.strip() for x in subjects)
-        ):
-            return jsonify({
-                "error": "Please provide at least one valid subject."
-            }), 400
-
-        # Validate chapters
-        if (
-            not isinstance(chapters, list)
-            or not all(isinstance(x, str) for x in chapters)
-        ):
-            return jsonify({
-                "error": "Chapters must be a list of text."
-            }), 400
+        if not isinstance(subjects, list) or not subjects or not all(isinstance(x, str) and x.strip() for x in subjects):
+            return jsonify({"error": "Please provide at least one valid subject."}), 400
+        if not isinstance(chapters, list) or not all(isinstance(x, str) for x in chapters):
+            return jsonify({"error": "Chapters must be a list of text."}), 400
 
         subjects = [s.strip() for s in subjects]
         chapters = [c.strip() for c in chapters if c.strip()]
 
-        # Validate examination date
         try:
             target_date = date.fromisoformat(exam_date)
         except (ValueError, TypeError):
-            return jsonify({
-                "error": "Enter a valid examination date in YYYY-MM-DD format."
-            }), 400
+            return jsonify({"error": "Enter a valid examination date in YYYY-MM-DD format."}), 400
 
         days_remaining = (target_date - date.today()).days
-
         if days_remaining < 0:
-            return jsonify({
-                "error": "The examination date has already passed."
-            }), 400
+            return jsonify({"error": "The examination date has already passed."}), 400
 
-        # Adapt the plan to the student's class level
         if class_number <= 5:
-            learning_level = """
-            The student is in primary school.
-            Use very simple language and short learning activities.
-            Include short study sessions, fun revision activities,
-            basic examples and frequent breaks.
-            Avoid overwhelming workloads.
-            """
-
+            learning_level = "The student is in primary school. Use very simple language, short learning activities, fun revision activities, and frequent breaks."
         elif class_number <= 9:
-            learning_level = """
-            The student is in middle or secondary school.
-            Include concept understanding, chapter-wise revision,
-            textbook exercises, practice questions and regular revision.
-            Keep the workload realistic and include breaks.
-            """
-
+            learning_level = "The student is in middle or secondary school. Include concept understanding, chapter-wise revision, textbook exercises, and practice questions."
         elif class_number == 10:
-            learning_level = """
-            The student is preparing for Class 10 examinations.
-            Include concept revision, important topics, written practice,
-            sample questions and mock examinations where appropriate.
-            """
-
+            learning_level = "The student is preparing for Class 10 board examinations. Include concept revision, important topics, written practice, and sample papers."
         elif class_number == 11:
-            learning_level = """
-            The student is in Class 11.
-            Focus on subject-specific concepts, chapter understanding,
-            numerical or practical exercises where relevant,
-            written practice and revision.
-            """
-
+            learning_level = "The student is in Class 11. Focus on subject-specific concepts, chapter understanding, numerical/practical exercises, and revision."
         else:
-            learning_level = """
-            The student is in Class 12.
-            Include detailed subject revision, important concepts,
-            written practice, sample questions and mock examinations
-            where appropriate.
-            """
+            learning_level = "The student is in Class 12 board examinations. Include detailed subject revision, important concepts, written practice, and mock papers."
 
-        prompt = f"""
-You are SmartStudyMate AI, an expert school examination preparation assistant.
-
+        prompt = f"""You are SmartStudyMate AI, an expert school examination preparation assistant.
 Create a realistic, personalized examination preparation plan.
-
 STUDENT CLASS: {class_name}
 EXAMINATION DATE: {exam_date}
 DAYS REMAINING: {days_remaining}
-
-SUBJECTS:
-{json.dumps(subjects, ensure_ascii=False)}
-
-CHAPTERS:
-{json.dumps(chapters, ensure_ascii=False)}
-
-STUDENT LEVEL INSTRUCTIONS:
-{learning_level}
-
-GENERAL INSTRUCTIONS:
-1. Create a practical day-wise preparation plan.
-2. Distribute time fairly among the supplied subjects.
-3. Cover the supplied chapters wherever possible.
-4. Include revision and practice sessions.
-5. Include mock examinations only when suitable for the class level.
-6. Include reasonable breaks and rest periods.
-7. Prioritize difficult topics without ignoring other subjects.
-8. Adapt the language and workload to the student's class.
-9. Do not assume that every class follows a board examination syllabus.
-10. Do not invent chapters or claim that a topic is in the syllabus
-    unless it was supplied or is clearly appropriate.
-11. Do not guarantee examination marks or results.
+SUBJECTS: {json.dumps(subjects, ensure_ascii=False)}
+CHAPTERS: {json.dumps(chapters, ensure_ascii=False)}
+STUDENT LEVEL INSTRUCTIONS: {learning_level}
 
 Return ONLY valid JSON in this format:
-
 {{
     "exam_countdown_days": {days_remaining},
     "preparation_plan": [
         {{
             "day": 1,
             "subject": "Mathematics",
-            "tasks": [
-                "Revise the selected chapter",
-                "Complete suitable practice questions"
-            ]
+            "tasks": ["Revise the selected chapter", "Complete suitable practice questions"]
         }}
     ],
     "important_recommendations": [
@@ -561,36 +671,24 @@ Return ONLY valid JSON in this format:
         "Take short breaks between study sessions."
     ]
 }}
-
-Make the number of preparation days appropriate for the available time.
 """
-
-        config = types.GenerateContentConfig(
-            response_mime_type="application/json"
-        )
-
+        config = types.GenerateContentConfig(response_mime_type="application/json")
         response = generate_with_retry(prompt, config=config)
         result = extract_json(response.text)
-
         if not isinstance(result.get("preparation_plan"), list):
             raise ValueError("Invalid preparation plan returned by AI.")
-
         if not isinstance(result.get("important_recommendations"), list):
             raise ValueError("Invalid recommendations returned by AI.")
-
         result["exam_countdown_days"] = days_remaining
-
         return jsonify(result)
-
     except Exception as exc:
         return handle_error(exc, "Exam Preparation")
 
 
 # ==================================================
-# 11. OFFICIAL CBSE SAMPLE PAPER LIBRARY (NEW)
+# 14. OFFICIAL CBSE SAMPLE PAPER LIBRARY
 # ==================================================
 class CBSEPaperParser(HTMLParser):
-    """Extracts subject rows and SQP/MS links from the CBSE page table."""
     def __init__(self):
         super().__init__()
         self.rows = []
@@ -703,7 +801,7 @@ def cbse_papers():
 
 
 # ==================================================
-# 12. START APPLICATION
+# 15. START APPLICATION
 # ==================================================
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True)
