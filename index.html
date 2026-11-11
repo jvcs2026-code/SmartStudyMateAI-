@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,8 +19,8 @@ aside{padding:20px 14px;background:#060a17;border-right:1px solid var(--line);di
 .logo-area{display:flex;align-items:center;gap:10px;padding:4px 8px 18px;font-size:18px;font-weight:800}
 .logo-icon{width:28px;height:28px;background:radial-gradient(circle,#3bc2ff,#5238ff);border-radius:50%;box-shadow:0 0 12px rgba(22,140,255,.5)}
 .logo-area span{color:#168cff}
-nav{display:flex;flex-direction:column;gap:5px}
-nav button{width:100%;text-align:left;padding:11px 14px;border:1px solid transparent;border-radius:9px;background:transparent;color:#9cb5de;cursor:pointer;font-size:13px;font-weight:500;transition:all .2s}
+nav{display:flex;flex-direction:column;gap:4px}
+nav button{width:100%;text-align:left;padding:10px 14px;border:1px solid transparent;border-radius:9px;background:transparent;color:#9cb5de;cursor:pointer;font-size:13px;font-weight:500;transition:all .2s}
 nav button:hover{background:rgba(22,140,255,.1);color:white}
 nav button.active{color:#fff;background:linear-gradient(90deg,rgba(22,140,255,.22),rgba(82,56,255,.1));border-color:rgba(39,212,255,.3);box-shadow:inset 3px 0 #19baff}
 main{padding:24px 32px;overflow-y:auto;background:radial-gradient(circle at 80% 80%,#091330 0,transparent 45%),var(--bg)}
@@ -35,11 +34,13 @@ label{display:block;margin:12px 0 6px;color:#dce8ff;font-size:13px;font-weight:6
 input,select,textarea{width:100%;padding:11px 13px;border:1px solid rgba(112,151,220,.2);border-radius:8px;background:#050917;color:#f4f7ff;font:inherit;outline:none}
 input:focus,select:focus,textarea:focus{border-color:#24bfff;box-shadow:0 0 0 3px rgba(22,140,255,.15)}
 textarea{min-height:95px;resize:vertical}
-button.primary,button.secondary,button.small{border:0;border-radius:8px;padding:10px 16px;cursor:pointer;font-weight:650;margin:8px 6px 0 0}
+button.primary,button.secondary,button.small{border:0;border-radius:8px;padding:10px 16px;cursor:pointer;font-weight:650;margin:8px 6px 0 0;transition:all .2s}
 button.primary{color:white;background:linear-gradient(105deg,#168cff,#5238ff);box-shadow:0 4px 14px rgba(22,140,255,.3)}
+button.primary:hover{filter:brightness(1.1)}
 button.secondary,button.small{background:#111b38;color:#dceaff;border:1px solid var(--line)}
 button:disabled{opacity:.5;cursor:not-allowed}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 .notice{padding:12px 14px;border-radius:8px;background:rgba(22,140,255,.12);border:1px solid rgba(39,212,255,.2);color:#cceeff;margin:12px 0}
 .error{background:rgba(255,80,110,.12);border-color:rgba(255,80,110,.3);color:#ffc1cc}
 .question{padding:16px;background:#0a1228;border:1px solid var(--line);border-radius:12px;margin:12px 0}
@@ -49,20 +50,22 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .source a,.paper-row a{color:#56cfff;overflow-wrap:anywhere}
 .item{padding:12px 0;border-bottom:1px solid var(--line)}
 .item:last-child{border:0}
-.result-block{background:linear-gradient(120deg,#0d1838,#121640);border:1px solid var(--line);border-radius:12px;padding:15px;margin:12px 0}
+.result-block{background:linear-gradient(120deg,#0d1838,#121640);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
 .task-meta{display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:6px 0}
 .paper-row{padding:12px 0;border-bottom:1px solid var(--line)}
 .paper-row a{margin-right:14px}
 .paper-row:last-child{border:0}
+
+/* Nebula Hero */
 .nebula-hero{background:linear-gradient(145deg,#0c1633,#070e20);border:1px solid rgba(38,150,255,.3);border-radius:18px;padding:28px;text-align:center;position:relative;overflow:hidden;box-shadow:0 16px 40px rgba(0,0,0,.4);margin-bottom:20px}
 .nebula-hero::before{content:"";position:absolute;width:350px;height:350px;background:radial-gradient(circle,rgba(22,140,255,.18),transparent 70%);top:-120px;left:50%;transform:translateX(-50%);border-radius:50%;pointer-events:none}
 .nebula-orb{width:75px;height:75px;margin:0 auto 16px;background:radial-gradient(circle at 35% 35%,#ff62e3,#3f0db2 65%,#0b1638);border-radius:50%;box-shadow:0 0 30px rgba(180,60,255,.5),inset 0 0 12px rgba(255,255,255,.4);display:grid;place-items:center;font-size:28px}
-.nebula-title{font-size:32px;font-weight:800;letter-spacing:-.5px;margin:0 0 8px}
+.nebula-title{font-size:30px;font-weight:800;letter-spacing:-.5px;margin:0 0 8px}
 .nebula-subtitle{color:var(--muted);font-size:14px;margin-bottom:24px}
-.nebula-action-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:15px}
-.nebula-action-card{background:linear-gradient(145deg,rgba(16,28,60,.8),rgba(10,18,40,.9));border:1px solid rgba(60,130,240,.22);border-radius:13px;padding:18px;text-align:left;cursor:pointer;transition:all .25s ease}
+.nebula-action-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:15px}
+.nebula-action-card{background:linear-gradient(145deg,rgba(16,28,60,.8),rgba(10,18,40,.9));border:1px solid rgba(60,130,240,.22);border-radius:13px;padding:16px;text-align:left;cursor:pointer;transition:all .25s ease}
 .nebula-action-card:hover{border-color:#24bfff;transform:translateY(-2px);box-shadow:0 8px 20px rgba(22,140,255,.15)}
-.nebula-action-card h3{font-size:15px;margin:0 0 6px;color:#fff}
+.nebula-action-card h3{font-size:14px;margin:0 0 6px;color:#fff}
 .nebula-action-card p{font-size:12px;margin:0;color:var(--muted);line-height:1.4}
 .dashboard-bottom{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .progress-ring{width:110px;height:110px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#168cff 0 75%,#111c3a 75%);position:relative;margin:10px auto}
@@ -70,392 +73,1140 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .progress-ring strong{position:relative;font-size:22px;font-weight:700}
 .progress-bars{height:110px;display:flex;align-items:end;justify-content:space-around;gap:6px;padding:8px}
 .progress-bars i{display:block;width:12px;border-radius:4px 4px 2px 2px;background:linear-gradient(#168cff,#704bff);box-shadow:0 0 10px rgba(22,140,255,.3)}
-.document-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
-.document-icon{width:32px;height:36px;border-radius:6px;background:#e84b65;display:grid;place-items:center;font-size:10px;font-weight:800;color:white}
+.document-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+.document-left{display:flex;align-items:center;gap:12px}
+.document-icon{width:34px;height:36px;border-radius:6px;background:#e84b65;display:grid;place-items:center;font-size:10px;font-weight:800;color:white}
 .document-row:nth-child(3) .document-icon{background:#168cff}
+.document-row:nth-child(4) .document-icon{background:#704bff}
 .upgrade-box{background:linear-gradient(145deg,#121d3f,#0a1126);border:1px solid rgba(82,56,255,.35);border-radius:12px;padding:14px;margin-top:15px}
 .upgrade-box p{font-size:11px;color:#b4c7ec;margin:0 0 10px}
 .upgrade-box button{width:100%;margin:0;padding:8px;font-size:12px}
 
-/* NEW: Exam Progress Tracker */
+/* Progress Tracker & Analytics */
 .progress-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .progress-card{background:linear-gradient(145deg,#101e40,#0a1329);border:1px solid var(--line);border-radius:12px;padding:18px}
 .progress-card h3{color:var(--muted);font-size:13px;margin:0}
 .progress-card strong{display:block;font-size:28px;color:#22bfff;margin-top:10px}
-.progress-track{height:12px;background:#1a2745;border-radius:20px;overflow:hidden;margin:12px 0}
+.progress-track{height:12px;background:#1a2745;border-radius:20px;overflow:hidden;margin:10px 0}
 .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#168cff,#704bff);transition:width .4s ease;border-radius:20px}
-.subject-progress{margin:18px 0}
-.subject-progress-header{display:flex;justify-content:space-between;gap:10px;margin-bottom:7px}
-.progress-actions{display:flex;gap:8px;flex-wrap:wrap}
-@media(max-width:1100px){.nebula-action-grid{grid-template-columns:1fr}.dashboard-bottom{grid-template-columns:1fr}}
-@media(max-width:820px){.app-layout{grid-template-columns:1fr}aside{padding:12px;border-right:0;border-bottom:1px solid var(--line)}nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}main{padding:18px}.browser-window{height:100vh;border-radius:0}.progress-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:480px){.row{grid-template-columns:1fr}.progress-stats{grid-template-columns:1fr 1fr}.nebula-title{font-size:24px}}
+.subject-progress{margin:16px 0}
+.subject-progress-header{display:flex;justify-content:space-between;gap:10px;margin-bottom:6px;font-size:14px}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-ready{background:rgba(53,217,174,.16);color:#35d9ae;border:1px solid rgba(53,217,174,.3)}
+.badge-warn{background:rgba(255,189,46,.16);color:#ffbd2e;border:1px solid rgba(255,189,46,.3)}
+.badge-low{background:rgba(255,95,86,.16);color:#ff7b74;border:1px solid rgba(255,95,86,.3)}
+.chart-container{display:flex;align-items:flex-end;gap:14px;height:160px;padding:18px 12px 8px;background:#070d20;border:1px solid var(--line);border-radius:12px;margin-top:12px}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end}
+.chart-bar{width:100%;max-width:44px;background:linear-gradient(180deg,#22bfff,#5238ff);border-radius:6px 6px 0 0;transition:height .4s ease;min-height:4px}
+.chart-label{font-size:11px;color:var(--muted);margin-top:6px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:75px}
+.chart-val{font-size:11px;color:#fff;font-weight:700;margin-bottom:4px}
+
+/* Voice & AI Tutor */
+.voice-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.mic-btn{background:linear-gradient(105deg,#e84b65,#9b2cff);color:#fff;border:0;border-radius:8px;padding:10px 16px;font-weight:650;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.mic-btn.recording{animation:pulse 1.2s infinite;background:#ff3b5c}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,59,92,.6)}70%{box-shadow:0 0 0 12px rgba(255,59,92,0)}100%{box-shadow:0 0 0 0 rgba(255,59,92,0)}}
+.tts-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+
+/* Question Paper Print Styling */
+.paper-sheet{background:#091126;border:1px solid rgba(39,212,255,.25);border-radius:14px;padding:24px;margin-top:16px}
+.paper-header{text-align:center;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:16px}
+.paper-meta{display:flex;justify-content:space-between;font-size:13px;color:#dce8ff;font-weight:600;margin-top:10px}
+.answer-box{margin-top:8px;padding:10px 12px;background:rgba(53,217,174,.09);border-left:3px solid #35d9ae;border-radius:6px;font-size:13px;color:#d6fff3;display:none}
+.show-answers .answer-box{display:block}
+
+@media(max-width:1100px){.nebula-action-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-bottom{grid-template-columns:1fr}}
+@media(max-width:820px){.app-layout{grid-template-columns:1fr}aside{padding:12px;border-right:0;border-bottom:1px solid var(--line)}nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}main{padding:18px}.browser-window{height:100vh;border-radius:0}.progress-stats,.row-3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.row,.row-3,.nebula-action-grid{grid-template-columns:1fr}.progress-stats{grid-template-columns:1fr 1fr}.nebula-title{font-size:24px}}
+@media print{
+  body{background:#fff;color:#000;padding:0}
+  .browser-window{border:0;box-shadow:none;height:auto;background:#fff}
+  .window-header,aside,button,.no-print{display:none!important}
+  .app-layout{display:block}
+  main{padding:0;background:#fff;color:#000;overflow:visible}
+  .card,.paper-sheet,.result-block{background:#fff!important;color:#000!important;border:1px solid #ccc!important;box-shadow:none!important}
+  p,.muted,.smalltext,.paper-meta{color:#222!important}
+}
 </style>
 </head>
 <body>
 <div class="browser-window">
-<div class="window-header">
-<div class="window-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
-<div class="window-url">smartstudymate.ai</div>
-</div>
-<div class="app-layout">
-<aside>
-<div>
-<div class="logo-area"><div class="logo-icon"></div>SmartStudy<span>Mate</span></div>
-<nav>
-<button class="active" data-page="dashboard">Dashboard</button>
-<button data-page="notes">Smart Study Notes</button>
-<button data-page="planner">Smart AI Study Planner</button>
-<button data-page="progress">Exam Progress Tracker</button>
-<button data-page="exam">Exam Preparation</button>
-<button data-page="papers">CBSE Sample Papers</button>
-<button data-page="tutor">AI Tutor</button>
-<button data-page="library">Textbook Library</button>
-<button data-page="mcq">One-Mark MCQ Generator</button>
-<button data-page="profile">My Profile</button>
-</nav>
-</div>
-<div class="upgrade-box">
-<div style="font-size:12px;font-weight:700;margin-bottom:4px">Upgrade to Pro</div>
-<p>Unlock advanced AI study models and unlimited textbook uploads.</p>
-<button class="primary" onclick="alert('Pro features coming soon!')">Upgrade today!</button>
-</div>
-</aside>
-<main>
-<section id="dashboard" class="page active">
-<div class="nebula-hero">
-<div class="nebula-orb">S</div>
-<div class="nebula-title">Welcome to your cognitive co-pilot</div>
-<div class="nebula-subtitle">I am SmartStudyMate. You can ask me to write, code, plan, or explore any idea.</div>
-<div class="nebula-action-grid">
-<div class="nebula-action-card" onclick="showPage('library')"><h3>Upload & Learn</h3><p>Choose a textbook or document and organise your learning.</p></div>
-<div class="nebula-action-card" onclick="showPage('tutor')"><h3>Ask AI Tutor</h3><p>Get clear explanations and answers to your questions.</p></div>
-<div class="nebula-action-card" onclick="showPage('mcq')"><h3>Generate Quiz</h3><p>Create syllabus-based one-mark practice questions.</p></div>
-</div>
-</div>
-<div class="dashboard-bottom">
-<div class="card" style="margin:0">
-<h2>Recent Learning Activity</h2>
-<div class="document-row"><div class="document-icon">NOTE</div><div><b>Saved Study Notes</b><div class="smalltext">Your revision notes are stored in this browser</div></div><button class="small" onclick="showPage('notes')">Open</button></div>
-<div class="document-row"><div class="document-icon">TASK</div><div><b>Study Planner</b><div class="smalltext">Review your tasks and weekly schedule</div></div><button class="small" onclick="showPage('planner')">Open</button></div>
-<div class="document-row"><div class="document-icon">PDF</div><div><b>CBSE Sample Papers</b><div class="smalltext">Find official sample papers and marking schemes</div></div><button class="small" onclick="showPage('papers')">Open</button></div>
-</div>
-<div class="card" style="margin:0">
-<h2>Learning Progress</h2>
-<div style="display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center">
-<div class="progress-ring"><strong>75%</strong></div>
-<div><div class="smalltext">Weekly learning overview</div><div class="progress-bars"><i style="height:42%"></i><i style="height:68%"></i><i style="height:82%"></i><i style="height:57%"></i><i style="height:88%"></i><i style="height:62%"></i><i style="height:96%"></i></div><div class="smalltext">Mon Tue Wed Thu Fri Sat Sun</div></div>
-</div>
-<div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 0">
-<div><div class="smalltext">Saved Notes</div><div class="stat" id="noteCount">0</div></div>
-<div><div class="smalltext">Study Tasks</div><div class="stat" id="taskCount">0</div></div>
-<div><div class="smalltext">MCQs Created</div><div class="stat" id="mcqCount">0</div></div>
-</div>
-</div>
-</div>
-</section>
+  <div class="window-header">
+    <div class="window-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+    <div class="window-url">smartstudymate.ai</div>
+  </div>
+  <div class="app-layout">
+    <aside>
+      <div>
+        <div class="logo-area"><div class="logo-icon"></div>SmartStudy<span>Mate</span></div>
+        <nav>
+          <button class="active" data-page="dashboard">Dashboard</button>
+          <button data-page="tutor">AI Voice & Text Tutor</button>
+          <button data-page="progress">Exam Progress Tracker</button>
+          <button data-page="paper-gen">AI Question Paper Generator</button>
+          <button data-page="revision">AI Revision Assistant</button>
+          <button data-page="analytics">Performance Analytics</button>
+          <button data-page="planner">Smart AI Study Planner</button>
+          <button data-page="exam">Exam Preparation Mode</button>
+          <button data-page="mcq">One-Mark MCQ Generator</button>
+          <button data-page="papers">CBSE Sample Papers</button>
+          <button data-page="notes">Smart Study Notes</button>
+          <button data-page="library">Textbook Library</button>
+          <button data-page="profile">My Profile</button>
+        </nav>
+      </div>
+      <div class="upgrade-box">
+        <div style="font-size:12px;font-weight:700;margin-bottom:4px">SmartStudyMate Pro</div>
+        <p>Full AI Exam Suite: Voice Tutor, Paper Generator & Performance Analytics active.</p>
+        <button class="primary" onclick="showPage('analytics')">View Analytics</button>
+      </div>
+    </aside>
+    <main>
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="page active">
+        <div class="nebula-hero">
+          <div class="nebula-orb">S</div>
+          <div class="nebula-title">Welcome to your cognitive co-pilot</div>
+          <div class="nebula-subtitle">I am SmartStudyMate. Ask questions by voice or text, generate full question papers, and track your exam readiness.</div>
+          <div class="nebula-action-grid">
+            <div class="nebula-action-card" onclick="showPage('tutor')"><h3>AI Voice & Text Tutor</h3><p>Speak or type questions and listen to clear spoken explanations.</p></div>
+            <div class="nebula-action-card" onclick="showPage('paper-gen')"><h3>Question Paper Generator</h3><p>Create custom full-marks exam papers with complete answer keys.</p></div>
+            <div class="nebula-action-card" onclick="showPage('revision')"><h3>AI Revision Assistant</h3><p>Get instant chapter summaries, key questions, and last-minute notes.</p></div>
+            <div class="nebula-action-card" onclick="showPage('progress')"><h3>Exam Progress Tracker</h3><p>Track subject & chapter completion and overall exam readiness.</p></div>
+          </div>
+        </div>
+        <div class="dashboard-bottom">
+          <div class="card" style="margin:0">
+            <h2>Quick Study Tools</h2>
+            <div class="document-row"><div class="document-left"><div class="document-icon">STAT</div><div><b>Student Performance Analytics</b><div class="smalltext">Weekly/monthly reports & weak topic detection</div></div></div><button class="small" onclick="showPage('analytics')">Open</button></div>
+            <div class="document-row"><div class="document-left"><div class="document-icon">MCQ</div><div><b>One-Mark MCQ Generator</b><div class="smalltext">Practice syllabus-based objective questions</div></div></div><button class="small" onclick="showPage('mcq')">Open</button></div>
+            <div class="document-row"><div class="document-left"><div class="document-icon">PDF</div><div><b>CBSE Sample Papers</b><div class="smalltext">Official sample papers and marking schemes</div></div></div><button class="small" onclick="showPage('papers')">Open</button></div>
+          </div>
+          <div class="card" style="margin:0">
+            <h2>Exam Readiness Overview</h2>
+            <div style="display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center">
+              <div class="progress-ring" id="dashRing"><strong id="dashRingText">0%</strong></div>
+              <div><div class="smalltext">Task completion & weekly momentum</div><div class="progress-bars"><i style="height:45%"></i><i style="height:68%"></i><i style="height:82%"></i><i style="height:60%"></i><i style="height:88%"></i><i style="height:74%"></i><i style="height:95%"></i></div><div class="smalltext">Mon Tue Wed Thu Fri Sat Sun</div></div>
+            </div>
+            <div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 0">
+              <div><div class="smalltext">Saved Notes</div><div class="stat" id="noteCount">0</div></div>
+              <div><div class="smalltext">Study Tasks</div><div class="stat" id="taskCount">0</div></div>
+              <div><div class="smalltext">MCQs Practiced</div><div class="stat" id="mcqCount">0</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-<section id="notes" class="page">
-<h1>Smart Study Notes</h1><p class="muted">Create and save your own revision notes in this browser.</p>
-<div class="card"><label>Note title</label><input id="noteTitle" placeholder="Example: Python Functions"><label>Notes</label><textarea id="noteBody" placeholder="Write your study notes here..."></textarea><button class="primary" onclick="saveNote()">Save note</button></div>
-<div class="card"><h2>My saved notes</h2><div id="notesList"></div></div>
-</section>
+      <!-- 5. UNIFIED AI VOICE & TEXT TUTOR -->
+      <section id="tutor" class="page">
+        <h1>AI Voice & Text Tutor</h1>
+        <p class="muted">Type your question or use your microphone to ask by voice. Listen to spoken explanations with built-in Text-to-Speech.</p>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+            <label style="margin:0">Ask a Question (Text or Voice)</label>
+            <label style="margin:0;display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:500">
+              <input type="checkbox" id="autoSpeakToggle" checked style="width:auto"> Auto-speak AI answers aloud
+            </label>
+          </div>
+          <textarea id="tutorQuestion" placeholder="Type here or click 'Speak Question' and ask: Explain Newton's second law of motion with an example..."></textarea>
+          <div class="voice-controls">
+            <button class="primary" id="tutorButton" onclick="askTutor(false)">Ask AI Tutor</button>
+            <button class="mic-btn" id="micButton" onclick="toggleVoiceInput()">🎤 Speak Question</button>
+            <span id="voiceStatus" class="smalltext"></span>
+          </div>
+          <div id="tutorAnswer"></div>
+          <div class="tts-bar" id="ttsControls" style="display:none">
+            <strong style="font-size:13px">Spoken Explanation:</strong>
+            <button class="small" onclick="speakTutorAnswer()">▶ Play / Replay</button>
+            <button class="small" onclick="pauseResumeSpeech()">⏸ Pause / Resume</button>
+            <button class="small" onclick="stopSpeech()">⏹ Stop</button>
+            <select id="speechRate" style="max-width:130px;padding:6px 10px" aria-label="Speech speed">
+              <option value="0.85">0.85x Slow</option>
+              <option value="1" selected>1.0x Normal</option>
+              <option value="1.2">1.2x Fast</option>
+            </select>
+          </div>
+        </div>
+      </section>
 
-<section id="planner" class="page">
-<h1>Smart AI Study Planner</h1><p class="muted">Organise study tasks, generate a weekly AI timetable and understand your learning progress.</p>
-<div class="card"><h2>Smart Task Management</h2><div class="row"><div><label>Task title</label><input id="taskTitle" placeholder="Example: Revise SQL joins"></div><div><label>Subject</label><input id="taskSubject" placeholder="Example: Computer Science"></div></div>
-<div class="row"><div><label>Chapter / topic</label><input id="taskChapter" placeholder="Example: Database queries"></div><div><label>Due date</label><input id="taskDueDate" type="date"></div></div>
-<div class="row"><div><label>Priority</label><select id="taskPriority"><option>Low</option><option selected>Medium</option><option>High</option></select></div><div style="display:flex;align-items:end"><button class="primary" id="addTaskButton" onclick="addSmartTask()">Add study task</button></div></div><div id="taskStatus"></div></div>
-<div class="card"><h2>My Study Tasks</h2><p class="muted">Update each task as Pending, In Progress or Completed.</p><div id="tasksList"><p class="muted">Loading tasks...</p></div></div>
-<div class="card"><h2>AI Study Schedule Generator</h2><p class="muted">Generate a weekly timetable based on your class, subjects, chapters and available study time.</p>
-<div class="row"><div><label>Class</label><select id="scheduleClass"><option value="">Select class</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option></select></div><div><label>Examination date (optional)</label><input id="scheduleExamDate" type="date"></div></div>
-<label>Subjects (one per line)</label><textarea id="scheduleSubjects" placeholder="Mathematics&#10;Science&#10;Computer Science"></textarea><label>Chapters / topics (one per line)</label><textarea id="scheduleChapters" placeholder="Algebra&#10;Electricity&#10;Python functions"></textarea>
-<label>Available study hours per day</label><input id="dailyHours" type="number" min="0.5" max="12" step="0.5" value="3"><button class="primary" id="scheduleButton" onclick="generateStudySchedule()">Generate AI Study Schedule</button><div id="scheduleStatus"></div><div id="scheduleResult"></div></div>
-<div class="card"><h2>AI Progress Analysis</h2><p class="muted">Get an overview of completed work, pending tasks and practical recommendations.</p><button class="primary" id="progressButton" onclick="analyseProgress()">Analyse My Progress</button><div id="progressStatus"></div><div id="progressResult"></div></div>
-</section>
+      <!-- 1. EXAM PROGRESS TRACKER -->
+      <section id="progress" class="page">
+        <h1>Exam Progress Tracker</h1>
+        <p class="muted">Subject-wise completion dashboard, chapter-wise progress tracking, visual charts, and examination readiness overview.</p>
 
-<!-- NEW EXAM PROGRESS TRACKER PAGE -->
-<section id="progress" class="page">
-<h1>Exam Progress Tracker</h1>
-<p class="muted">Monitor your study performance, completed tasks and subject-wise preparation.</p>
+        <div class="progress-stats">
+          <div class="progress-card"><h3>Total Chapters / Tasks</h3><strong id="trackerTotal">0</strong></div>
+          <div class="progress-card"><h3>Completed</h3><strong id="trackerCompleted">0</strong></div>
+          <div class="progress-card"><h3>In Progress</h3><strong id="trackerInProgress">0</strong></div>
+          <div class="progress-card"><h3>Exam Readiness</h3><strong id="trackerReadiness">0%</strong></div>
+        </div>
 
-<div class="progress-stats">
-<div class="progress-card"><h3>Total Tasks</h3><strong id="trackerTotal">0</strong></div>
-<div class="progress-card"><h3>Completed</h3><strong id="trackerCompleted">0</strong></div>
-<div class="progress-card"><h3>Pending</h3><strong id="trackerPending">0</strong></div>
-<div class="progress-card"><h3>In Progress</h3><strong id="trackerInProgress">0</strong></div>
-</div>
+        <div class="card">
+          <div class="subject-progress-header">
+            <h2 style="margin:0">Examination Readiness Overview</h2>
+            <span id="readinessBadge" class="badge badge-warn">Getting Started</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="trackerOverallBar"></div></div>
+          <p id="trackerSummary">Add subjects and chapters in your Study Planner to track exam readiness.</p>
+        </div>
 
-<div class="card">
-<h2>Overall Exam Preparation</h2>
-<div class="subject-progress-header"><span class="muted">Overall completion</span><strong id="trackerPercentage">0%</strong></div>
-<div class="progress-track"><div class="progress-fill" id="trackerOverallBar"></div></div>
-<p id="trackerSummary">Add tasks in your Study Planner to start tracking.</p>
-</div>
+        <div class="row">
+          <div class="card" style="margin:0">
+            <h2>Subject-wise Completion Dashboard</h2>
+            <div id="trackerSubjects"><p class="muted">Loading subject progress...</p></div>
+          </div>
+          <div class="card" style="margin:0">
+            <h2>Visual Subject Completion Chart</h2>
+            <p class="smalltext">Percentage of syllabus tasks completed per subject</p>
+            <div class="chart-container" id="subjectBarChart"></div>
+          </div>
+        </div>
 
-<div class="card">
-<h2>Subject-wise Progress</h2>
-<div id="trackerSubjects"><p class="muted">Loading subject progress...</p></div>
-</div>
+        <div class="card">
+          <h2>Chapter-wise Progress Tracking</h2>
+          <p class="muted">Update chapter completion status directly or add new chapters in the Study Planner.</p>
+          <div id="chapterProgressList"><p class="muted">No chapters tracked yet.</p></div>
+          <div style="margin-top:12px">
+            <button class="primary" onclick="showPage('planner')">+ Add Chapters / Tasks</button>
+            <button class="secondary" onclick="loadExamProgressTracker()">Refresh Tracker</button>
+            <button class="secondary" id="trackerAnalyseButton" onclick="analyseTrackerProgress()">AI Readiness Feedback</button>
+          </div>
+          <div id="trackerAnalysisStatus"></div>
+          <div id="trackerAnalysisResult"></div>
+        </div>
+      </section>
 
-<div class="card">
-<h2>AI Performance Analysis</h2>
-<p class="muted">Get AI feedback on your study habits, strengths and next steps.</p>
-<button class="primary" id="trackerAnalyseButton" onclick="analyseTrackerProgress()">Analyse My Exam Progress</button>
-<div id="trackerAnalysisStatus"></div>
-<div id="trackerAnalysisResult"></div>
-</div>
+      <!-- 2. AI QUESTION PAPER GENERATOR -->
+      <section id="paper-gen" class="page">
+        <h1>AI Question Paper Generator</h1>
+        <p class="muted">Generate complete syllabus-aligned question papers with custom marks, difficulty levels, and complete answer keys.</p>
+        <div class="card no-print">
+          <div class="row-3">
+            <div>
+              <label>Class</label>
+              <select id="qpClass">
+                <option value="">Select class</option>
+                <option>Class 6</option><option>Class 7</option><option>Class 8</option>
+                <option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option>
+              </select>
+            </div>
+            <div>
+              <label>Subject</label>
+              <input id="qpSubject" placeholder="Example: Computer Science, Mathematics, Physics">
+            </div>
+            <div>
+              <label>Total Marks</label>
+              <select id="qpMarks">
+                <option value="20">20 Marks (Unit Test)</option>
+                <option value="40">40 Marks (Half-Term)</option>
+                <option value="50">50 Marks (Mid-Term)</option>
+                <option value="70">70 Marks (CBSE Practical Subject)</option>
+                <option value="80" selected>80 Marks (Full Board Pattern)</option>
+                <option value="100">100 Marks (Full Paper)</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label>Difficulty Level</label>
+              <select id="qpDifficulty">
+                <option value="Easy">Easy (Foundation & Direct Concepts)</option>
+                <option value="Medium" selected>Medium (Balanced School Standard)</option>
+                <option value="Hard">Hard (HOTS, Analytical & Application)</option>
+                <option value="Board Exam Standard">Board Exam Standard (Competency + Case Study)</option>
+              </select>
+            </div>
+            <div>
+              <label>Time Allowed</label>
+              <select id="qpDuration">
+                <option>45 Minutes</option>
+                <option>1.5 Hours</option>
+                <option>2 Hours</option>
+                <option selected>3 Hours</option>
+              </select>
+            </div>
+          </div>
+          <label>Chapters / Syllabus Topics to Include</label>
+          <textarea id="qpChapters" placeholder="Example: Python Functions, File Handling, MySQL Queries, Computer Networks"></textarea>
+          <button class="primary" id="qpGenerateBtn" onclick="generateQuestionPaper()">Generate Complete Question Paper</button>
+          <button class="secondary" onclick="toggleAnswerKey()">Show / Hide Answer Key</button>
+          <button class="secondary" onclick="window.print()">Print / Save PDF</button>
+          <div id="qpStatus"></div>
+        </div>
+        <div id="qpOutput"></div>
+      </section>
 
-<div class="card">
-<h2>Manage Study Tasks</h2>
-<p class="muted">Add, edit or update your study tasks in the planner.</p>
-<div class="progress-actions">
-<button class="primary" onclick="showPage('planner')">Open Study Planner</button>
-<button class="secondary" onclick="loadExamProgressTracker()">Refresh Progress</button>
-</div>
-</div>
-</section>
+      <!-- 3. AI REVISION ASSISTANT -->
+      <section id="revision" class="page">
+        <h1>AI Revision Assistant</h1>
+        <p class="muted">Generate automatic chapter summaries, high-probability important questions, and last-minute revision notes.</p>
+        <div class="card">
+          <div class="row-3">
+            <div>
+              <label>Class</label>
+              <select id="revClass">
+                <option value="">Select class</option>
+                <option>Class 6</option><option>Class 7</option><option>Class 8</option>
+                <option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option>
+              </select>
+            </div>
+            <div>
+              <label>Subject</label>
+              <input id="revSubject" placeholder="Example: Science, Chemistry, Computer Science">
+            </div>
+            <div>
+              <label>Chapter / Topic Name</label>
+              <input id="revChapter" placeholder="Example: Chemical Reactions and Equations">
+            </div>
+          </div>
+          <label>Optional: Paste Your Raw Notes or Key Points (AI will summarize & structure them)</label>
+          <textarea id="revNotes" placeholder="Leave blank to generate from syllabus knowledge, or paste your class notes here..."></textarea>
+          <button class="primary" id="revGenerateBtn" onclick="generateRevisionKit()">Generate Revision Kit</button>
+          <button class="secondary" onclick="saveRevisionToNotes()">Save Summary to My Notes</button>
+          <div id="revStatus"></div>
+        </div>
+        <div id="revOutput"></div>
+      </section>
 
-<section id="exam" class="page">
-<h1>Exam Preparation Mode</h1><p class="muted">Build a structured exam preparation plan for any class from Class 1 to Class 12.</p>
-<div class="card"><div class="row"><div><label>Class</label><select id="examClass"><option value="">Select class</option><option value="1">Class 1</option><option value="2">Class 2</option><option value="3">Class 3</option><option value="4">Class 4</option><option value="5">Class 5</option><option value="6">Class 6</option><option value="7">Class 7</option><option value="8">Class 8</option><option value="9">Class 9</option><option value="10">Class 10</option><option value="11">Class 11</option><option value="12">Class 12</option></select></div><div><label>Examination date</label><input id="examDate" type="date"></div></div>
-<label>Subjects (one per line)</label><textarea id="examSubjects" placeholder="Mathematics&#10;Science&#10;English"></textarea><label>Chapters / portions (one per line)</label><textarea id="examChapters" placeholder="List the chapters to prepare"></textarea><button class="primary" id="examButton" onclick="generateExamPlan()">Create Exam Preparation Plan</button><div id="examStatus"></div><div id="examResult"></div></div>
-</section>
+      <!-- 4. STUDENT PERFORMANCE ANALYTICS -->
+      <section id="analytics" class="page">
+        <h1>Student Performance Analytics</h1>
+        <p class="muted">Subject-wise performance breakdown, weekly and monthly study reports, and identification of topics needing revision.</p>
 
-<section id="papers" class="page">
-<h1>CBSE Previous Year Question Paper Library</h1>
-<p class="muted">Find CBSE question papers from the last five years. Select your class, year and subject to search for available papers.</p>
-<div class="card">
-<div class="row">
-<div><label>Class</label><select id="paperClass"><option value="10">Class 10</option><option value="12">Class 12</option></select></div>
-<div><label>Year</label><select id="paperYear"><option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option></select></div>
-</div>
-<label>Subject (optional)</label><input id="paperSubject" placeholder="Example: Mathematics, Science, English">
-<button class="primary" id="paperButton" onclick="loadCBSEPapers()">Find Previous Year Papers</button>
-<div id="paperStatus"></div><div id="paperResults"></div>
-</div>
-<div class="card">
-<h2>Official CBSE Resources</h2>
-<p class="muted">If a paper is not listed, use the official CBSE websites to check available question papers and examination resources.</p>
-<p><a href="https://www.cbse.gov.in/cbsenew/question-paper.html" target="_blank" rel="noopener" style="color:#56cfff">CBSE Previous Year Question Papers</a></p>
-<p><a href="https://cbseacademic.nic.in/" target="_blank" rel="noopener" style="color:#56cfff">CBSE Academic Website</a></p>
-</div>
-</section>
+        <div class="progress-stats">
+          <div class="progress-card"><h3>Average Quiz Accuracy</h3><strong id="anaAvgScore">0%</strong></div>
+          <div class="progress-card"><h3>Quizzes Completed</h3><strong id="anaQuizCount">0</strong></div>
+          <div class="progress-card"><h3>Syllabus Tasks Done</h3><strong id="anaTasksDone">0</strong></div>
+          <div class="progress-card"><h3>Topics Flagged</h3><strong id="anaWeakCount">0</strong></div>
+        </div>
 
-<section id="tutor" class="page">
-<h1>AI Tutor</h1><p class="muted">Ask a question and receive a class-friendly explanation.</p>
-<div class="card"><label>Your question</label><textarea id="tutorQuestion" placeholder="Explain the difference between a list and a tuple in Python."></textarea><button class="primary" id="tutorButton" onclick="askTutor()">Ask AI Tutor</button><div id="tutorAnswer"></div></div>
-</section>
+        <div class="row">
+          <div class="card" style="margin:0">
+            <h2>Subject-wise Performance</h2>
+            <p class="smalltext">Combined accuracy from MCQ quizzes and task completion</p>
+            <div id="anaSubjectPerf"><p class="muted">Complete quizzes or study tasks to populate subject performance.</p></div>
+          </div>
+          <div class="card" style="margin:0">
+            <h2>Weekly Activity & Quiz Trend</h2>
+            <p class="smalltext">Recent quiz scores (%) across your sessions</p>
+            <div class="chart-container" id="anaTrendChart"></div>
+          </div>
+        </div>
 
-<section id="library" class="page">
-<h1>My Textbook Library</h1><p class="muted">Choose PDF textbooks from your computer. Files are kept in this browser session; large files may exceed browser storage limits.</p>
-<div class="card"><label>Select a PDF</label><input id="pdfFile" type="file" accept="application/pdf"><button class="primary" onclick="addPdf()">Add PDF</button><div id="libraryList"></div></div>
-</section>
+        <div class="card">
+          <h2>Topics Needing Immediate Revision</h2>
+          <p class="muted">Automatically identified from pending/overdue tasks and quizzes scoring below 70%.</p>
+          <div id="anaWeakTopics"></div>
+        </div>
 
-<section id="mcq" class="page">
-<h1>One-Mark MCQ Generator</h1><p class="muted">Generate syllabus-based practice questions with Google Search grounding through Gemini.</p>
-<div class="card"><div class="row"><div><label>Class</label><select id="mcqClass"><option value="">Select class</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option></select></div><div><label>Subject</label><select id="mcqSubject"><option value="">Select subject</option><option>Computer Science</option><option>Artificial Intelligence</option><option>Informatics Practices</option><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>Science</option><option>English</option></select></div></div>
-<label>Syllabus portion / chapter / topics</label><textarea id="mcqPortion" placeholder="Example: Python functions, arguments and return values"></textarea><div class="row"><div><label>Number of questions</label><select id="mcqNumber"><option>5</option><option selected>10</option><option>15</option><option>20</option><option>30</option></select></div><div><label>Mode</label><select id="mcqMode"><option value="practice">Practice mode (show score after submit)</option><option value="study">Study mode (show answers and explanations)</option></select></div></div>
-<button class="primary" id="generateButton" onclick="generateMCQs()">Generate MCQs using AI</button><button class="secondary" onclick="downloadMCQs()">Download TXT</button><button class="secondary" onclick="printMCQs()">Print / Save PDF</button><div id="mcqStatus"></div><div id="mcqResults"></div><div id="mcqSources"></div></div>
-</section>
+        <div class="card">
+          <h2>AI Weekly & Monthly Performance Report</h2>
+          <p class="muted">Generate a personalized AI diagnostic report based on your quiz history and study progress.</p>
+          <button class="primary" id="anaReportBtn" onclick="generateAnalyticsReport()">Generate Weekly & Monthly Report</button>
+          <div id="anaStatus"></div>
+          <div id="anaReportOutput"></div>
+        </div>
+      </section>
 
-<section id="profile" class="page">
-<h1>My Profile</h1><p class="muted">Your profile details are saved only in this browser.</p>
-<div class="card"><label>Name</label><input id="profileName" placeholder="Your name"><label>Class</label><input id="profileClass" placeholder="Example: Class 12"><label>School</label><input id="profileSchool" placeholder="School name"><button class="primary" onclick="saveProfile()">Save profile</button><div id="profileStatus"></div></div>
-</section>
-</main>
-</div>
+      <!-- SMART AI STUDY PLANNER -->
+      <section id="planner" class="page">
+        <h1>Smart AI Study Planner</h1><p class="muted">Organise study tasks, generate a weekly AI timetable and understand your learning progress.</p>
+        <div class="card"><h2>Smart Task Management</h2><div class="row"><div><label>Task title</label><input id="taskTitle" placeholder="Example: Revise SQL joins"></div><div><label>Subject</label><input id="taskSubject" placeholder="Example: Computer Science"></div></div>
+        <div class="row"><div><label>Chapter / topic</label><input id="taskChapter" placeholder="Example: Database queries"></div><div><label>Due date</label><input id="taskDueDate" type="date"></div></div>
+        <div class="row"><div><label>Priority</label><select id="taskPriority"><option>Low</option><option selected>Medium</option><option>High</option></select></div><div style="display:flex;align-items:end"><button class="primary" id="addTaskButton" onclick="addSmartTask()">Add study task</button></div></div><div id="taskStatus"></div></div>
+        <div class="card"><h2>My Study Tasks</h2><p class="muted">Update each task as Pending, In Progress or Completed.</p><div id="tasksList"><p class="muted">Loading tasks...</p></div></div>
+        <div class="card"><h2>AI Study Schedule Generator</h2><p class="muted">Generate a weekly timetable based on your class, subjects, chapters and available study time.</p>
+        <div class="row"><div><label>Class</label><select id="scheduleClass"><option value="">Select class</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option></select></div><div><label>Examination date (optional)</label><input id="scheduleExamDate" type="date"></div></div>
+        <label>Subjects (one per line)</label><textarea id="scheduleSubjects" placeholder="Mathematics&#10;Science&#10;Computer Science"></textarea><label>Chapters / topics (one per line)</label><textarea id="scheduleChapters" placeholder="Algebra&#10;Electricity&#10;Python functions"></textarea>
+        <label>Available study hours per day</label><input id="dailyHours" type="number" min="0.5" max="12" step="0.5" value="3"><button class="primary" id="scheduleButton" onclick="generateStudySchedule()">Generate AI Study Schedule</button><div id="scheduleStatus"></div><div id="scheduleResult"></div></div>
+      </section>
+
+      <!-- EXAM PREPARATION -->
+      <section id="exam" class="page">
+        <h1>Exam Preparation Mode</h1><p class="muted">Build a structured exam preparation plan for any class from Class 1 to Class 12.</p>
+        <div class="card"><div class="row"><div><label>Class</label><select id="examClass"><option value="">Select class</option><option value="1">Class 1</option><option value="2">Class 2</option><option value="3">Class 3</option><option value="4">Class 4</option><option value="5">Class 5</option><option value="6">Class 6</option><option value="7">Class 7</option><option value="8">Class 8</option><option value="9">Class 9</option><option value="10">Class 10</option><option value="11">Class 11</option><option value="12">Class 12</option></select></div><div><label>Examination date</label><input id="examDate" type="date"></div></div>
+        <label>Subjects (one per line)</label><textarea id="examSubjects" placeholder="Mathematics&#10;Science&#10;English"></textarea><label>Chapters / portions (one per line)</label><textarea id="examChapters" placeholder="List the chapters to prepare"></textarea><button class="primary" id="examButton" onclick="generateExamPlan()">Create Exam Preparation Plan</button><div id="examStatus"></div><div id="examResult"></div></div>
+      </section>
+
+      <!-- CBSE SAMPLE PAPERS -->
+      <section id="papers" class="page">
+        <h1>CBSE Sample Question Paper Library</h1>
+        <p class="muted">Find official CBSE Sample Question Papers (SQP) and Marking Schemes (MS).</p>
+        <div class="card">
+        <div class="row">
+        <div><label>Class</label><select id="paperClass"><option value="10">Class 10</option><option value="12">Class 12</option></select></div>
+        <div><label>Academic Session</label><select id="paperSession"><option value="2026-27">2026-27</option><option value="2025-26">2025-26</option><option value="2024-25">2024-25</option><option value="2023-24">2023-24</option></select></div>
+        </div>
+        <label>Subject (optional)</label><input id="paperSubject" placeholder="Example: Mathematics, Science, Computer Science">
+        <button class="primary" id="paperButton" onclick="loadCBSEPapers()">Find Official CBSE Papers</button>
+        <div id="paperStatus"></div><div id="paperResults"></div>
+        </div>
+        <div class="card">
+        <h2>Official CBSE Resources</h2>
+        <p><a href="https://cbseacademic.nic.in/SQP_CLASSXII_2026-27.html" target="_blank" rel="noopener" style="color:#56cfff">CBSE Class 12 Sample Papers</a></p>
+        <p><a href="https://cbseacademic.nic.in/SQP_CLASSX_2026-27.html" target="_blank" rel="noopener" style="color:#56cfff">CBSE Class 10 Sample Papers</a></p>
+        </div>
+      </section>
+
+      <!-- SMART STUDY NOTES -->
+      <section id="notes" class="page">
+        <h1>Smart Study Notes</h1><p class="muted">Create and save your own revision notes in this browser.</p>
+        <div class="card"><label>Note title</label><input id="noteTitle" placeholder="Example: Python Functions"><label>Notes</label><textarea id="noteBody" placeholder="Write your study notes here..."></textarea><button class="primary" onclick="saveNote()">Save note</button></div>
+        <div class="card"><h2>My saved notes</h2><div id="notesList"></div></div>
+      </section>
+
+      <!-- TEXTBOOK LIBRARY -->
+      <section id="library" class="page">
+        <h1>My Textbook Library</h1><p class="muted">Choose PDF textbooks from your computer. Files are kept in this browser session.</p>
+        <div class="card"><label>Select a PDF</label><input id="pdfFile" type="file" accept="application/pdf"><button class="primary" onclick="addPdf()">Add PDF</button><div id="libraryList"></div></div>
+      </section>
+
+      <!-- ONE-MARK MCQ GENERATOR -->
+      <section id="mcq" class="page">
+        <h1>One-Mark MCQ Generator</h1><p class="muted">Generate syllabus-based practice questions and track your quiz scores in Performance Analytics.</p>
+        <div class="card"><div class="row"><div><label>Class</label><select id="mcqClass"><option value="">Select class</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option></select></div><div><label>Subject</label><select id="mcqSubject"><option value="">Select subject</option><option>Computer Science</option><option>Artificial Intelligence</option><option>Informatics Practices</option><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>Science</option><option>English</option></select></div></div>
+        <label>Syllabus portion / chapter / topics</label><textarea id="mcqPortion" placeholder="Example: Python functions, arguments and return values"></textarea><div class="row"><div><label>Number of questions</label><select id="mcqNumber"><option>5</option><option selected>10</option><option>15</option><option>20</option><option>30</option></select></div><div><label>Mode</label><select id="mcqMode"><option value="practice">Practice mode (show score after submit)</option><option value="study">Study mode (show answers and explanations)</option></select></div></div>
+        <button class="primary" id="generateButton" onclick="generateMCQs()">Generate MCQs using AI</button><button class="secondary" onclick="downloadMCQs()">Download TXT</button><button class="secondary" onclick="printMCQs()">Print / Save PDF</button><div id="mcqStatus"></div><div id="mcqResults"></div><div id="mcqSources"></div></div>
+      </section>
+
+      <!-- MY PROFILE -->
+      <section id="profile" class="page">
+        <h1>My Profile</h1><p class="muted">Your profile details are saved only in this browser.</p>
+        <div class="card"><label>Name</label><input id="profileName" placeholder="Your name"><label>Class</label><input id="profileClass" placeholder="Example: Class 12"><label>School</label><input id="profileSchool" placeholder="School name"><button class="primary" onclick="saveProfile()">Save profile</button><div id="profileStatus"></div></div>
+      </section>
+    </main>
+  </div>
 </div>
 
 <script>
-let mcqData=[];
-let library=[];
-let smartTasks=[];
+let mcqData = [];
+let library = [];
+let smartTasks = [];
+let lastTutorResponse = '';
+let lastRevisionData = null;
 
-const getStore=(key,fallback=[])=>{try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}};
-const setStore=(key,value)=>localStorage.setItem(key,JSON.stringify(value));
+const getStore = (key, fallback = []) => { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } };
+const setStore = (key, value) => localStorage.setItem(key, JSON.stringify(value));
 
-function showPage(id){
-document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));
-document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
-if(id==='planner')loadSmartTasks();
-if(id==='progress')loadExamProgressTracker();
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === id));
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.page === id));
+  if (id === 'planner') loadSmartTasks();
+  if (id === 'progress') loadExamProgressTracker();
+  if (id === 'analytics') renderAnalyticsDashboard();
 }
-document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => showPage(b.dataset.page)));
 
-function refresh(){
-const notes=getStore('sm_notes');
-document.getElementById('noteCount').textContent=notes.length;
-document.getElementById('taskCount').textContent=smartTasks.length;
-document.getElementById('mcqCount').textContent=getStore('sm_mcq_count',0);
-document.getElementById('notesList').innerHTML=notes.length?notes.map((n,i)=>`<div class="item"><b>${escapeHtml(n.title)}</b><p>${escapeHtml(n.body).replace(/\n/g,'<br>')}</p><button class="small" onclick="deleteNote(${i})">Delete</button></div>`).join(''):'<p class="muted">No notes saved yet.</p>';
-document.getElementById('libraryList').innerHTML=library.map((f,i)=>`<div class="item">${escapeHtml(f.name)} <button class="small" onclick="openPdf(${i})">Open</button><button class="small" onclick="removePdf(${i})">Remove</button></div>`).join('');
-}
-function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function lines(id){return document.getElementById(id).value.split('\n').map(x=>x.trim()).filter(Boolean)}
-async function api(url,options={}){const response=await fetch(url,{...options,headers:{'Content-Type':'application/json',...(options.headers||{})}});let data={};try{data=await response.json()}catch{}if(!response.ok)throw Error(data.error||'Request failed. Please try again.');return data;}
+function refresh() {
+  const notes = getStore('sm_notes');
+  document.getElementById('noteCount').textContent = notes.length;
+  document.getElementById('taskCount').textContent = smartTasks.length;
+  document.getElementById('mcqCount').textContent = getStore('sm_mcq_count', 0);
 
-function saveNote(){let title=document.getElementById('noteTitle').value.trim(),body=document.getElementById('noteBody').value.trim();if(!title||!body)return alert('Enter a title and note.');let a=getStore('sm_notes');a.unshift({title,body});setStore('sm_notes',a);document.getElementById('noteTitle').value='';document.getElementById('noteBody').value='';refresh();}
-function deleteNote(i){let a=getStore('sm_notes');a.splice(i,1);setStore('sm_notes',a);refresh();}
+  const total = smartTasks.length;
+  const completed = smartTasks.filter(t => t.status === 'Completed').length;
+  const pct = total ? Math.round((completed / total) * 100) : 0;
+  document.getElementById('dashRingText').textContent = pct + '%';
+  document.getElementById('dashRing').style.background = `conic-gradient(#168cff 0 ${pct}%, #111c3a ${pct}%)`;
 
-async function loadSmartTasks(){
-const box=document.getElementById('tasksList');
-box.innerHTML='<p class="muted">Loading tasks...</p>';
-try{
-const d=await api('/api/tasks');
-smartTasks=d.tasks||[];
-renderSmartTasks();
-refresh();
-if(document.getElementById('progress').classList.contains('active'))renderExamProgress();
-}catch(e){
-box.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';
-}
-}
-function renderSmartTasks(){
-const box=document.getElementById('tasksList');
-if(!smartTasks.length){box.innerHTML='<p class="muted">No study tasks added yet.</p>';return;}
-box.innerHTML=smartTasks.map(t=>`<div class="item"><b>${escapeHtml(t.title)}</b><div class="task-meta"><span>${escapeHtml(t.subject||'No subject')}</span><span>${escapeHtml(t.chapter||'No chapter')}</span><span>Due: ${escapeHtml(t.due_date||'Not set')}</span><span>Priority: ${escapeHtml(t.priority||'Medium')}</span></div><div class="task-actions"><select aria-label="Task status" onchange="changeTaskStatus('${escapeHtml(t.id)}',this.value)"><option ${t.status==='Pending'?'selected':''}>Pending</option><option ${t.status==='In Progress'?'selected':''}>In Progress</option><option ${t.status==='Completed'?'selected':''}>Completed</option></select><button class="small" onclick="deleteSmartTask('${escapeHtml(t.id)}')">Delete</button></div></div>`).join('');
+  document.getElementById('notesList').innerHTML = notes.length
+    ? notes.map((n, i) => `<div class="item"><b>${escapeHtml(n.title)}</b><p>${escapeHtml(n.body).replace(/\n/g, '<br>')}</p><button class="small" onclick="deleteNote(${i})">Delete</button></div>`).join('')
+    : '<p class="muted">No notes saved yet.</p>';
+  document.getElementById('libraryList').innerHTML = library.map((f, i) => `<div class="item">${escapeHtml(f.name)} <button class="small" onclick="openPdf(${i})">Open</button><button class="small" onclick="removePdf(${i})">Remove</button></div>`).join('');
 }
 
-async function addSmartTask(){
-const title=document.getElementById('taskTitle').value.trim();
-if(!title)return alert('Enter a task title.');
-const btn=document.getElementById('addTaskButton'),status=document.getElementById('taskStatus');
-btn.disabled=true;status.innerHTML='<p class="muted">Saving task...</p>';
-try{
-await api('/api/tasks',{method:'POST',body:JSON.stringify({title,subject:document.getElementById('taskSubject').value.trim(),chapter:document.getElementById('taskChapter').value.trim(),due_date:document.getElementById('taskDueDate').value,priority:document.getElementById('taskPriority').value})});
-['taskTitle','taskSubject','taskChapter','taskDueDate'].forEach(id=>document.getElementById(id).value='');
-status.innerHTML='<div class="notice">Study task added.</div>';
-await loadSmartTasks();
-}catch(e){status.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';}
-finally{btn.disabled=false;}
-}
-async function changeTaskStatus(id,status){try{await api('/api/tasks/'+encodeURIComponent(id),{method:'PUT',body:JSON.stringify({status})});await loadSmartTasks();}catch(e){alert(e.message);await loadSmartTasks();}}
-async function deleteSmartTask(id){if(!confirm('Delete this study task?'))return;try{await api('/api/tasks/'+encodeURIComponent(id),{method:'DELETE'});await loadSmartTasks();}catch(e){alert(e.message);}}
-
-function renderExamProgress(){
-const total=smartTasks.length;
-const completed=smartTasks.filter(t=>t.status==='Completed').length;
-const pending=smartTasks.filter(t=>t.status==='Pending').length;
-const inProgress=smartTasks.filter(t=>t.status==='In Progress').length;
-const percentage=total?Math.round(completed/total*100):0;
-
-document.getElementById('trackerTotal').textContent=total;
-document.getElementById('trackerCompleted').textContent=completed;
-document.getElementById('trackerPending').textContent=pending;
-document.getElementById('trackerInProgress').textContent=inProgress;
-document.getElementById('trackerPercentage').textContent=percentage+'%';
-document.getElementById('trackerOverallBar').style.width=percentage+'%';
-document.getElementById('trackerSummary').textContent=total
-?`${completed} of ${total} study tasks completed. ${total-completed} tasks remain.`
-:'No study tasks yet. Add tasks in the Study Planner to begin.';
-
-const subjects={};
-smartTasks.forEach(task=>{
-const subject=task.subject?.trim()||'Other';
-if(!subjects[subject])subjects[subject]={total:0,completed:0};
-subjects[subject].total++;
-if(task.status==='Completed')subjects[subject].completed++;
-});
-
-const names=Object.keys(subjects);
-const subjectBox=document.getElementById('trackerSubjects');
-if(!names.length){
-subjectBox.innerHTML='<p class="muted">No subject-wise progress yet. Add tasks with subject names in the Study Planner.</p>';
-return;
-}
-subjectBox.innerHTML=names.sort().map(name=>{
-const item=subjects[name];
-const percent=Math.round(item.completed/item.total*100);
-return `<div class="subject-progress">
-<div class="subject-progress-header"><strong>${escapeHtml(name)}</strong><span class="muted">${item.completed}/${item.total} completed (${percent}%)</span></div>
-<div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
-</div>`;
-}).join('');
+function escapeHtml(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function lines(id) { return document.getElementById(id).value.split('\n').map(x => x.trim()).filter(Boolean); }
+async function api(url, options = {}) {
+  const response = await fetch(url, { ...options, headers: { 'Content-Type': 'application/json', ...(options.headers || {}) } });
+  let data = {};
+  try { data = await response.json(); } catch {}
+  if (!response.ok) throw Error(data.error || 'Request failed. Please try again.');
+  return data;
 }
 
-async function loadExamProgressTracker(){
-const box=document.getElementById('trackerSubjects');
-box.innerHTML='<p class="muted">Refreshing your progress...</p>';
-try{
-const d=await api('/api/tasks');
-smartTasks=d.tasks||[];
-renderExamProgress();
-refresh();
-}catch(e){
-box.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';
-}
+/* ==========================================
+   5. UNIFIED AI VOICE & TEXT TUTOR
+   ========================================== */
+let recognition = null;
+let isRecording = false;
+
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SpeechRecognition();
+  recognition.lang = 'en-IN';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  recognition.onstart = () => {
+    isRecording = true;
+    const btn = document.getElementById('micButton');
+    btn.classList.add('recording');
+    btn.textContent = '⏹ Listening... Click to Stop';
+    document.getElementById('voiceStatus').textContent = 'Speak your question clearly...';
+  };
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    document.getElementById('tutorQuestion').value = transcript;
+    document.getElementById('voiceStatus').textContent = 'Heard: "' + transcript + '"';
+    askTutor(true);
+  };
+
+  recognition.onerror = (event) => {
+    document.getElementById('voiceStatus').textContent = 'Voice input error: ' + event.error;
+  };
+
+  recognition.onend = () => {
+    isRecording = false;
+    const btn = document.getElementById('micButton');
+    btn.classList.remove('recording');
+    btn.textContent = '🎤 Speak Question';
+  };
 }
 
-async function analyseTrackerProgress(){
-const btn=document.getElementById('trackerAnalyseButton');
-const status=document.getElementById('trackerAnalysisStatus');
-const box=document.getElementById('trackerAnalysisResult');
-btn.disabled=true;
-status.innerHTML='<div class="notice">AI is analysing your study progress...</div>';
-box.innerHTML='';
-try{
-const d=await api('/api/progress-analysis',{method:'POST',body:JSON.stringify({tasks:smartTasks})});
-const a=d.analysis||{};
-let html=`<div class="result-block"><h3>Overall Analysis</h3><p>${escapeHtml(a.overall_analysis||'No analysis available.')}</p></div>`;
-const sections=[['strengths','Your Strengths'],['areas_to_improve','Areas to Improve'],['recommendations','AI Recommendations'],['next_steps','Your Next Steps']];
-sections.forEach(([key,title])=>{
-if(Array.isArray(a[key])&&a[key].length){
-html+=`<div class="result-block"><h3>${title}</h3><ul>${a[key].map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul></div>`;
-}
-});
-box.innerHTML=html;
-status.innerHTML='<div class="notice">AI progress analysis completed.</div>';
-}catch(e){
-status.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';
-}finally{btn.disabled=false;}
+function toggleVoiceInput() {
+  if (!recognition) {
+    return alert('Voice recognition is not supported in this browser. Please use Chrome or Edge.');
+  }
+  stopSpeech();
+  if (isRecording) {
+    recognition.stop();
+  } else {
+    recognition.start();
+  }
 }
 
-function renderSchedule(data){const box=document.getElementById('scheduleResult');let html='';(data.schedule||[]).forEach(day=>{html+=`<div class="result-block"><h3>${escapeHtml(day.day||'Study day')}</h3>`;(day.sessions||[]).forEach(s=>{html+=`<p><b>${escapeHtml(s.time||'')}</b> — ${escapeHtml(s.subject||'')} / ${escapeHtml(s.chapter||'')}<br>${escapeHtml(s.activity||'')} <span class="smalltext">(${escapeHtml(s.duration_minutes??'')} minutes)</span></p>`});html+='</div>'});if(data.recommendations?.length)html+='<div class="result-block"><h3>AI Recommendations</h3><ul>'+data.recommendations.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')+'</ul></div>';box.innerHTML=html||'<p class="muted">No schedule was returned.</p>';}
-async function generateStudySchedule(){const className=document.getElementById('scheduleClass').value,subjects=lines('scheduleSubjects'),chapters=lines('scheduleChapters'),daily_hours=Number(document.getElementById('dailyHours').value),exam_date=document.getElementById('scheduleExamDate').value;if(!className||!subjects.length)return alert('Select your class and enter at least one subject.');const btn=document.getElementById('scheduleButton'),status=document.getElementById('scheduleStatus');btn.disabled=true;status.innerHTML='<div class="notice">Creating your weekly study schedule...</div>';document.getElementById('scheduleResult').innerHTML='';try{const d=await api('/api/study-schedule',{method:'POST',body:JSON.stringify({class:className,subjects,chapters,daily_hours,exam_date})});renderSchedule(d);status.innerHTML='<div class="notice">Your AI study schedule is ready.</div>';}catch(e){status.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';}finally{btn.disabled=false;}}
-async function analyseProgress(){const btn=document.getElementById('progressButton'),status=document.getElementById('progressStatus'),box=document.getElementById('progressResult');btn.disabled=true;status.innerHTML='<div class="notice">Analysing your study tasks...</div>';box.innerHTML='';try{const d=await api('/api/progress-analysis',{method:'POST',body:JSON.stringify({tasks:smartTasks})});const s=d.statistics||{},a=d.analysis||{};box.innerHTML=`<div class="grid"><div class="result-block"><div class="muted">Completion</div><div class="stat">${escapeHtml(s.completion_percentage??0)}%</div></div><div class="result-block"><div class="muted">Completed</div><div class="stat">${escapeHtml(s.completed??0)}</div></div><div class="result-block"><div class="muted">Pending</div><div class="stat">${escapeHtml(s.pending??0)}</div></div></div><div class="result-block"><h3>Overall Analysis</h3><p>${escapeHtml(a.overall_analysis||'')}</p></div>`+['strengths','areas_to_improve','recommendations','next_steps'].map((key)=>a[key]?.length?`<div class="result-block"><h3>${({strengths:'Strengths',areas_to_improve:'Areas to Improve',recommendations:'Recommendations',next_steps:'Next Steps'})[key]}</h3><ul>${a[key].map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul></div>`:'').join('');status.innerHTML='<div class="notice">Progress analysis completed.</div>';}catch(e){status.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';}finally{btn.disabled=false;}}
-async function generateExamPlan(){const className=document.getElementById('examClass').value,exam_date=document.getElementById('examDate').value,subjects=lines('examSubjects'),chapters=lines('examChapters');if(!className||!exam_date||!subjects.length)return alert('Select your class, enter the exam date and add at least one subject.');const btn=document.getElementById('examButton'),status=document.getElementById('examStatus'),box=document.getElementById('examResult');btn.disabled=true;status.innerHTML='<div class="notice">Preparing your exam plan...</div>';box.innerHTML='';try{const d=await api('/api/exam-preparation',{method:'POST',body:JSON.stringify({class:className,exam_date,subjects,chapters})});let html=`<div class="result-block"><h3>Days remaining</h3><div class="stat">${escapeHtml(d.exam_countdown_days)}</div></div>`;(d.preparation_plan||[]).forEach(day=>{html+=`<div class="result-block"><h3>Day ${escapeHtml(day.day)} — ${escapeHtml(day.subject||'')}</h3><ul>${(day.tasks||[]).map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul></div>`});if(d.important_recommendations?.length)html+='<div class="result-block"><h3>Important Recommendations</h3><ul>'+d.important_recommendations.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')+'</ul></div>';box.innerHTML=html;status.innerHTML='<div class="notice">Your exam preparation plan is ready.</div>';}catch(e){status.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';}finally{btn.disabled=false;}}
-async function loadCBSEPapers(){
-const cls=document.getElementById('paperClass').value;
-const year=document.getElementById('paperYear').value;
-const subject=document.getElementById('paperSubject').value.trim();
-const btn=document.getElementById('paperButton');
-const status=document.getElementById('paperStatus');
-const box=document.getElementById('paperResults');
-btn.disabled=true;
-status.innerHTML='<div class="notice">Searching for CBSE '+year+' question papers...</div>';
-box.innerHTML='';
-try{
-const params=new URLSearchParams({class:cls,year,type:'previous-year'});
-if(subject)params.set('subject',subject);
-const d=await api('/api/cbse-papers?'+params.toString());
-let html=`<p class="smalltext">Source: ${escapeHtml(d.source||'CBSE')} | Class: ${escapeHtml(cls)} | Year: ${escapeHtml(year)}</p>`;
-if(!(d.papers||[]).length)html+='<p class="muted">No matching paper links were returned. Please check the official CBSE question paper archive below.</p>';
-(d.papers||[]).forEach(p=>{
-html+=`<div class="paper-row"><b>${escapeHtml(p.subject||subject||'Question Paper')}</b><div>`+
-(p.question_paper||p.sample_paper||p.paper_url?`<a href="${escapeHtml(p.question_paper||p.sample_paper||p.paper_url)}" target="_blank" rel="noopener">Question Paper PDF</a>`:'<span class="smalltext">Question paper link unavailable</span>')+
-(p.marking_scheme?`<a href="${escapeHtml(p.marking_scheme)}" target="_blank" rel="noopener">Marking Scheme</a>`:'')+
-'</div></div>';
-});
-box.innerHTML=html;
-status.innerHTML='<div class="notice">Search completed.</div>';
-}catch(e){
-status.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';
-box.innerHTML='<p><a style="color:#56cfff" href="https://www.cbse.gov.in/cbsenew/question-paper.html" target="_blank" rel="noopener">Open official CBSE Previous Year Question Papers</a></p>';
-}finally{btn.disabled=false;}
+function speakTutorAnswer() {
+  if (!lastTutorResponse || !('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(lastTutorResponse);
+  utterance.rate = parseFloat(document.getElementById('speechRate').value) || 1.0;
+  utterance.pitch = 1.0;
+  window.speechSynthesis.speak(utterance);
 }
-async function askTutor(){let q=document.getElementById('tutorQuestion').value.trim(),out=document.getElementById('tutorAnswer'),btn=document.getElementById('tutorButton');if(!q)return alert('Enter a question.');btn.disabled=true;out.innerHTML='<p class="muted">Thinking...</p>';try{let d=await api('/api/ask',{method:'POST',body:JSON.stringify({question:q})});out.innerHTML='<div class="notice">'+escapeHtml(d.answer).replace(/\n/g,'<br>')+'</div>';}catch(e){out.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';}finally{btn.disabled=false;}}
-async function generateMCQs(){let className=document.getElementById('mcqClass').value,subject=document.getElementById('mcqSubject').value,portion=document.getElementById('mcqPortion').value.trim(),number=Number(document.getElementById('mcqNumber').value),mode=document.getElementById('mcqMode').value,status=document.getElementById('mcqStatus'),btn=document.getElementById('generateButton');if(!className||!subject||!portion)return alert('Select class, subject and enter the syllabus portion.');btn.disabled=true;status.innerHTML='<div class="notice">Generating questions. This may take a little time...</div>';document.getElementById('mcqResults').innerHTML='';document.getElementById('mcqSources').innerHTML='';try{let d=await api('/api/one-mark',{method:'POST',body:JSON.stringify({class:className,subject,portion,number})});mcqData=d.mcqs||[];setStore('sm_mcq_count',Number(getStore('sm_mcq_count',0))+mcqData.length);renderMCQs(mode);renderSources(d.sources||[]);status.innerHTML='<div class="notice">Generated '+mcqData.length+' questions successfully.</div>';refresh();}catch(e){status.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';}finally{btn.disabled=false;}}
-function renderMCQs(mode){let out=document.getElementById('mcqResults');out.innerHTML=mcqData.map((q,i)=>`<div class="question" id="q${i}"><b>${i+1}. ${escapeHtml(q.question)}</b>${q.options.map((o,j)=>`<label class="option" id="option-${i}-${j}"><input type="radio" name="q${i}" value="${j}">${escapeHtml(o)}</label>`).join('')}<div id="ex${i}" class="smalltext">${mode==='study'?'<b>Correct answer:</b> '+escapeHtml(q.options[q.answer_index]??'Unavailable')+'<br>'+escapeHtml(q.explanation||''):''}</div></div>`).join('')+(mode==='practice'?'<button class="primary" id="submitMCQButton" onclick="submitMCQs()">Submit answers</button>':'');}
-function submitMCQs(){if(!mcqData.length)return;let score=0,attempted=0;mcqData.forEach((q,i)=>{const correctIndex=Number(q.answer_index),selected=document.querySelector(`input[name="q${i}"]:checked`),feedback=document.getElementById('ex'+i),questionBox=document.getElementById('q'+i);questionBox.classList.remove('correct','wrong');q.options.forEach((option,j)=>{const element=document.getElementById(`option-${i}-${j}`);if(element)element.style.fontWeight='';});if(selected){attempted++;const selectedIndex=Number(selected.value);if(selectedIndex===correctIndex){score++;questionBox.classList.add('correct');feedback.innerHTML='<b>Correct!</b><br>Your answer is right.<br>'+escapeHtml(q.explanation||'');}else{questionBox.classList.add('wrong');feedback.innerHTML='<b>Wrong!</b><br>Correct answer: '+escapeHtml(q.options[correctIndex]??'Unavailable')+'<br>'+escapeHtml(q.explanation||'');}}else{questionBox.classList.add('wrong');feedback.innerHTML='<b>Not attempted.</b><br>Correct answer: '+escapeHtml(q.options[correctIndex]??'Unavailable')+'<br>'+escapeHtml(q.explanation||'');}const correctOption=document.getElementById(`option-${i}-${correctIndex}`);if(correctOption)correctOption.style.fontWeight='700';document.querySelectorAll(`input[name="q${i}"]`).forEach(input=>input.disabled=true);});const total=mcqData.length,percentage=Math.round(score/total*100);document.getElementById('mcqStatus').innerHTML=`<div class="result-block"><h2>Quiz Results</h2><div class="stat">${score} / ${total}</div><p>Correct answers: ${score}</p><p>Wrong or unanswered: ${total-score}</p><p>Attempted: ${attempted} / ${total}</p><p>Percentage: ${percentage}%</p></div>`;const submitButton=document.getElementById('submitMCQButton');if(submitButton){submitButton.disabled=true;submitButton.textContent='Submitted';}}
-function renderSources(sources){let box=document.getElementById('mcqSources');if(!sources.length){box.innerHTML='<p class="smalltext">No source links were returned for this response.</p>';return;}box.innerHTML='<h2>Sources</h2>'+sources.map(s=>`<div class="source"><a href="${escapeHtml(s.url)}" target="_blank" rel="noopener">${escapeHtml(s.title||s.url)}</a></div>`).join('');}
-function downloadMCQs(){if(!mcqData.length)return alert('Generate questions first.');let txt=mcqData.map((q,i)=>`${i+1}. ${q.question}\n${q.options.map((o,j)=>`${String.fromCharCode(65+j)}. ${o}`).join('\n')}\nAnswer: ${q.options[q.answer_index]}\nExplanation: ${q.explanation}`).join('\n\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));a.download='SmartStudyMate_MCQs.txt';a.click();URL.revokeObjectURL(a.href);}
-function printMCQs(){if(!mcqData.length)return alert('Generate questions first.');window.print();}
-async function addPdf(){let file=document.getElementById('pdfFile').files[0];if(!file)return alert('Choose a PDF first.');if(file.type!=='application/pdf')return alert('Please choose a PDF file.');if(file.size>8*1024*1024)return alert('Please choose a PDF smaller than 8 MB.');let data=await file.arrayBuffer();library.push({name:file.name,bytes:Array.from(new Uint8Array(data))});document.getElementById('pdfFile').value='';refresh();}
-function openPdf(i){let bytes=new Uint8Array(library[i].bytes),blob=new Blob([bytes],{type:'application/pdf'}),url=URL.createObjectURL(blob);window.open(url,'_blank');setTimeout(()=>URL.revokeObjectURL(url),60000);}
-function removePdf(i){library.splice(i,1);refresh();}
-function saveProfile(){let p={name:document.getElementById('profileName').value,className:document.getElementById('profileClass').value,school:document.getElementById('profileSchool').value};setStore('sm_profile',p);document.getElementById('profileStatus').innerHTML='<div class="notice">Profile saved in this browser.</div>';}
-function loadProfile(){let p=getStore('sm_profile',{});document.getElementById('profileName').value=p.name||'';document.getElementById('profileClass').value=p.className||'';document.getElementById('profileSchool').value=p.school||'';}
+
+function pauseResumeSpeech() {
+  if (!('speechSynthesis' in window)) return;
+  if (window.speechSynthesis.paused) {
+    window.speechSynthesis.resume();
+  } else if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.pause();
+  }
+}
+
+function stopSpeech() {
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+}
+
+async function askTutor(fromVoice = false) {
+  let q = document.getElementById('tutorQuestion').value.trim();
+  let out = document.getElementById('tutorAnswer');
+  let btn = document.getElementById('tutorButton');
+  if (!q) return alert('Enter or speak a question first.');
+  stopSpeech();
+  btn.disabled = true;
+  out.innerHTML = '<p class="muted">Thinking...</p>';
+  try {
+    let d = await api('/api/ask', { method: 'POST', body: JSON.stringify({ question: q, voice_mode: fromVoice }) });
+    lastTutorResponse = d.answer;
+    out.innerHTML = '<div class="notice">' + escapeHtml(d.answer).replace(/\n/g, '<br>') + '</div>';
+    document.getElementById('ttsControls').style.display = 'flex';
+    if (fromVoice || document.getElementById('autoSpeakToggle').checked) {
+      speakTutorAnswer();
+    }
+  } catch (e) {
+    out.innerHTML = '<div class="notice error">' + escapeHtml(e.message) + '</div>';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+/* ==========================================
+   1. EXAM PROGRESS TRACKER
+   ========================================== */
+function renderExamProgress() {
+  const total = smartTasks.length;
+  const completed = smartTasks.filter(t => t.status === 'Completed').length;
+  const pending = smartTasks.filter(t => t.status === 'Pending').length;
+  const inProgress = smartTasks.filter(t => t.status === 'In Progress').length;
+  const percentage = total ? Math.round((completed / total) * 100) : 0;
+
+  document.getElementById('trackerTotal').textContent = total;
+  document.getElementById('trackerCompleted').textContent = completed;
+  document.getElementById('trackerInProgress').textContent = inProgress;
+  document.getElementById('trackerReadiness').textContent = percentage + '%';
+  document.getElementById('trackerOverallBar').style.width = percentage + '%';
+
+  const badge = document.getElementById('readinessBadge');
+  if (percentage >= 75) {
+    badge.className = 'badge badge-ready';
+    badge.textContent = 'Exam Ready';
+  } else if (percentage >= 40) {
+    badge.className = 'badge badge-warn';
+    badge.textContent = 'In Progress';
+  } else {
+    badge.className = 'badge badge-low';
+    badge.textContent = total ? 'Needs Focus' : 'Not Started';
+  }
+
+  document.getElementById('trackerSummary').textContent = total
+    ? `${completed} of ${total} chapters/tasks completed (${percentage}%). ${pending} pending and ${inProgress} currently in progress.`
+    : 'No chapters or tasks added yet. Add tasks in the Study Planner to begin tracking.';
+
+  const subjects = {};
+  smartTasks.forEach(task => {
+    const subject = task.subject?.trim() || 'General';
+    if (!subjects[subject]) subjects[subject] = { total: 0, completed: 0 };
+    subjects[subject].total++;
+    if (task.status === 'Completed') subjects[subject].completed++;
+  });
+
+  const names = Object.keys(subjects).sort();
+  const subjectBox = document.getElementById('trackerSubjects');
+  const chartBox = document.getElementById('subjectBarChart');
+
+  if (!names.length) {
+    subjectBox.innerHTML = '<p class="muted">No subject-wise progress yet. Add tasks with subjects in the Study Planner.</p>';
+    chartBox.innerHTML = '<p class="muted" style="margin:auto">No data to chart yet</p>';
+  } else {
+    subjectBox.innerHTML = names.map(name => {
+      const item = subjects[name];
+      const percent = Math.round((item.completed / item.total) * 100);
+      return `<div class="subject-progress">
+        <div class="subject-progress-header"><strong>${escapeHtml(name)}</strong><span class="muted">${item.completed}/${item.total} (${percent}%)</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
+      </div>`;
+    }).join('');
+
+    chartBox.innerHTML = names.map(name => {
+      const item = subjects[name];
+      const percent = Math.round((item.completed / item.total) * 100);
+      return `<div class="chart-bar-wrap">
+        <div class="chart-val">${percent}%</div>
+        <div class="chart-bar" style="height:${Math.max(percent, 5)}%"></div>
+        <div class="chart-label" title="${escapeHtml(name)}">${escapeHtml(name)}</div>
+      </div>`;
+    }).join('');
+  }
+
+  const chapterBox = document.getElementById('chapterProgressList');
+  if (!smartTasks.length) {
+    chapterBox.innerHTML = '<p class="muted">No chapters tracked yet.</p>';
+  } else {
+    chapterBox.innerHTML = smartTasks.map(t => `
+      <div class="item" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div>
+          <b>${escapeHtml(t.chapter || t.title)}</b>
+          <div class="smalltext">Subject: ${escapeHtml(t.subject || 'General')} · Task: ${escapeHtml(t.title)}</div>
+        </div>
+        <select style="max-width:160px" onchange="changeTaskStatus('${escapeHtml(t.id)}', this.value)">
+          <option ${t.status === 'Pending' ? 'selected' : ''}>Pending</option>
+          <option ${t.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+          <option ${t.status === 'Completed' ? 'selected' : ''}>Completed</option>
+        </select>
+      </div>
+    `).join('');
+  }
+}
+
+async function loadExamProgressTracker() {
+  try {
+    const d = await api('/api/tasks');
+    smartTasks = d.tasks || [];
+    renderExamProgress();
+    refresh();
+  } catch (e) {
+    document.getElementById('trackerSubjects').innerHTML = '<div class="notice error">' + escapeHtml(e.message) + '</div>';
+  }
+}
+
+async function analyseTrackerProgress() {
+  const btn = document.getElementById('trackerAnalyseButton');
+  const status = document.getElementById('trackerAnalysisStatus');
+  const box = document.getElementById('trackerAnalysisResult');
+  btn.disabled = true;
+  status.innerHTML = '<div class="notice">AI is analysing your exam readiness...</div>';
+  box.innerHTML = '';
+  try {
+    const d = await api('/api/progress-analysis', { method: 'POST', body: JSON.stringify({ tasks: smartTasks }) });
+    const a = d.analysis || {};
+    let html = `<div class="result-block"><h3>Readiness Analysis</h3><p>${escapeHtml(a.overall_analysis || '')}</p></div>`;
+    if (a.recommendations?.length) {
+      html += `<div class="result-block"><h3>Recommendations</h3><ul>${a.recommendations.map(x => '<li>' + escapeHtml(x) + '</li>').join('')}</ul></div>`;
+    }
+    box.innerHTML = html;
+    status.innerHTML = '<div class="notice">Analysis complete.</div>';
+  } catch (e) {
+    status.innerHTML = '<div class="notice error">' + escapeHtml(e.message) + '</div>';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+/* ==========================================
+   2. AI QUESTION PAPER GENERATOR
+   ========================================== */
+async function generateQuestionPaper() {
+  const cls = document.getElementById('qpClass').value;
+  const subject = document.getElementById('qpSubject').value.trim();
+  const total_marks = Number(document.getElementById('qpMarks').value);
+  const difficulty = document.getElementById('qpDifficulty').value;
+  const duration = document.getElementById('qpDuration').value;
+  const chapters = document.getElementById('qpChapters').value.trim();
+
+  if (!cls || !subject || !chapters) {
+    return alert('Please select class, enter subject, and specify chapters.');
+  }
+
+  const btn = document.getElementById('qpGenerateBtn');
+  const status = document.getElementById('qpStatus');
+  const out = document.getElementById('qpOutput');
+  btn.disabled = true;
+  status.innerHTML = '<div class="notice">Generating full ' + total_marks + '-mark question paper and answer key...</div>';
+  out.innerHTML = '';
+
+  try {
+    const d = await api('/api/generate-question-paper', {
+      method: 'POST',
+      body: JSON.stringify({ class: cls, subject, total_marks, difficulty, duration, chapters })
+    });
+
+    let sectionsHtml = (d.sections || []).map(sec => `
+      <div style="margin-top:20px">
+        <h3 style="color:#22bfff;margin-bottom:4px">${escapeHtml(sec.section_name || '')}</h3>
+        <div class="smalltext" style="margin-bottom:10px">${escapeHtml(sec.section_instructions || '')}</div>
+        ${(sec.questions || []).map(q => `
+          <div class="item">
+            <div style="display:flex;justify-content:space-between;gap:12px">
+              <div><b>Q${escapeHtml(q.q_no)}.</b> ${escapeHtml(q.question)}</div>
+              <b style="color:#56cfff;white-space:nowrap">[${escapeHtml(q.marks)} Marks]</b>
+            </div>
+            <div class="answer-box"><b>Answer Key:</b> ${escapeHtml(q.answer)}</div>
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+
+    out.innerHTML = `
+      <div class="paper-sheet" id="generatedPaperSheet">
+        <div class="paper-header">
+          <h2 style="margin:0;font-size:22px">${escapeHtml(d.paper_title || (cls + ' ' + subject))}</h2>
+          <div class="smalltext">Difficulty: ${escapeHtml(d.difficulty || difficulty)}</div>
+          <div class="paper-meta">
+            <span>Time Allowed: ${escapeHtml(d.duration || duration)}</span>
+            <span>Maximum Marks: ${escapeHtml(d.total_marks || total_marks)}</span>
+          </div>
+        </div>
+        <div class="smalltext" style="margin-bottom:14px">
+          <b>General Instructions:</b>
+          <ul style="margin:6px 0 0 18px;padding:0">
+            ${(d.general_instructions || []).map(inst => '<li>' + escapeHtml(inst) + '</li>').join('')}
+          </ul>
+        </div>
+        ${sectionsHtml}
+      </div>
+    `;
+    status.innerHTML = '<div class="notice">Question paper ready! Click "Show / Hide Answer Key" to view answers or "Print / Save PDF".</div>';
+  } catch (e) {
+    status.innerHTML = '<div class="notice error">' + escapeHtml(e.message) + '</div>';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function toggleAnswerKey() {
+  const sheet = document.getElementById('generatedPaperSheet');
+  if (!sheet) return alert('Generate a question paper first.');
+  sheet.classList.toggle('show-answers');
+}
+
+/* ==========================================
+   3. AI REVISION ASSISTANT
+   ========================================== */
+async function generateRevisionKit() {
+  const cls = document.getElementById('revClass').value;
+  const subject = document.getElementById('revSubject').value.trim();
+  const chapter = document.getElementById('revChapter').value.trim();
+  const notes = document.getElementById('revNotes').value.trim();
+
+  if (!cls || !subject || !chapter) {
+    return alert('Please select class and enter subject and chapter name.');
+  }
+
+  const btn = document.getElementById('revGenerateBtn');
+  const status = document.getElementById('revStatus');
+  const out = document.getElementById('revOutput');
+  btn.disabled = true;
+  status.innerHTML = '<div class="notice">Generating chapter summary, important questions, and last-minute revision notes...</div>';
+  out.innerHTML = '';
+
+  try {
+    const d = await api('/api/revision-assistant', {
+      method: 'POST',
+      body: JSON.stringify({ class: cls, subject, chapter, notes })
+    });
+    lastRevisionData = { subject, chapter, data: d };
+
+    out.innerHTML = `
+      <div class="card">
+        <h2>Automatic Chapter Summary — ${escapeHtml(d.chapter_title || chapter)}</h2>
+        <p style="color:#e4edff">${escapeHtml(d.summary || '').replace(/\n/g, '<br>')}</p>
+      </div>
+      <div class="card">
+        <h2>Last-Minute Revision Notes & Formulas</h2>
+        <ul>${(d.last_minute_notes || []).map(n => '<li style="margin:6px 0">' + escapeHtml(n) + '</li>').join('')}</ul>
+        ${d.common_mistakes?.length ? `<h3 style="color:#ffbd2e;font-size:15px;margin-top:14px">Common Exam Mistakes to Avoid</h3><ul>${d.common_mistakes.map(m => '<li>' + escapeHtml(m) + '</li>').join('')}</ul>` : ''}
+      </div>
+      <div class="card">
+        <h2>Important Exam Questions</h2>
+        ${(d.important_questions || []).map((q, idx) => `
+          <div class="result-block">
+            <div style="display:flex;justify-content:space-between;gap:10px">
+              <b>Q${idx + 1}. ${escapeHtml(q.question)}</b>
+              <span class="badge badge-ready">${escapeHtml(q.marks || 'Important')}</span>
+            </div>
+            <p style="margin:8px 0 0;font-size:13px;color:#cde4ff"><b>Key Answer:</b> ${escapeHtml(q.answer)}</p>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    status.innerHTML = '<div class="notice">Revision kit generated! You can also save this summary to Smart Study Notes.</div>';
+  } catch (e) {
+    status.innerHTML = '<div class="notice error">' + escapeHtml(e.message) + '</div>';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function saveRevisionToNotes() {
+  if (!lastRevisionData) return alert('Generate a revision kit first.');
+  const { subject, chapter, data } = lastRevisionData;
+  const body = `SUMMARY:\n${data.summary}\n\nLAST-MINUTE NOTES:\n- ${(data.last_minute_notes || []).join('\n- ')}`;
+  let notes = getStore('sm_notes');
+  notes.unshift({ title: `${subject}: ${chapter} (Revision)`, body });
+  setStore('sm_notes', notes);
+  refresh();
+  alert('Saved to Smart Study Notes!');
+}
+
+/* ==========================================
+   4. STUDENT PERFORMANCE ANALYTICS
+   ========================================== */
+function renderAnalyticsDashboard() {
+  const history = getStore('sm_quiz_history', []);
+  const completedTasks = smartTasks.filter(t => t.status === 'Completed').length;
+
+  const avgScore = history.length
+    ? Math.round(history.reduce((acc, q) => acc + q.percentage, 0) / history.length)
+    : 0;
+
+  document.getElementById('anaAvgScore').textContent = avgScore + '%';
+  document.getElementById('anaQuizCount').textContent = history.length;
+  document.getElementById('anaTasksDone').textContent = completedTasks;
+
+  // Subject performance map
+  const subjMap = {};
+  history.forEach(q => {
+    const s = q.subject || 'General';
+    if (!subjMap[s]) subjMap[s] = { scores: [], tasksTotal: 0, tasksDone: 0 };
+    subjMap[s].scores.push(q.percentage);
+  });
+  smartTasks.forEach(t => {
+    const s = t.subject?.trim() || 'General';
+    if (!subjMap[s]) subjMap[s] = { scores: [], tasksTotal: 0, tasksDone: 0 };
+    subjMap[s].tasksTotal++;
+    if (t.status === 'Completed') subjMap[s].tasksDone++;
+  });
+
+  const subjNames = Object.keys(subjMap).sort();
+  const subjBox = document.getElementById('anaSubjectPerf');
+  if (!subjNames.length) {
+    subjBox.innerHTML = '<p class="muted">Take a practice quiz in the MCQ Generator or add study tasks to see subject-wise performance.</p>';
+  } else {
+    subjBox.innerHTML = subjNames.map(s => {
+      const info = subjMap[s];
+      const quizAvg = info.scores.length ? Math.round(info.scores.reduce((a, b) => a + b, 0) / info.scores.length) : null;
+      const taskPct = info.tasksTotal ? Math.round((info.tasksDone / info.tasksTotal) * 100) : null;
+      const combined = quizAvg !== null && taskPct !== null ? Math.round((quizAvg + taskPct) / 2) : (quizAvg ?? taskPct ?? 0);
+      return `<div class="subject-progress">
+        <div class="subject-progress-header">
+          <strong>${escapeHtml(s)}</strong>
+          <span class="smalltext">${quizAvg !== null ? 'Quiz Avg: ' + quizAvg + '%' : ''} ${taskPct !== null ? '· Tasks: ' + taskPct + '%' : ''}</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:${combined}%"></div></div>
+      </div>`;
+    }).join('');
+  }
+
+  // Trend chart
+  const trendBox = document.getElementById('anaTrendChart');
+  const recent = history.slice(-7);
+  if (!recent.length) {
+    trendBox.innerHTML = '<p class="muted" style="margin:auto">Complete practice quizzes to see score trends</p>';
+  } else {
+    trendBox.innerHTML = recent.map(q => `
+      <div class="chart-bar-wrap">
+        <div class="chart-val">${q.percentage}%</div>
+        <div class="chart-bar" style="height:${Math.max(q.percentage, 6)}%"></div>
+        <div class="chart-label" title="${escapeHtml(q.portion)}">${escapeHtml(q.subject)}</div>
+      </div>
+    `).join('');
+  }
+
+  // Flagged topics needing revision
+  const weakList = [];
+  history.forEach(q => {
+    if (q.percentage < 70) {
+      weakList.push({ subject: q.subject, topic: q.portion, reason: `Quiz accuracy was ${q.percentage}% (${q.score}/${q.total})` });
+    }
+  });
+  smartTasks.forEach(t => {
+    if (t.status !== 'Completed' && t.priority === 'High') {
+      weakList.push({ subject: t.subject || 'General', topic: t.chapter || t.title, reason: `High priority task is still ${t.status}` });
+    }
+  });
+
+  document.getElementById('anaWeakCount').textContent = weakList.length;
+  const weakBox = document.getElementById('anaWeakTopics');
+  if (!weakList.length) {
+    weakBox.innerHTML = '<p class="muted">No weak topics flagged right now. Keep practicing quizzes and completing tasks!</p>';
+  } else {
+    weakBox.innerHTML = weakList.map(w => `
+      <div class="item" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <div>
+          <b>${escapeHtml(w.subject)} — ${escapeHtml(w.topic)}</b>
+          <div class="smalltext">${escapeHtml(w.reason)}</div>
+        </div>
+        <button class="small" onclick="quickReviseTopic('${escapeHtml(w.subject)}', '${escapeHtml(w.topic)}')">Revise with AI</button>
+      </div>
+    `).join('');
+  }
+}
+
+function quickReviseTopic(subject, topic) {
+  document.getElementById('revSubject').value = subject;
+  document.getElementById('revChapter').value = topic;
+  showPage('revision');
+}
+
+async function generateAnalyticsReport() {
+  const btn = document.getElementById('anaReportBtn');
+  const status = document.getElementById('anaStatus');
+  const out = document.getElementById('anaReportOutput');
+  btn.disabled = true;
+  status.innerHTML = '<div class="notice">Generating Weekly & Monthly Performance Analytics Report...</div>';
+  out.innerHTML = '';
+
+  try {
+    const history = getStore('sm_quiz_history', []);
+    const notes = getStore('sm_notes', []);
+    const d = await api('/api/performance-analytics', {
+      method: 'POST',
+      body: JSON.stringify({ tasks: smartTasks, quiz_history: history, notes_count: notes.length })
+    });
+
+    out.innerHTML = `
+      <div class="result-block"><h3>Executive Performance Summary</h3><p>${escapeHtml(d.executive_summary || '')}</p></div>
+      <div class="row">
+        <div class="result-block" style="margin:0"><h3>Weekly Study Report</h3><p>${escapeHtml(d.weekly_report || '')}</p></div>
+        <div class="result-block" style="margin:0"><h3>Monthly Exam Outlook</h3><p>${escapeHtml(d.monthly_outlook || '')}</p></div>
+      </div>
+      ${d.action_plan?.length ? `<div class="result-block"><h3>7-Day Improvement Action Plan</h3><ul>${d.action_plan.map(a => '<li>' + escapeHtml(a) + '</li>').join('')}</ul></div>` : ''}
+    `;
+    status.innerHTML = '<div class="notice">Performance report generated successfully.</div>';
+  } catch (e) {
+    status.innerHTML = '<div class="notice error">' + escapeHtml(e.message) + '</div>';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+/* ==========================================
+   EXISTING FEATURES (NOTES, TASKS, SCHEDULE, EXAM, CBSE, MCQ, PDF, PROFILE)
+   ========================================== */
+function saveNote() {
+  let title = document.getElementById('noteTitle').value.trim(), body = document.getElementById('noteBody').value.trim();
+  if (!title || !body) return alert('Enter a title and note.');
+  let a = getStore('sm_notes');
+  a.unshift({ title, body });
+  setStore('sm_notes', a);
+  document.getElementById('noteTitle').value = '';
+  document.getElementById('noteBody').value = '';
+  refresh();
+}
+function deleteNote(i) { let a = getStore('sm_notes'); a.splice(i, 1); setStore('sm_notes', a); refresh(); }
+
+async function loadSmartTasks() {
+  const box = document.getElementById('tasksList');
+  box.innerHTML = '<p class="muted">Loading tasks...</p>';
+  try {
+    const d = await api('/api/tasks');
+    smartTasks = d.tasks || [];
+    renderSmartTasks();
+    refresh();
+    if (document.getElementById('progress').classList.contains('active')) renderExamProgress();
+  } catch (e) {
+    box.innerHTML = '<div class="notice error">' + escapeHtml(e.message) + '</div>';
+  }
+}
+
+function renderSmartTasks() {
+  const box = document.getElementById('tasksList');
+  if (!smartTasks.length) { box.innerHTML = '<p class="muted">No study tasks added yet.</p>'; return; }
+  box.innerHTML = smartTasks.map(t => `<div class="item"><b>${escapeHtml(t.title)}</b><div class="task-meta"><span>${escapeHtml(t.subject || 'No subject')}</span><span>${escapeHtml(t.chapter || 'No chapter')}</span><span>Due: ${escapeHtml(t.due_date || 'Not set')}</span><span>Priority: ${escapeHtml(t.priority || 'Medium')}</span></div><div class="task-actions"><select aria-label="Task status" onchange="changeTaskStatus('${escapeHtml(t.id)}',this.value)"><option ${t.status === 'Pending' ? 'selected' : ''}>Pending</option><option ${t.status === 'In Progress' ? 'selected' : ''}>In Progress</option><option ${t.status === 'Completed' ? 'selected' : ''}>Completed</option></select><button class="small" onclick="deleteSmartTask('${escapeHtml(t.id)}')">Delete</button></div></div>`).join('');
+}
+
+async function addSmartTask() {
+  const title = document.getElementById('taskTitle').value.trim();
+  if (!title) return alert('Enter a task title.');
+  const btn = document.getElementById('addTaskButton'), status = document.getElementById('taskStatus');
+  btn.disabled = true; status.innerHTML = '<p class="muted">Saving task...</p>';
+  try {
+    await api('/api/tasks', { method: 'POST', body: JSON.stringify({ title, subject: document.getElementById('taskSubject').value.trim(), chapter: document.getElementById('taskChapter').value.trim(), due_date: document.getElementById('taskDueDate').value, priority: document.getElementById('taskPriority').value }) });
+    ['taskTitle', 'taskSubject', 'taskChapter', 'taskDueDate'].forEach(id => document.getElementById(id).value = '');
+    status.innerHTML = '<div class="notice">Study task added.</div>';
+    await loadSmartTasks();
+  } catch (e) { status.innerHTML = '<div class="notice error">' + escapeHtml(e.message) + '</div>'; }
+  finally { btn.disabled = false; }
+}
+
+async function changeTaskStatus(id, status) {
+  try { await api('/api/tasks/' + encodeURIComponent(id), { method: 'PUT', body: JSON.stringify({ status }) }); await loadSmartTasks(); }
+  catch (e) { alert(e.message); await loadSmartTasks(); }
+}
+
+async function deleteSmartTask(id) {
+  if (!confirm('Delete this study task?')) return;
+  try { await api('/api/tasks/' + encodeURIComponent(id), { method: 'DELETE' }); await loadSmartTasks(); }
+  catch (e) { alert(e.message); }
+}
+
+function renderSchedule(data) {
+  const box = document.getElementById('scheduleResult');
+  let html = '';
+  (data.schedule || []).forEach(day => {
+    html += `<div class="result-block"><h3>${escapeHtml(day.day || 'Study day')}</h3>`;
+    (day.sessions || []).forEach(s => { html += `<p><b>${escapeHtml(s.time || '')}</b> — ${escapeHtml(s.subject || '')} / ${escapeHtml(s.chapter || '')}<br>${escapeHtml(s.activity || '')} <span class="smalltext">(${escapeHtml(s.duration_minutes ?? '')} minutes)</span></p>`; });
+    html += '</div>';
+  });
+  if (data.recommendations?.length) html += '<div class="result-block"><h3>AI Recommendations</h3><ul>' + data.recommendations.map(x => '<li>' + escapeHtml(x) + '</li>').join('') + '</ul></div>';
+  box.innerHTML = html || '<p class="muted">No schedule was returned.</p>';
+}
+
+async function generateStudySchedule() {
+  const className = document.getElementById('scheduleClass').value, subjects = lines('scheduleSubjects'), chapters = lines('scheduleChapters'), daily_hours = Number(document.getElementById('dailyHours').value), exam_date = document.getElementById('scheduleExamDate').value;
+  if (!className || !subjects.length) return alert('Select your class and enter at least one subject.');
+  const btn = document.getElementById('scheduleButton'), status = document.getElementById('scheduleStatus');
+  btn.disabled = true; status.innerHTML = '<div class="notice">Creating your weekly study schedule...</div>'; document.getElementById('scheduleResult').innerHTML = '';
+  try { const d = await api('/api/study-schedule', { method: 'POST', body: JSON.stringify({ class: className, subjects, chapters, daily_hours, exam_date }) }); renderSchedule(d); status.innerHTML = '<div class="notice">Your AI study schedule is ready.</div>'; }
+  catch (e) { status.innerHTML = '<div class="notice error">' + escapeHtml(e.message) + '</div>'; }
+  finally { btn.disabled = false; }
+}
+
+async function generateExamPlan() {
+  const className = document.getElementById('examClass').value, exam_date = document.getElementById('examDate').value, subjects = lines('examSubjects'), chapters = lines('examChapters');
+  if (!className || !exam_date || !subjects.length) return alert('Select your class, enter the exam date and add at least one subject.');
+  const btn = document.getElementById('examButton'), status = document.getElementById('examStatus'), box = document.getElementById('examResult');
+  btn.disabled = true; status.innerHTML = '<div class="notice">Preparing your exam plan...</div>'; box.innerHTML = '';
+  try {
+    const d = await api('/api/exam-preparation', { method: 'POST', body: JSON.stringify({ class: className, exam_date, subjects, chapters }) });
+    let html = `<div class="result-block"><h3>Days remaining</h3><div class="stat">${escapeHtml(d.exam_countdown_days)}</div></div>`;
+    (d.preparation_plan || []).forEach(day => { html += `<div class="result-block"><h3>Day ${escapeHtml(day.day)} — ${escapeHtml(day.subject || '')}</h3><ul>${(day.tasks || []).map(x => '<li>' + escapeHtml(x) + '</li>').join('')}</ul></div>`; });
+    if (d.important_recommendations?.length) html += '<div class="result-block"><h3>Important Recommendations</h3><ul>' + d.important_recommendations.map(x => '<li>' + escapeHtml(x) + '</li>').join('') + '</ul></div>';
+    box.innerHTML = html; status.innerHTML = '<div class="notice">Your exam preparation plan is ready.</div>';
+  } catch (e) { status.innerHTML = '<div class="notice error">' + escapeHtml(e.message) + '</div>'; }
+  finally { btn.disabled = false; }
+}
+
+async function loadCBSEPapers() {
+  const cls = document.getElementById('paperClass').value;
+  const session = document.getElementById('paperSession').value;
+  const subject = document.getElementById('paperSubject').value.trim();
+  const btn = document.getElementById('paperButton'), status = document.getElementById('paperStatus'), box = document.getElementById('paperResults');
+  btn.disabled = true; status.innerHTML = '<div class="notice">Searching official CBSE papers...</div>'; box.innerHTML = '';
+  try {
+    const params = new URLSearchParams({ class: cls, session });
+    if (subject) params.set('subject', subject);
+    const d = await api('/api/cbse-papers?' + params.toString());
+    let html = `<p class="smalltext">Source: ${escapeHtml(d.source || 'CBSE')} | Class: ${escapeHtml(cls)} | Session: ${escapeHtml(session)}</p>`;
+    if (!(d.papers || []).length) html += '<p class="muted">No matching paper links were returned.</p>';
+    (d.papers || []).forEach(p => {
+      html += `<div class="paper-row"><b>${escapeHtml(p.subject)}</b><div>` +
+        (p.sample_paper ? `<a href="${escapeHtml(p.sample_paper)}" target="_blank" rel="noopener">Sample Question Paper (SQP)</a>` : '') +
+        (p.marking_scheme ? `<a href="${escapeHtml(p.marking_scheme)}" target="_blank" rel="noopener">Marking Scheme (MS)</a>` : '') +
+        '</div></div>';
+    });
+    box.innerHTML = html; status.innerHTML = '<div class="notice">Search completed.</div>';
+  } catch (e) {
+    status.innerHTML = '<div class="notice error">' + escapeHtml(e.message) + '</div>';
+  } finally { btn.disabled = false; }
+}
+
+let currentMcqMeta = { subject: '', portion: '' };
+async function generateMCQs() {
+  let className = document.getElementById('mcqClass').value, subject = document.getElementById('mcqSubject').value, portion = document.getElementById('mcqPortion').value.trim(), number = Number(document.getElementById('mcqNumber').value), mode = document.getElementById('mcqMode').value, status = document.getElementById('mcqStatus'), btn = document.getElementById('generateButton');
+  if (!className || !subject || !portion) return alert('Select class, subject and enter the syllabus portion.');
+  currentMcqMeta = { subject, portion };
+  btn.disabled = true; status.innerHTML = '<div class="notice">Generating questions...</div>'; document.getElementById('mcqResults').innerHTML = ''; document.getElementById('mcqSources').innerHTML = '';
+  try {
+    let d = await api('/api/one-mark', { method: 'POST', body: JSON.stringify({ class: className, subject, portion, number }) });
+    mcqData = d.mcqs || [];
+    setStore('sm_mcq_count', Number(getStore('sm_mcq_count', 0)) + mcqData.length);
+    renderMCQs(mode);
+    status.innerHTML = '<div class="notice">Generated ' + mcqData.length + ' questions successfully.</div>';
+    refresh();
+  } catch (e) { status.innerHTML = '<div class="notice error">' + escapeHtml(e.message) + '</div>'; }
+  finally { btn.disabled = false; }
+}
+
+function renderMCQs(mode) {
+  let out = document.getElementById('mcqResults');
+  out.innerHTML = mcqData.map((q, i) => `<div class="question" id="q${i}"><b>${i + 1}. ${escapeHtml(q.question)}</b>${q.options.map((o, j) => `<label class="option" id="option-${i}-${j}"><input type="radio" name="q${i}" value="${j}">${escapeHtml(o)}</label>`).join('')}<div id="ex${i}" class="smalltext">${mode === 'study' ? '<b>Correct answer:</b> ' + escapeHtml(q.options[q.answer_index] ?? 'Unavailable') + '<br>' + escapeHtml(q.explanation || '') : ''}</div></div>`).join('') + (mode === 'practice' ? '<button class="primary" id="submitMCQButton" onclick="submitMCQs()">Submit answers</button>' : '');
+}
+
+function submitMCQs() {
+  if (!mcqData.length) return;
+  let score = 0, attempted = 0;
+  mcqData.forEach((q, i) => {
+    const correctIndex = Number(q.answer_index), selected = document.querySelector(`input[name="q${i}"]:checked`), feedback = document.getElementById('ex' + i), questionBox = document.getElementById('q' + i);
+    questionBox.classList.remove('correct', 'wrong');
+    if (selected) {
+      attempted++;
+      if (Number(selected.value) === correctIndex) {
+        score++; questionBox.classList.add('correct');
+        feedback.innerHTML = '<b>Correct!</b><br>' + escapeHtml(q.explanation || '');
+      } else {
+        questionBox.classList.add('wrong');
+        feedback.innerHTML = '<b>Wrong!</b> Correct answer: ' + escapeHtml(q.options[correctIndex] ?? '') + '<br>' + escapeHtml(q.explanation || '');
+      }
+    } else {
+      questionBox.classList.add('wrong');
+      feedback.innerHTML = '<b>Not attempted.</b> Correct answer: ' + escapeHtml(q.options[correctIndex] ?? '') + '<br>' + escapeHtml(q.explanation || '');
+    }
+    const correctOption = document.getElementById(`option-${i}-${correctIndex}`);
+    if (correctOption) correctOption.style.fontWeight = '700';
+    document.querySelectorAll(`input[name="q${i}"]`).forEach(input => input.disabled = true);
+  });
+  const total = mcqData.length, percentage = Math.round((score / total) * 100);
+
+  // Save to Performance Analytics history
+  const hist = getStore('sm_quiz_history', []);
+  hist.push({ subject: currentMcqMeta.subject || 'General', portion: currentMcqMeta.portion || 'Topic', score, total, percentage, date: new Date().toISOString() });
+  setStore('sm_quiz_history', hist);
+
+  document.getElementById('mcqStatus').innerHTML = `<div class="result-block"><h2>Quiz Results</h2><div class="stat">${score} / ${total} (${percentage}%)</div><p>Attempted: ${attempted}/${total}. Result saved to Performance Analytics.</p></div>`;
+  const submitButton = document.getElementById('submitMCQButton');
+  if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Submitted'; }
+}
+
+function downloadMCQs() { if (!mcqData.length) return alert('Generate questions first.'); let txt = mcqData.map((q, i) => `${i + 1}. ${q.question}\n${q.options.map((o, j) => `${String.fromCharCode(65 + j)}. ${o}`).join('\n')}\nAnswer: ${q.options[q.answer_index]}\nExplanation: ${q.explanation}`).join('\n\n'); let a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], { type: 'text/plain' })); a.download = 'SmartStudyMate_MCQs.txt'; a.click(); URL.revokeObjectURL(a.href); }
+function printMCQs() { if (!mcqData.length) return alert('Generate questions first.'); window.print(); }
+async function addPdf() { let file = document.getElementById('pdfFile').files[0]; if (!file) return alert('Choose a PDF first.'); if (file.type !== 'application/pdf') return alert('Please choose a PDF file.'); if (file.size > 8 * 1024 * 1024) return alert('Please choose a PDF smaller than 8 MB.'); let data = await file.arrayBuffer(); library.push({ name: file.name, bytes: Array.from(new Uint8Array(data)) }); document.getElementById('pdfFile').value = ''; refresh(); }
+function openPdf(i) { let bytes = new Uint8Array(library[i].bytes), blob = new Blob([bytes], { type: 'application/pdf' }), url = URL.createObjectURL(blob); window.open(url, '_blank'); setTimeout(() => URL.revokeObjectURL(url), 60000); }
+function removePdf(i) { library.splice(i, 1); refresh(); }
+function saveProfile() { let p = { name: document.getElementById('profileName').value, className: document.getElementById('profileClass').value, school: document.getElementById('profileSchool').value }; setStore('sm_profile', p); document.getElementById('profileStatus').innerHTML = '<div class="notice">Profile saved in this browser.</div>'; }
+function loadProfile() { let p = getStore('sm_profile', {}); document.getElementById('profileName').value = p.name || ''; document.getElementById('profileClass').value = p.className || ''; document.getElementById('profileSchool').value = p.school || ''; }
 
 refresh();
 loadProfile();
