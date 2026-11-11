@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartStudyMate AI</title>
+<style>
+
+:root{--bg:#050b1d;--panel:#0b1530;--text:#f4f7ff;--muted:#9baacb;--accent:#168cff;--line:rgba(112,151,220,.18)}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:"Segoe UI",Arial,sans-serif;color:var(--text);background:radial-gradient(ellipse at 5% 10%,#092c69 0,transparent 37%),radial-gradient(ellipse at 95% 90%,#111b55 0,transparent 40%),#050b1d}
+header{height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:rgba(4,10,27,.94);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.brand{font-size:22px;font-weight:800}.brand span{color:#168cff}
+.layout{display:grid;grid-template-columns:245px minmax(0,1fr);min-height:calc(100vh - 68px)}
+aside{padding:22px 14px;background:linear-gradient(180deg,#08142e,#080d22);border-right:1px solid var(--line)}
+nav{display:flex;flex-direction:column;gap:7px}nav button{width:100%;text-align:left;padding:13px 14px;margin:0;border:1px solid transparent;border-radius:10px;background:transparent;color:#aebcda;cursor:pointer;font-size:14px}
+nav button:hover{background:rgba(22,140,255,.12);color:white}nav button.active{color:#fff;background:linear-gradient(90deg,rgba(22,140,255,.24),rgba(117,76,255,.1));border-color:rgba(39,212,255,.26);box-shadow:inset 3px 0 #19baff}
+main{padding:30px;width:100%;max-width:1500px;margin:auto}.page{display:none}.page.active{display:block}
+h1{font-size:28px;margin:0 0 8px;font-weight:750}h2{font-size:19px;margin:0 0 12px}h3{color:#fff}p{line-height:1.6}
+.muted,.smalltext{color:var(--muted)}.smalltext{font-size:12px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:15px;margin:22px 0}
+.card{background:linear-gradient(145deg,rgba(13,29,61,.97),rgba(12,19,45,.97));border:1px solid var(--line);border-radius:15px;padding:20px;margin:15px 0;box-shadow:0 12px 32px rgba(0,0,0,.2)}
+.stat{font-size:33px;font-weight:800;color:#32c5ff;margin-top:9px}
+label{display:block;margin:14px 0 7px;color:#dce8ff;font-size:13px;font-weight:600}
+input,select,textarea{width:100%;padding:12px 13px;border:1px solid rgba(112,151,220,.24);border-radius:9px;background:#07132c;color:#f4f7ff;font:inherit;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#24bfff;box-shadow:0 0 0 3px rgba(22,140,255,.12)}textarea{min-height:105px;resize:vertical}
+button.primary,button.secondary,button.small{border:0;border-radius:9px;padding:11px 17px;cursor:pointer;font-weight:650;margin:10px 6px 0 0}
+button.primary{color:white;background:linear-gradient(105deg,#087cff,#6048f5)}button.secondary,button.small{background:#172b51;color:#dceaff;border:1px solid var(--line)}button:disabled{opacity:.5;cursor:not-allowed}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.notice{padding:13px 15px;border-radius:9px;background:rgba(22,140,255,.13);border:1px solid rgba(39,212,255,.2);color:#cceeff;margin:13px 0}
+.error{background:rgba(255,80,110,.12);border-color:rgba(255,80,110,.3);color:#ffc1cc}
+.question{padding:18px;background:#0b1731;border:1px solid var(--line);border-radius:12px;margin:14px 0}.option{display:block;padding:10px;margin:8px 0;border-radius:8px;background:#13264a;cursor:pointer}.option input{width:auto;margin-right:9px}
+.correct{border:1px solid #35d9ae}.wrong{border:1px solid #ff647c}.source a,.paper-row a{color:#56cfff;overflow-wrap:anywhere}
+.item{padding:13px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}.result-block{background:linear-gradient(120deg,#102449,#171b48);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+.result-block h3{margin:0 0 8px;font-size:16px}.task-meta{display:flex;gap:11px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:8px 0}.task-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.task-actions select{max-width:180px}
+.paper-row{padding:14px 0;border-bottom:1px solid var(--line)}.paper-row a{margin-right:16px}.paper-row:last-child{border:0}
+.hero-layout{display:grid;grid-template-columns:minmax(230px,.78fr) minmax(0,1.65fr);gap:20px;align-items:stretch}
+.hero-panel{min-height:255px;padding:25px;border-radius:17px;background:linear-gradient(145deg,#0c3d8c,#071a46 60%,#11134d);border:1px solid rgba(65,161,255,.35);position:relative;overflow:hidden}
+.hero-panel:after{content:"";position:absolute;width:220px;height:220px;border:1px solid rgba(53,190,255,.24);border-radius:50%;right:-65px;bottom:-105px;box-shadow:0 0 0 18px rgba(53,190,255,.035),0 0 0 38px rgba(53,190,255,.025)}
+.hero-kicker{font-size:11px;letter-spacing:2px;color:#74dfff;font-weight:700}.hero-title{font-size:30px;line-height:1.13;font-weight:800;margin:14px 0 10px}.hero-title span{color:#24bfff}.hero-copy{max-width:300px;color:#c1d5f4;font-size:13px}
+.hero-feature-list{display:grid;gap:12px;margin-top:22px}.hero-feature{font-size:13px;color:#e1edff}.hero-feature b{color:#39caff;margin-right:8px}
+.dashboard-top{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.dashboard-tag{display:inline-flex;padding:7px 11px;border-radius:30px;background:rgba(22,140,255,.12);border:1px solid rgba(39,212,255,.22);color:#9eeaff;font-size:11px}
+.dashboard-columns{display:grid;grid-template-columns:1.2fr .8fr;gap:15px}.quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.quick-link{padding:15px;border-radius:12px;background:linear-gradient(145deg,#10244a,#111b3a);border:1px solid var(--line);cursor:pointer}.quick-link:hover{border-color:#20bfff}
+.quick-icon{width:35px;height:35px;display:grid;place-items:center;border-radius:10px;background:rgba(22,140,255,.18);color:#52d5ff;font-size:18px}
+.quick-link strong{display:block;margin:10px 0 4px;font-size:13px}.quick-link span{font-size:11px;color:var(--muted)}
+@media(max-width:1000px){.hero-layout,.dashboard-columns{grid-template-columns:1fr}.hero-panel{min-height:220px}}
+@media(max-width:820px){.layout{grid-template-columns:1fr}aside{padding:11px;border-right:0;border-bottom:1px solid var(--line)}nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}main{padding:18px}}
+@media(max-width:520px){header{padding:0 14px}.row{grid-template-columns:1fr}.quick-grid{grid-template-columns:1fr}nav{grid-template-columns:1fr 1fr}.hero-title{font-size:25px}}
+@media print{header,aside,button{display:none!important}body{background:#fff;color:#111}.card,.question{background:#fff;color:#111;box-shadow:none}}
+
+
+/* StudySync-inspired dashboard refinement */
+body{background:radial-gradient(ellipse at 0 0,#092b68 0,transparent 36%),#030a1c;color:#f4f7ff}
+header{background:#050d22;border-bottom:1px solid rgba(40,145,255,.25)}
+.layout{grid-template-columns:250px minmax(0,1fr)}
+aside{background:linear-gradient(180deg,#06142e,#050b1d);border-right:1px solid rgba(40,145,255,.25)}
+nav button{color:#d2def8}
+nav button.active{background:linear-gradient(90deg,#0b438d,#10254c);border-color:#126bd0;box-shadow:inset 3px 0 #1ac8ff}
+main{max-width:1600px}
+.dashboard-hero{display:grid;grid-template-columns:.78fr 1.7fr;gap:18px;padding:18px;border:1px solid rgba(28,139,255,.48);border-radius:19px;background:linear-gradient(135deg,#071a3d,#06112a 65%,#0a1640);box-shadow:0 18px 50px rgba(0,0,0,.25)}
+.hero-art{min-height:300px;border-radius:15px;background:radial-gradient(circle at 50% 42%,rgba(0,174,255,.3),transparent 48%),linear-gradient(145deg,#082b68,#06142e);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.hero-art:before{content:"";position:absolute;width:210px;height:210px;border:1px solid rgba(42,190,255,.55);border-radius:50%;box-shadow:0 0 0 18px rgba(42,190,255,.06),0 0 0 40px rgba(42,190,255,.04),0 0 35px #087bff}
+.hero-art .brain{font-size:90px;filter:drop-shadow(0 0 18px #13bfff);z-index:1}
+.hero-art .book{position:absolute;bottom:25px;font-size:54px;filter:drop-shadow(0 0 14px #138fff)}
+.hero-main{padding:13px 8px}
+.hero-main h1{font-size:clamp(25px,3vw,36px);margin:15px 0 7px}
+.hero-main>p{color:#afc5ec;margin:0 0 22px}
+.hero-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.hero-card{border:1px solid rgba(54,132,255,.4);border-radius:15px;padding:16px;background:linear-gradient(145deg,#17246a,#0b1b43);min-height:185px}
+.hero-card:nth-child(2){background:linear-gradient(145deg,#07558a,#09244d)}
+.hero-card:nth-child(3){background:linear-gradient(145deg,#4920a0,#15194b)}
+.hero-card .symbol{font-size:25px;color:#57d9ff}
+.hero-card h3{font-size:16px;margin:10px 0 5px}
+.hero-card p{font-size:12px;color:#c0d1f2;min-height:36px;margin:0}
+.hero-card button{width:100%;margin:12px 0 0}
+.dashboard-bottom{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;margin-top:16px}
+.dashboard-bottom .card{margin:0;background:linear-gradient(145deg,#091a39,#07132c)}
+.progress-ring{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#17c9f5 0 75%,#183768 75%);position:relative;margin:10px auto}
+.progress-ring:before{content:"";position:absolute;inset:10px;border-radius:50%;background:#091a39}
+.progress-ring strong{position:relative;font-size:25px}
+.progress-bars{height:120px;display:flex;align-items:end;justify-content:space-around;gap:8px;padding:10px}
+.progress-bars i{display:block;width:13%;border-radius:6px 6px 2px 2px;background:linear-gradient(#20c9ff,#594bff);box-shadow:0 0 12px rgba(23,159,255,.25)}
+.document-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(112,151,220,.16)}
+.document-icon{width:35px;height:40px;border-radius:7px;background:#e84b65;display:grid;place-items:center;font-size:11px;font-weight:800;color:white}
+.document-row:nth-child(3) .document-icon{background:#168cff}
+@media(max-width:1100px){.dashboard-hero{grid-template-columns:1fr}.hero-art{min-height:210px}.dashboard-bottom{grid-template-columns:1fr}}
+@media(max-width:650px){.hero-cards{grid-template-columns:1fr}.hero-art{min-height:170px}.dashboard-hero{padding:12px}.dashboard-bottom{grid-template-columns:1fr}}
+
+
+/* Nebula-inspired dark purple frontend theme */
+:root{--bg:#080711;--panel:#11101d;--text:#f5f1ff;--muted:#aaa2bb;--accent:#a855f7;--line:rgba(190,150,255,.16)}
+html{background:#080711}
+body{background:radial-gradient(ellipse at 52% 35%,rgba(112,54,145,.28),transparent 42%),radial-gradient(ellipse at 5% 95%,rgba(49,31,89,.34),transparent 35%),#080711;color:#f5f1ff}
+header{height:64px;padding:0 28px;background:rgba(10,9,18,.96);border-bottom:1px solid rgba(210,180,255,.10)}
+.brand{font-size:21px}.brand span{color:#c084fc}
+.layout{grid-template-columns:238px minmax(0,1fr);min-height:calc(100vh - 64px)}
+aside{padding:22px 14px;background:linear-gradient(180deg,#100d1b,#0b0a14);border-right:1px solid rgba(210,180,255,.10)}
+nav{gap:8px}
+nav button{color:#c0b8ce;border-radius:11px;padding:13px 14px;font-size:13px;transition:background .2s,border-color .2s}
+nav button:hover{background:rgba(168,85,247,.13);color:#fff}
+nav button.active{color:#fff;background:linear-gradient(100deg,#64209b,#35134f);border-color:rgba(196,132,252,.28);box-shadow:0 7px 22px rgba(91,28,137,.22),inset 3px 0 #d8a5ff}
+main{max-width:1500px;padding:28px}
+.page{animation:pageIn .22s ease}
+@keyframes pageIn{from{opacity:.65;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+h1{font-size:29px;letter-spacing:-.5px}h2{font-size:18px}
+.muted,.smalltext{color:#aaa2bb}
+.card{background:linear-gradient(145deg,rgba(25,21,38,.98),rgba(16,14,26,.98));border:1px solid rgba(190,150,255,.15);border-radius:17px;box-shadow:0 14px 38px rgba(0,0,0,.24)}
+input,select,textarea{background:#100e1b;color:#f5f1ff;border:1px solid rgba(190,150,255,.2);border-radius:10px}
+input:focus,select:focus,textarea:focus{border-color:#b76cff;box-shadow:0 0 0 3px rgba(168,85,247,.13)}
+button.primary{color:white;background:linear-gradient(105deg,#7626b2,#a23ad0);box-shadow:0 5px 16px rgba(124,38,178,.18)}
+button.primary:hover{filter:brightness(1.12)}
+button.secondary,button.small{background:#21182d;color:#e8d9fa;border:1px solid rgba(190,150,255,.18)}
+.notice{background:rgba(139,75,190,.13);border-color:rgba(190,130,245,.22);color:#e4caff}
+.question,.result-block{background:linear-gradient(135deg,#1b1528,#151323);border:1px solid rgba(190,150,255,.15);border-radius:13px}
+.option{background:#251a34}
+.source a,.paper-row a{color:#d29aff}
+.dashboard-hero{grid-template-columns:.72fr 1.5fr;gap:20px;padding:20px;border:1px solid rgba(190,150,255,.18);border-radius:20px;background:radial-gradient(ellipse at 70% 50%,rgba(115,48,145,.25),transparent 55%),linear-gradient(135deg,#171324,#100e1b 70%,#191127);box-shadow:0 18px 48px rgba(0,0,0,.3)}
+.hero-art{min-height:310px;border-radius:16px;background:radial-gradient(circle at 50% 42%,rgba(215,104,255,.30),transparent 38%),linear-gradient(145deg,#251336,#11101f 70%)}
+.hero-art:before{width:190px;height:190px;border-color:rgba(219,150,255,.48);box-shadow:0 0 0 18px rgba(190,105,255,.06),0 0 0 40px rgba(190,105,255,.035),0 0 38px rgba(190,90,255,.65)}
+.hero-art .brain{filter:drop-shadow(0 0 18px #c45cff)}.hero-art .book{filter:drop-shadow(0 0 14px #a855f7)}
+.dashboard-tag{background:rgba(168,85,247,.12);border-color:rgba(190,150,255,.2);color:#dfbaff}
+.hero-main h1{font-size:clamp(27px,3vw,38px)}.hero-main>p{color:#bcb2cc}
+.hero-cards{gap:12px}
+.hero-card,.hero-card:nth-child(2),.hero-card:nth-child(3){min-height:180px;border:1px solid rgba(190,150,255,.2);border-radius:15px;background:linear-gradient(145deg,rgba(70,34,91,.78),rgba(25,19,40,.96))}
+.hero-card:nth-child(2){background:linear-gradient(145deg,rgba(56,38,88,.9),rgba(22,19,38,.98))}
+.hero-card:nth-child(3){background:linear-gradient(145deg,rgba(91,34,107,.78),rgba(25,19,40,.98))}
+.hero-card .symbol{color:#e1b5ff}.hero-card p{color:#c6bbd4}
+.dashboard-bottom{gap:16px}
+.dashboard-bottom .card{background:linear-gradient(145deg,#171324,#100e1b);border-color:rgba(190,150,255,.15)}
+.progress-ring{background:conic-gradient(#bd68f4 0 75%,#30213e 75%)}
+.progress-ring:before{background:#171324}
+.progress-bars i{background:linear-gradient(#d58bff,#7434b1);box-shadow:0 0 12px rgba(190,100,255,.2)}
+.document-row{border-bottom-color:rgba(190,150,255,.13)}
+.document-icon{background:#8d39b5}.document-row:nth-child(3) .document-icon{background:#6336a5}
+.stat{color:#d18cff}.task-meta{color:#aaa2bb}
+@media(max-width:1100px){.dashboard-hero{grid-template-columns:1fr}.hero-art{min-height:210px}}
+@media(max-width:820px){.layout{grid-template-columns:1fr}aside{padding:11px;border-right:0;border-bottom:1px solid rgba(210,180,255,.10)}main{padding:18px}}
+@media(max-width:520px){header{padding:0 14px}.hero-cards{grid-template-columns:1fr}.hero-art{min-height:170px}.dashboard-hero{padding:12px}}
+
+</style>
+</head>
+<body>
+<header><div class="brand">SmartStudy<span>Mate</span> AI</div><div class="smalltext">Your personal study workspace</div></header>
+<div class="layout">
+<aside><nav>
+<button class="active" data-page="dashboard">Dashboard</button>
+<button data-page="notes">Smart Study Notes</button>
+<button data-page="planner">Smart AI Study Planner</button>
+<button data-page="exam">Exam Preparation</button>
+<button data-page="papers">CBSE Sample Papers</button>
+<button data-page="tutor">AI Tutor</button>
+<button data-page="library">Textbook Library</button>
+<button data-page="mcq">One-Mark MCQ Generator</button>
+<button data-page="profile">My Profile</button>
+</nav></aside>
+<main>
+<section id="dashboard" class="page active">
+  <div class="dashboard-hero">
+    <div class="hero-art"><div class="brain">🧠</div><div class="book">📖</div></div>
+    <div class="hero-main">
+      <div class="dashboard-tag">SMARTSTUDYMATE AI · LEARNING PLATFORM</div>
+      <h1>Welcome to your AI study workspace</h1>
+      <p>Your personal learning co-pilot. Plan, practise and prepare for every exam.</p>
+      <div class="hero-cards">
+        <div class="hero-card"><div class="symbol">▤</div><h3>Upload & Learn</h3><p>Choose a textbook or document and organise your learning.</p><button class="primary" onclick="showPage('library')">Upload Document</button></div>
+        <div class="hero-card"><div class="symbol">✦</div><h3>AI Tutor</h3><p>Get clear explanations and answers to your questions.</p><button class="primary" onclick="showPage('tutor')">Ask Question</button></div>
+        <div class="hero-card"><div class="symbol">☑</div><h3>Generate Quiz</h3><p>Create syllabus-based one-mark practice questions.</p><button class="primary" onclick="showPage('mcq')">Generate Quiz</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="dashboard-bottom">
+    <div class="card">
+      <h2>Recent Learning Activity</h2>
+      <div class="document-row"><div class="document-icon">NOTE</div><div><b>Saved Study Notes</b><div class="smalltext">Your revision notes are stored in this browser</div></div><button class="small" onclick="showPage('notes')">Open</button></div>
+      <div class="document-row"><div class="document-icon">TASK</div><div><b>Study Planner</b><div class="smalltext">Review your tasks and weekly schedule</div></div><button class="small" onclick="showPage('planner')">Open</button></div>
+      <div class="document-row"><div class="document-icon">PDF</div><div><b>CBSE Sample Papers</b><div class="smalltext">Find official sample papers and marking schemes</div></div><button class="small" onclick="showPage('papers')">Open</button></div>
+    </div>
+    <div class="card">
+      <h2>Learning Progress</h2>
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:center">
+        <div class="progress-ring"><strong>75%</strong></div>
+        <div><div class="smalltext">Weekly learning overview</div><div class="progress-bars"><i style="height:42%"></i><i style="height:68%"></i><i style="height:82%"></i><i style="height:57%"></i><i style="height:88%"></i><i style="height:62%"></i><i style="height:96%"></i></div><div class="smalltext">Mon　Tue　Wed　Thu　Fri　Sat　Sun</div></div>
+      </div>
+      <div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 0">
+        <div><div class="smalltext">Saved Notes</div><div class="stat" id="noteCount">0</div></div>
+        <div><div class="smalltext">Study Tasks</div><div class="stat" id="taskCount">0</div></div>
+        <div><div class="smalltext">MCQs Created</div><div class="stat" id="mcqCount">0</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="notes" class="page">
+<h1>Smart Study Notes</h1><p class="muted">Create and save your own revision notes in this browser.</p>
+<div class="card"><label>Note title</label><input id="noteTitle" placeholder="Example: Python Functions"><label>Notes</label><textarea id="noteBody" placeholder="Write your study notes here..."></textarea><button class="primary" onclick="saveNote()">Save note</button></div>
+<div class="card"><h2>My saved notes</h2><div id="notesList"></div></div>
+</section>
+<section id="planner" class="page">
+<h1>Smart AI Study Planner</h1><p class="muted">Organise study tasks, generate a weekly AI timetable and understand your learning progress.</p>
+<div class="card"><h2>Smart Task Management</h2><div class="row"><div><label>Task title</label><input id="taskTitle" placeholder="Example: Revise SQL joins"></div><div><label>Subject</label><input id="taskSubject" placeholder="Example: Computer Science"></div></div>
+<div class="row"><div><label>Chapter / topic</label><input id="taskChapter" placeholder="Example: Database queries"></div><div><label>Due date</label><input id="taskDueDate" type="date"></div></div>
+<div class="row"><div><label>Priority</label><select id="taskPriority"><option>Low</option><option selected>Medium</option><option>High</option></select></div><div style="display:flex;align-items:end"><button class="primary" id="addTaskButton" onclick="addSmartTask()">Add study task</button></div></div><div id="taskStatus"></div></div>
+<div class="card"><h2>My Study Tasks</h2><p class="muted">Update each task as Pending, In Progress or Completed.</p><div id="tasksList"><p class="muted">Loading tasks...</p></div></div>
+<div class="card"><h2>AI Study Schedule Generator</h2><p class="muted">Generate a weekly timetable based on your class, subjects, chapters and available study time.</p>
+<div class="row"><div><label>Class</label><select id="scheduleClass"><option value="">Select class</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option></select></div><div><label>Examination date (optional)</label><input id="scheduleExamDate" type="date"></div></div>
+<label>Subjects (one per line)</label><textarea id="scheduleSubjects" placeholder="Mathematics&#10;Science&#10;Computer Science"></textarea><label>Chapters / topics (one per line)</label><textarea id="scheduleChapters" placeholder="Algebra&#10;Electricity&#10;Python functions"></textarea>
+<label>Available study hours per day</label><input id="dailyHours" type="number" min="0.5" max="12" step="0.5" value="3"><button class="primary" id="scheduleButton" onclick="generateStudySchedule()">Generate AI Study Schedule</button><div id="scheduleStatus"></div><div id="scheduleResult"></div></div>
+<div class="card"><h2>AI Progress Analysis</h2><p class="muted">Get an overview of completed work, pending tasks and practical recommendations.</p><button class="primary" id="progressButton" onclick="analyseProgress()">Analyse My Progress</button><div id="progressStatus"></div><div id="progressResult"></div></div>
+</section>
+<section id="exam" class="page">
+<h1>Exam Preparation Mode</h1><p class="muted">Build a structured exam preparation plan for any class from Class 1 to Class 12.</p>
+<div class="card"><div class="row"><div><label>Class</label><select id="examClass"><option value="">Select class</option><option value="1">Class 1</option><option value="2">Class 2</option><option value="3">Class 3</option><option value="4">Class 4</option><option value="5">Class 5</option><option value="6">Class 6</option><option value="7">Class 7</option><option value="8">Class 8</option><option value="9">Class 9</option><option value="10">Class 10</option><option value="11">Class 11</option><option value="12">Class 12</option></select></div><div><label>Examination date</label><input id="examDate" type="date"></div></div>
+<label>Subjects (one per line)</label><textarea id="examSubjects" placeholder="Mathematics&#10;Science&#10;English"></textarea><label>Chapters / portions (one per line)</label><textarea id="examChapters" placeholder="List the chapters to prepare"></textarea><button class="primary" id="examButton" onclick="generateExamPlan()">Create Exam Preparation Plan</button><div id="examStatus"></div><div id="examResult"></div></div>
+</section>
+<section id="papers" class="page">
+<h1>CBSE Previous Year Question Paper Library</h1>
+<p class="muted">Find CBSE question papers from the last five years. Select your class, year and subject to search for available papers.</p>
+<div class="card">
+<div class="row">
+<div><label>Class</label><select id="paperClass">
+<option value="10">Class 10</option><option value="12">Class 12</option>
+</select></div>
+<div><label>Year</label><select id="paperYear">
+<option value="2026">2026</option><option value="2025">2025</option>
+<option value="2024">2024</option><option value="2023">2023</option>
+<option value="2022">2022</option>
+</select></div>
+</div>
+<label>Subject (optional)</label>
+<input id="paperSubject" placeholder="Example: Mathematics, Science, English">
+<button class="primary" id="paperButton" onclick="loadCBSEPapers()">Find Previous Year Papers</button>
+<div id="paperStatus"></div><div id="paperResults"></div>
+</div>
+<div class="card">
+<h2>Official CBSE Resources</h2>
+<p class="muted">If a paper is not listed, use the official CBSE websites to check available question papers and examination resources.</p>
+<p><a href="https://www.cbse.gov.in/cbsenew/question-paper.html" target="_blank" rel="noopener" style="color:#56cfff">CBSE Previous Year Question Papers</a></p>
+<p><a href="https://cbseacademic.nic.in/" target="_blank" rel="noopener" style="color:#56cfff">CBSE Academic Website</a></p>
+</div>
+</section>
+<section id="tutor" class="page">
+<h1>AI Tutor</h1><p class="muted">Ask a question and receive a class-friendly explanation.</p>
+<div class="card"><label>Your question</label><textarea id="tutorQuestion" placeholder="Explain the difference between a list and a tuple in Python."></textarea><button class="primary" id="tutorButton" onclick="askTutor()">Ask AI Tutor</button><div id="tutorAnswer"></div></div>
+</section>
+<section id="library" class="page">
+<h1>My Textbook Library</h1><p class="muted">Choose PDF textbooks from your computer. Files are kept in this browser session; large files may exceed browser storage limits.</p>
+<div class="card"><label>Select a PDF</label><input id="pdfFile" type="file" accept="application/pdf"><button class="primary" onclick="addPdf()">Add PDF</button><div id="libraryList"></div></div>
+</section>
+<section id="mcq" class="page">
+<h1>One-Mark MCQ Generator</h1><p class="muted">Generate syllabus-based practice questions with Google Search grounding through Gemini.</p>
+<div class="card"><div class="row"><div><label>Class</label><select id="mcqClass"><option value="">Select class</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option></select></div><div><label>Subject</label><select id="mcqSubject"><option value="">Select subject</option><option>Computer Science</option><option>Artificial Intelligence</option><option>Informatics Practices</option><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>Science</option><option>English</option></select></div></div>
+<label>Syllabus portion / chapter / topics</label><textarea id="mcqPortion" placeholder="Example: Python functions, arguments and return values"></textarea><div class="row"><div><label>Number of questions</label><select id="mcqNumber"><option>5</option><option selected>10</option><option>15</option><option>20</option><option>30</option></select></div><div><label>Mode</label><select id="mcqMode"><option value="practice">Practice mode (show score after submit)</option><option value="study">Study mode (show answers and explanations)</option></select></div></div>
+<button class="primary" id="generateButton" onclick="generateMCQs()">Generate MCQs using AI</button><button class="secondary" onclick="downloadMCQs()">Download TXT</button><button class="secondary" onclick="printMCQs()">Print / Save PDF</button><div id="mcqStatus"></div><div id="mcqResults"></div><div id="mcqSources"></div></div>
+</section>
+<section id="profile" class="page">
+<h1>My Profile</h1><p class="muted">Your profile details are saved only in this browser.</p>
+<div class="card"><label>Name</label><input id="profileName" placeholder="Your name"><label>Class</label><input id="profileClass" placeholder="Example: Class 12"><label>School</label><input id="profileSchool" placeholder="School name"><button class="primary" onclick="saveProfile()">Save profile</button><div id="profileStatus"></div></div>
+</section>
+</main></div>
+<script>
+let mcqData=[];let library=[];let smartTasks=[];
+const getStore=(key,fallback=[])=>{try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}};
+const setStore=(key,value)=>localStorage.setItem(key,JSON.stringify(value));
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='planner')loadSmartTasks();if(id==='papers'){} }
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+function refresh(){const notes=getStore('sm_notes');document.getElementById('noteCount').textContent=notes.length;document.getElementById('taskCount').textContent=smartTasks.length;document.getElementById('mcqCount').textContent=getStore('sm_mcq_count',0);document.getElementById('notesList').innerHTML=notes.length?notes.map((n,i)=>`<div class="item"><b>${escapeHtml(n.title)}</b><p>${escapeHtml(n.body).replace(/\n/g,'<br>')}</p><button class="small" onclick="deleteNote(${i})">Delete</button></div>`).join(''):'<p class="muted">No notes saved yet.</p>';document.getElementById('libraryList').innerHTML=library.map((f,i)=>`<div class="item">${escapeHtml(f.name)} <button class="small" onclick="openPdf(${i})">Open</button><button class="small" onclick="removePdf(${i})">Remove</button></div>`).join('');}
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function lines(id){return document.getElementById(id).value.split('\n').map(x=>x.trim()).filter(Boolean)}
+async function api(url,options={}){const response=await fetch(url,{...options,headers:{'Content-Type':'application/json',...(options.headers||{})}});let data={};try{data=await response.json()}catch{}if(!response.ok)throw Error(data.error||'Request failed. Please try again.');return data;}
+function saveNote(){let title=document.getElementById('noteTitle').value.trim(),body=document.getElementById('noteBody').value.trim();if(!title||!body)return alert('Enter a title and note.');let a=getStore('sm_notes');a.unshift({title,body});setStore('sm_notes',a);document.getElementById('noteTitle').value='';document.getElementById('noteBody').value='';refresh();}
+function deleteNote(i){let a=getStore('sm_notes');a.splice(i,1);setStore('sm_notes',a);refresh();}
+async function loadSmartTasks(){const box=document.getElementById('tasksList');box.innerHTML='<p class="muted">Loading tasks...</p>';try{const d=await api('/api/tasks');smartTasks=d.tasks||[];renderSmartTasks();refresh();}catch(e){box.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';}}
+function renderSmartTasks(){const box=document.getElementById('tasksList');if(!smartTasks.length){box.innerHTML='<p class="muted">No study tasks added yet.</p>';return;}box.innerHTML=smartTasks.map(t=>`<div class="item"><b>${escapeHtml(t.title)}</b><div class="task-meta"><span>${escapeHtml(t.subject||'No subject')}</span><span>${escapeHtml(t.chapter||'No chapter')}</span><span>Due: ${escapeHtml(t.due_date||'Not set')}</span><span>Priority: ${escapeHtml(t.priority||'Medium')}</span></div><div class="task-actions"><select aria-label="Task status" onchange="changeTaskStatus('${escapeHtml(t.id)}',this.value)"><option ${t.status==='Pending'?'selected':''}>Pending</option><option ${t.status==='In Progress'?'selected':''}>In Progress</option><option ${t.status==='Completed'?'selected':''}>Completed</option></select><button class="small" onclick="deleteSmartTask('${escapeHtml(t.id)}')">Delete</button></div></div>`).join('');}
+async function addSmartTask(){const title=document.getElementById('taskTitle').value.trim();if(!title)return alert('Enter a task title.');const btn=document.getElementById('addTaskButton'),status=document.getElementById('taskStatus');btn.disabled=true;status.innerHTML='<p class="muted">Saving task...</p>';try{await api('/api/tasks',{method:'POST',body:JSON.stringify({title,subject:document.getElementById('taskSubject').value.trim(),chapter:document.getElementById('taskChapter').value.trim(),due_date:document.getElementById('taskDueDate').value,priority:document.getElementById('taskPriority').value})});['taskTitle','taskSubject','taskChapter','taskDueDate'].forEach(id=>document.getElementById(id).value='');status.innerHTML='<div class="notice">Study task added.</div>';await loadSmartTasks();}catch(e){status.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';}finally{btn.disabled=false;}}
+async function changeTaskStatus(id,status){try{await api('/api/tasks/'+encodeURIComponent(id),{method:'PUT',body:JSON.stringify({status})});await loadSmartTasks();}catch(e){alert(e.message);await loadSmartTasks();}}
+async function deleteSmartTask(id){if(!confirm('Delete this study task?'))return;try{await api('/api/tasks/'+encodeURIComponent(id),{method:'DELETE'});await loadSmartTasks();}catch(e){alert(e.message);}}
+function renderSchedule(data){const box=document.getElementById('scheduleResult');let html='';(data.schedule||[]).forEach(day=>{html+=`<div class="result-block"><h3>${escapeHtml(day.day||'Study day')}</h3>`;(day.sessions||[]).forEach(s=>{html+=`<p><b>${escapeHtml(s.time||'')}</b> — ${escapeHtml(s.subject||'')} / ${escapeHtml(s.chapter||'')}<br>${escapeHtml(s.activity||'')} <span class="smalltext">(${escapeHtml(s.duration_minutes??'')} minutes)</span></p>`});html+='</div>'});if(data.recommendations?.length)html+='<div class="result-block"><h3>AI Recommendations</h3><ul>'+data.recommendations.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')+'</ul></div>';box.innerHTML=html||'<p class="muted">No schedule was returned.</p>';}
+async function generateStudySchedule(){const className=document.getElementById('scheduleClass').value,subjects=lines('scheduleSubjects'),chapters=lines('scheduleChapters'),daily_hours=Number(document.getElementById('dailyHours').value),exam_date=document.getElementById('scheduleExamDate').value;if(!className||!subjects.length)return alert('Select your class and enter at least one subject.');const btn=document.getElementById('scheduleButton'),status=document.getElementById('scheduleStatus');btn.disabled=true;status.innerHTML='<div class="notice">Creating your weekly study schedule...</div>';document.getElementById('scheduleResult').innerHTML='';try{const d=await api('/api/study-schedule',{method:'POST',body:JSON.stringify({class:className,subjects,chapters,daily_hours,exam_date})});renderSchedule(d);status.innerHTML='<div class="notice">Your AI study schedule is ready.</div>';}catch(e){status.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';}finally{btn.disabled=false;}}
+async function analyseProgress(){const btn=document.getElementById('progressButton'),status=document.getElementById('progressStatus'),box=document.getElementById('progressResult');btn.disabled=true;status.innerHTML='<div class="notice">Analysing your study tasks...</div>';box.innerHTML='';try{const d=await api('/api/progress-analysis',{method:'POST',body:JSON.stringify({tasks:smartTasks})});const s=d.statistics||{},a=d.analysis||{};box.innerHTML=`<div class="grid"><div class="result-block"><div class="muted">Completion</div><div class="stat">${escapeHtml(s.completion_percentage??0)}%</div></div><div class="result-block"><div class="muted">Completed</div><div class="stat">${escapeHtml(s.completed??0)}</div></div><div class="result-block"><div class="muted">Pending</div><div class="stat">${escapeHtml(s.pending??0)}</div></div></div><div class="result-block"><h3>Overall Analysis</h3><p>${escapeHtml(a.overall_analysis||'')}</p></div>`+['strengths','areas_to_improve','recommendations','next_steps'].map((key)=>a[key]?.length?`<div class="result-block"><h3>${({strengths:'Strengths',areas_to_improve:'Areas to Improve',recommendations:'Recommendations',next_steps:'Next Steps'})[key]}</h3><ul>${a[key].map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul></div>`:'').join('');status.innerHTML='<div class="notice">Progress analysis completed.</div>';}catch(e){status.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';}finally{btn.disabled=false;}}
+async function generateExamPlan(){const className=document.getElementById('examClass').value,exam_date=document.getElementById('examDate').value,subjects=lines('examSubjects'),chapters=lines('examChapters');if(!className||!exam_date||!subjects.length)return alert('Select your class, enter the exam date and add at least one subject.');const btn=document.getElementById('examButton'),status=document.getElementById('examStatus'),box=document.getElementById('examResult');btn.disabled=true;status.innerHTML='<div class="notice">Preparing your exam plan...</div>';box.innerHTML='';try{const d=await api('/api/exam-preparation',{method:'POST',body:JSON.stringify({class:className,exam_date,subjects,chapters})});let html=`<div class="result-block"><h3>Days remaining</h3><div class="stat">${escapeHtml(d.exam_countdown_days)}</div></div>`;(d.preparation_plan||[]).forEach(day=>{html+=`<div class="result-block"><h3>Day ${escapeHtml(day.day)} — ${escapeHtml(day.subject||'')}</h3><ul>${(day.tasks||[]).map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul></div>`});if(d.important_recommendations?.length)html+='<div class="result-block"><h3>Important Recommendations</h3><ul>'+d.important_recommendations.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')+'</ul></div>';box.innerHTML=html;status.innerHTML='<div class="notice">Your exam preparation plan is ready.</div>';}catch(e){status.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';}finally{btn.disabled=false;}}
+async function loadCBSEPapers(){
+const cls=document.getElementById('paperClass').value;
+const year=document.getElementById('paperYear').value;
+const subject=document.getElementById('paperSubject').value.trim();
+const btn=document.getElementById('paperButton');
+const status=document.getElementById('paperStatus');
+const box=document.getElementById('paperResults');
+btn.disabled=true;
+status.innerHTML='<div class="notice">Searching for CBSE '+year+' question papers...</div>';
+box.innerHTML='';
+try{
+const params=new URLSearchParams({class:cls,year,type:'previous-year'});
+if(subject)params.set('subject',subject);
+const d=await api('/api/cbse-papers?'+params.toString());
+let html=`<p class="smalltext">Source: ${escapeHtml(d.source||'CBSE')} | Class: ${escapeHtml(cls)} | Year: ${escapeHtml(year)}</p>`;
+if(!(d.papers||[]).length){
+html+='<p class="muted">No matching paper links were returned. Please check the official CBSE question paper archive below.</p>';
+}
+(d.papers||[]).forEach(p=>{
+html+=`<div class="paper-row"><b>${escapeHtml(p.subject||subject||'Question Paper')}</b><div>`+
+(p.question_paper||p.sample_paper||p.paper_url?`<a href="${escapeHtml(p.question_paper||p.sample_paper||p.paper_url)}" target="_blank" rel="noopener">Question Paper PDF</a>`:'<span class="smalltext">Question paper link unavailable</span>')+
+(p.marking_scheme?`<a href="${escapeHtml(p.marking_scheme)}" target="_blank" rel="noopener">Marking Scheme</a>`:'')+
+'</div></div>';
+});
+box.innerHTML=html;
+status.innerHTML='<div class="notice">Search completed.</div>';
+}catch(e){
+status.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';
+box.innerHTML='<p><a style="color:#56cfff" href="https://www.cbse.gov.in/cbsenew/question-paper.html" target="_blank" rel="noopener">Open official CBSE Previous Year Question Papers</a></p>';
+}finally{btn.disabled=false;}
+}
+async function askTutor(){let q=document.getElementById('tutorQuestion').value.trim(),out=document.getElementById('tutorAnswer'),btn=document.getElementById('tutorButton');if(!q)return alert('Enter a question.');btn.disabled=true;out.innerHTML='<p class="muted">Thinking...</p>';try{let d=await api('/api/ask',{method:'POST',body:JSON.stringify({question:q})});out.innerHTML='<div class="notice">'+escapeHtml(d.answer).replace(/\n/g,'<br>')+'</div>';}catch(e){out.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';}finally{btn.disabled=false;}}
+async function generateMCQs(){let className=document.getElementById('mcqClass').value,subject=document.getElementById('mcqSubject').value,portion=document.getElementById('mcqPortion').value.trim(),number=Number(document.getElementById('mcqNumber').value),mode=document.getElementById('mcqMode').value,status=document.getElementById('mcqStatus'),btn=document.getElementById('generateButton');if(!className||!subject||!portion)return alert('Select class, subject and enter the syllabus portion.');btn.disabled=true;status.innerHTML='<div class="notice">Generating questions. This may take a little time...</div>';document.getElementById('mcqResults').innerHTML='';document.getElementById('mcqSources').innerHTML='';try{let d=await api('/api/one-mark',{method:'POST',body:JSON.stringify({class:className,subject,portion,number})});mcqData=d.mcqs||[];setStore('sm_mcq_count',Number(getStore('sm_mcq_count',0))+mcqData.length);renderMCQs(mode);renderSources(d.sources||[]);status.innerHTML='<div class="notice">Generated '+mcqData.length+' questions successfully.</div>';refresh();}catch(e){status.innerHTML='<div class="notice error">'+escapeHtml(e.message)+'</div>';}finally{btn.disabled=false;}}
+function renderMCQs(mode){let out=document.getElementById('mcqResults');out.innerHTML=mcqData.map((q,i)=>`<div class="question" id="q${i}"><b>${i+1}. ${escapeHtml(q.question)}</b>${q.options.map((o,j)=>`<label class="option"><input type="radio" name="q${i}" value="${j}"> ${escapeHtml(o)}</label>`).join('')}<div id="ex${i}" class="smalltext">${mode==='study'?'Correct answer: '+escapeHtml(q.options[q.answer_index])+' — '+escapeHtml(q.explanation):''}</div></div>`).join('')+(mode==='practice'?'<button class="primary" onclick="submitMCQs()">Submit answers</button>':'');}
+function submitMCQs(){let score=0;mcqData.forEach((q,i)=>{let chosen=document.querySelector(`input[name="q${i}"]:checked`),box=document.getElementById('q'+i),ex=document.getElementById('ex'+i);box.classList.remove('correct','wrong');if(chosen&&Number(chosen.value)===q.answer_index){score++;box.classList.add('correct');}else box.classList.add('wrong');ex.textContent='Correct answer: '+q.options[q.answer_index]+'. '+q.explanation;});document.getElementById('mcqStatus').innerHTML='<div class="notice">Your score: '+score+' / '+mcqData.length+'</div>';}
+function renderSources(sources){let box=document.getElementById('mcqSources');if(!sources.length){box.innerHTML='<p class="smalltext">No source links were returned for this response.</p>';return;}box.innerHTML='<h2>Sources</h2>'+sources.map(s=>`<div class="source"><a href="${escapeHtml(s.url)}" target="_blank" rel="noopener">${escapeHtml(s.title||s.url)}</a></div>`).join('');}
+function downloadMCQs(){if(!mcqData.length)return alert('Generate questions first.');let txt=mcqData.map((q,i)=>`${i+1}. ${q.question}\n${q.options.map((o,j)=>`${String.fromCharCode(65+j)}. ${o}`).join('\n')}\nAnswer: ${q.options[q.answer_index]}\nExplanation: ${q.explanation}`).join('\n\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));a.download='SmartStudyMate_MCQs.txt';a.click();URL.revokeObjectURL(a.href);}
+function printMCQs(){if(!mcqData.length)return alert('Generate questions first.');window.print();}
+async function addPdf(){let file=document.getElementById('pdfFile').files[0];if(!file)return alert('Choose a PDF first.');if(file.type!=='application/pdf')return alert('Please choose a PDF file.');if(file.size>8*1024*1024)return alert('Please choose a PDF smaller than 8 MB.');let data=await file.arrayBuffer();library.push({name:file.name,bytes:Array.from(new Uint8Array(data))});document.getElementById('pdfFile').value='';refresh();}
+function openPdf(i){let bytes=new Uint8Array(library[i].bytes),blob=new Blob([bytes],{type:'application/pdf'}),url=URL.createObjectURL(blob);window.open(url,'_blank');setTimeout(()=>URL.revokeObjectURL(url),60000);}
+function removePdf(i){library.splice(i,1);refresh();}
+function saveProfile(){let p={name:document.getElementById('profileName').value,className:document.getElementById('profileClass').value,school:document.getElementById('profileSchool').value};setStore('sm_profile',p);document.getElementById('profileStatus').innerHTML='<div class="notice">Profile saved in this browser.</div>';}
+function loadProfile(){let p=getStore('sm_profile',{});document.getElementById('profileName').value=p.name||'';document.getElementById('profileClass').value=p.className||'';document.getElementById('profileSchool').value=p.school||'';}
+refresh();loadProfile();loadSmartTasks();
+</script></body></html>
