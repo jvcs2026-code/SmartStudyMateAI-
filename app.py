@@ -8,6 +8,7 @@ from datetime import date, datetime
 from html.parser import HTMLParser
 from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
+from flask import send_from_directory
 
 from flask import Flask, request, jsonify, send_from_directory
 from dotenv import load_dotenv
@@ -113,9 +114,13 @@ def home():
     return send_from_directory(BASE_DIR, "index.html")
 
 
-@app.route("/favicon.ico")
+@app.route('/favicon.ico')
 def favicon():
-    return send_from_directory(BASE_DIR, "favicon.ico", mimetype="image/vnd.microsoft.icon")
+    return send_from_directory(
+        app.root_path,
+        'favicon.ico',
+        mimetype='image/vnd.microsoft.icon'
+    )
 
 # ==================================================
 # 5. UNIFIED AI TUTOR & VOICE TUTOR
