@@ -895,13 +895,32 @@ def study_room(code):
     code = code.upper(); rooms = read_json_file(ROOM_FILE, {})
     if code not in rooms: return jsonify({"error": "Study room not found."}), 404
     room = rooms[code]
-    # Upgrade rooms created by the earlier single-question version without losing that question.
+    # Upgrade and normalize older room data without deleting saved questions.
     quiz = room.get("quiz")
-    if quiz and "questions" not in quiz:
-        legacy_question = {"id": str(uuid.uuid4()), "question": quiz.get("question", ""), "options": quiz.get("options", []), "responses": quiz.get("responses", {})}
-        quiz["questions"] = [legacy_question] if legacy_question["question"] else []
-        quiz.pop("question", None); quiz.pop("options", None); quiz.pop("responses", None)
+    if quiz and isinstance(quiz, dict):
+        if "questions" not in quiz:
+            legacy_question = {
+                "id": str(uuid.uuid4()),
+                "question": quiz.get("question", ""),
+                "options": quiz.get("options", []) if isinstance(quiz.get("options", []), list) else [],
+                "responses": quiz.get("responses", {}) if isinstance(quiz.get("responses", {}), dict) else {},
+            }
+            quiz["questions"] = [legacy_question] if legacy_question["question"] else []
+            quiz.pop("question", None); quiz.pop("options", None); quiz.pop("responses", None)
+        if not isinstance(quiz.get("questions"), list):
+            quiz["questions"] = []
+        for saved_question in quiz["questions"]:
+            if not isinstance(saved_question, dict):
+                continue
+            if not isinstance(saved_question.get("options"), list):
+                saved_question["options"] = []
+            if not isinstance(saved_question.get("responses"), dict):
+                saved_question["responses"] = {}
+            saved_question.setdefault("id", str(uuid.uuid4()))
+            saved_question.setdefault("question", "")
         room["quiz"] = quiz
+        rooms[code] = room
+        write_json_file(ROOM_FILE, rooms)
     if request.method == "POST":
         data = request.get_json(silent=True) or {}
         action = data.get("action", "add_question")
