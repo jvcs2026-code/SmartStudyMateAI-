@@ -143,8 +143,7 @@ aside{padding:26px 18px 18px;background:linear-gradient(180deg,#0d0b2c 0%,#100d3
 .brand-mark{width:58px;height:58px;display:grid;place-items:center;border-radius:18px;color:#d79cff;font-size:42px;font-weight:800;background:radial-gradient(circle at 35% 30%,#8c35ff,#2426a9 72%);box-shadow:0 0 26px #722cff66}
 nav{gap:7px}
 nav button{min-height:48px;padding:12px 15px;border-radius:13px;color:#d1cbed;font-size:14px;font-weight:550;display:flex;align-items:center;gap:12px}
-nav button::before{content:"";width:20px;height:20px;flex:0 0 20px;border-radius:6px;background:linear-gradient(145deg,#d4b8ff,#7776ff);opacity:.9;mask:radial-gradient(circle,#000 58%,transparent 62%)}
-nav button[data-page="dashboard"]::before{content:"⌂";mask:none;background:none;color:#fff;font-size:25px;line-height:18px}
+nav button::before{display:none !important;}
 nav button.active{background:linear-gradient(100deg,#6e20c9,#3a147d);border-color:#7b2ee7;box-shadow:0 5px 22px #6818c866,inset 0 0 0 1px #9d54ff33;color:#fff}
 nav button:hover{background:rgba(128,64,255,.18);color:#fff}
 .upgrade-box{margin-top:auto;padding:24px 16px;border-radius:18px;text-align:center;background:linear-gradient(145deg,#160d45,#0b0a2c);border:1px solid #5521a7;box-shadow:0 0 24px #39117b2b}
@@ -233,6 +232,17 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
 @media(max-width:850px){.app-layout{grid-template-columns:1fr;overflow:auto}aside{padding:10px 14px;gap:8px}.logo-area{min-height:55px;padding-bottom:8px}.brand-mark{width:42px;height:42px;font-size:30px}nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}nav button{min-height:40px;font-size:12px;padding:8px}main{padding:0 16px 22px}.app-topbar{height:76px}.welcome-hero{min-height:280px}.welcome-copy{width:65%}.hero-art{right:-12%;opacity:.8}.feature-cards{grid-template-columns:1fr}.feature-card{min-height:110px}.redesigned-bottom{grid-template-columns:1fr}}
 @media(max-width:520px){.welcome-hero{padding:25px 20px;min-height:360px;align-items:flex-start}.welcome-copy{width:100%}.welcome-copy p{font-size:15px;max-width:85%}.hero-art{width:100%;right:-25%;top:145px;bottom:-30px;opacity:.5;transform:scale(.8)}.global-search{width:100%;height:46px}.topbar-actions{gap:4px}.notification-button{display:none}.progress-overview{grid-template-columns:1fr}.weekly-chart{border-left:0}.progress-metrics{gap:5px}.progress-metrics>div{grid-template-columns:30px 1fr;padding:6px}.metric-icon{font-size:20px}.progress-metrics small{font-size:9px}.activity-panel,.progress-panel{padding:18px 14px}}
 
+
+/* Additional SmartStudyMate tools */
+#flashcards .card,#references .card,#studyroom .card,#focus .card,#checklist .card{margin:18px 0}
+#flashcards input,#references input,#studyroom input,#focus input,#checklist input{width:100%;margin:8px 0}
+.tool-item{padding:13px;margin:10px 0;background:#19163f;border:1px solid #44317f;border-radius:12px}
+.tool-item pre{white-space:pre-wrap;overflow-wrap:anywhere;color:#d9d0ff;font-size:13px}
+.flashcard-answer{padding:14px;margin:12px 0;background:#21194b;border-radius:12px}
+.tool-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.check-row{display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1px solid #40336e}
+.check-row input{width:auto!important}
+
 </style>
 </head>
 <body>
@@ -244,21 +254,26 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
   <div class="app-layout">
     <aside>
       <div>
-        <div class="logo-area"><div class="brand-mark" aria-hidden="true">✧</div><div><strong>SmartStudyMate AI</strong><small>Learn · Practice · Excel</small></div></div>
+        <div class="logo-area"><div class="brand-mark" aria-hidden="true">⚛️</div><div><strong>SmartStudyMate AI</strong><small>Learn · Practice · Excel</small></div></div>
         <nav>
-          <button class="active" data-page="dashboard">Dashboard</button>
-          <button data-page="tutor">AI Tutor</button>
-          <button data-page="progress">Exam Progress Tracker</button>
-          <button data-page="paper-gen">Question Paper Generator</button>
-          <button data-page="revision">AI Revision Assistant</button>
-          <button data-page="analytics">Performance Analytics</button>
-          <button data-page="planner">AI Study Planner</button>
-          <button data-page="exam">Exam Preparation</button>
-          <button data-page="mcq">One-Mark MCQ Generator</button>
-          <button data-page="papers">CBSE Sample Papers</button>
-          <button data-page="notes">Smart Study Notes</button>
-          <button data-page="library">Textbook Library</button>
-          <button data-page="profile">My Profile</button>
+          <button class="active" data-page="dashboard">🏠 Dashboard</button>
+          <button data-page="tutor">💠 AI Tutor</button>
+          <button data-page="progress">📈 Exam Progress Tracker</button>
+          <button data-page="paper-gen">📝 Question Paper Generator</button>
+          <button data-page="revision">🤖 AI Revision Assistant</button>
+          <button data-page="analytics">📊 Performance Analytics</button>
+          <button data-page="planner">📅 AI Study Planner</button>
+          <button data-page="exam">⚡ Exam Preparation</button>
+          <button data-page="mcq">❓ One-Mark MCQ Generator</button>
+          <button data-page="papers">📚 CBSE Sample Papers</button>
+          <button data-page="notes">📓 Smart Study Notes</button>
+          <button data-page="library">📖 Textbook Library</button>
+          <button data-page="profile">👤 My Profile</button>
+          <button data-page="flashcards">🗂️ Flashcards</button>
+          <button data-page="references">🧮 Formula & Code Library</button>
+          <button data-page="studyroom">👥 Collaborative Study Room</button>
+          <button data-page="focus">⏱️ Pomodoro Focus</button>
+          <button data-page="checklist">✅ Exam-Day Checklist</button>
         </nav>
       </div>
       <div class="upgrade-box">
@@ -279,7 +294,7 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
           </div>
           <div class="hero-art" aria-hidden="true">
             <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-            <div class="float-book">▤</div><div class="float-cap">◆</div>
+            <div class="float-book">▤</div><div class="float-cap">⚛️</div>
             <div class="study-robot">
               <div class="robot-cap"></div>
               <div class="robot-head"><div class="robot-ear"></div><div class="robot-eyes"><i></i><i></i></div><div class="robot-smile"></div></div>
@@ -291,13 +306,13 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
 
         <div class="feature-cards">
           <button class="feature-card feature-upload" onclick="showPage('library')">
-            <span class="feature-icon">▤</span><span class="feature-copy"><b>Upload &amp; Learn</b><small>Choose a textbook or document and organise your learning.</small></span><span class="feature-arrow">→</span>
+            <span class="feature-icon">📁</span><span class="feature-copy"><b>Upload &amp; Learn</b><small>Choose a textbook or document and organise your learning.</small></span><span class="feature-arrow">→</span>
           </button>
           <button class="feature-card feature-tutor" onclick="showPage('tutor')">
-            <span class="feature-icon">▰</span><span class="feature-copy"><b>AI Tutor</b><small>Get clear explanations and answers to your questions.</small></span><span class="feature-arrow">→</span>
+            <span class="feature-icon">🤖</span><span class="feature-copy"><b>AI Tutor</b><small>Get clear explanations and answers to your questions.</small></span><span class="feature-arrow">→</span>
           </button>
           <button class="feature-card feature-quiz" onclick="showPage('mcq')">
-            <span class="feature-icon">✓</span><span class="feature-copy"><b>Generate Quiz</b><small>Create syllabus-based one-mark practice questions.</small></span><span class="feature-arrow">→</span>
+            <span class="feature-icon">🎯</span><span class="feature-copy"><b>Generate Quiz</b><small>Create syllabus-based one-mark practice questions.</small></span><span class="feature-arrow">→</span>
           </button>
         </div>
 
@@ -609,6 +624,35 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
       <section id="profile" class="page">
         <h1>My Profile</h1><p class="muted">Your profile details are saved only in this browser.</p>
         <div class="card"><label>Name</label><input id="profileName" placeholder="Your name"><label>Class</label><input id="profileClass" placeholder="Example: Class 12"><label>School</label><input id="profileSchool" placeholder="School name"><button class="primary" onclick="saveProfile()">Save profile</button><div id="profileStatus"></div></div>
+      </section>
+
+      <!-- ADD-ON: SPACED REPETITION FLASHCARDS -->
+      <section id="flashcards" class="page">
+        <h1>Interactive Flashcards</h1><p class="muted">Create question-and-answer cards. Review due cards and rate your recall to schedule the next review.</p>
+        <div class="card"><h2>Create a Flashcard</h2><input id="fcFront" placeholder="Question / Front of card"><textarea id="fcBack" placeholder="Answer / Back of card"></textarea><button class="primary" onclick="addFlashcard()">Add Flashcard</button><div id="fcStatus"></div></div>
+        <div class="card"><div class="panel-heading"><h2>Review Cards</h2><button class="secondary" onclick="loadFlashcards()">Refresh</button></div><div id="fcReview">Loading cards…</div></div>
+      </section>
+      <!-- ADD-ON: SEARCHABLE FORMULA AND CODE LIBRARY -->
+      <section id="references" class="page">
+        <h1>Formula & Code Reference Library</h1><p class="muted">Save and search Python, SQL, physics formulas and other quick references.</p>
+        <div class="card"><input id="refTitle" placeholder="Title (e.g. Python list comprehension)"><input id="refCategory" placeholder="Category (Python / SQL / Physics)"><textarea id="refContent" placeholder="Enter formula, syntax or code snippet"></textarea><button class="primary" onclick="addReference()">Save Reference</button></div>
+        <div class="card"><input id="refSearch" placeholder="Search saved references…" oninput="loadReferences()"><div id="refResults"></div></div>
+      </section>
+      <!-- ADD-ON: LIVE STUDY ROOM -->
+      <section id="studyroom" class="page">
+        <h1>Collaborative Study Room</h1><p class="muted">Create a room and share its code or link. Room members see the current timed MCQ challenge and synchronized responses.</p>
+        <div class="card"><button class="primary" onclick="createStudyRoom()">Create Study Room</button><input id="roomCode" placeholder="Enter room code"><button class="secondary" onclick="joinStudyRoom()">Join Room</button><div id="roomStatus"></div><div id="roomQuiz"></div></div>
+        <div class="card"><h2>Start a Live MCQ Challenge</h2><input id="roomQuizTitle" placeholder="Challenge title"><textarea id="roomQuestion" placeholder="Question"></textarea><input id="roomOptA" placeholder="Option A"><input id="roomOptB" placeholder="Option B"><input id="roomOptC" placeholder="Option C"><input id="roomOptD" placeholder="Option D"><label>Duration (minutes)</label><input id="roomDuration" type="number" min="1" max="60" value="5"><button class="primary" onclick="startRoomQuiz()">Start synchronized quiz</button></div>
+      </section>
+      <!-- ADD-ON: POMODORO TIMER -->
+      <section id="focus" class="page">
+        <h1>Pomodoro Focus Timer</h1><p class="muted">Connect a session to a study task, focus for 25 or 50 minutes, then take a short or long break.</p>
+        <div class="card"><label>Study task</label><select id="focusTask"><option value="">Choose a task (optional)</option></select><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="secondary" onclick="setPomodoro(25)">25 min focus</button><button class="secondary" onclick="setPomodoro(50)">50 min focus</button><button class="secondary" onclick="setPomodoro(5)">5 min break</button><button class="secondary" onclick="setPomodoro(15)">15 min break</button></div><div id="pomodoroClock" style="font-size:64px;font-weight:800;text-align:center;padding:22px">25:00</div><div style="display:flex;gap:10px;justify-content:center"><button class="primary" onclick="startPomodoro()">Start</button><button class="secondary" onclick="pausePomodoro()">Pause</button><button class="secondary" onclick="resetPomodoro()">Reset</button></div><div id="pomodoroStatus" class="muted" style="text-align:center;margin-top:12px">Ready to focus.</div></div>
+      </section>
+      <!-- ADD-ON: EXAM DAY CHECKLIST -->
+      <section id="checklist" class="page">
+        <h1>Exam-Day Checklist</h1><p class="muted">Enter your exam date to prepare a checklist for the final 48 hours and exam day.</p>
+        <div class="card"><label>Exam date</label><input id="checkExamDate" type="date"><button class="primary" onclick="loadExamChecklist()">Generate / Open Checklist</button><div id="checklistStatus"></div><div id="checklistItems"></div></div>
       </section>
     </main>
   </div>
@@ -1347,6 +1391,37 @@ function loadProfile() { let p = getStore('sm_profile', {}); document.getElement
 refresh();
 loadProfile();
 loadSmartTasks();
+
+// ==================================================
+// Added study tools: flashcards, references, study rooms, Pomodoro, checklist
+// ==================================================
+let flashcardQueue = [], flashcardIndex = 0, currentRoomCode = '', roomPollHandle = null;
+let pomoSeconds = 25*60, pomoRemaining = pomoSeconds, pomoInterval = null;
+async function loadFlashcards(){try{const d=await api('/api/flashcards');flashcardQueue=d.due_cards||[];flashcardIndex=0;renderFlashcard();document.getElementById('fcStatus').textContent=`${d.cards.length} saved · ${flashcardQueue.length} due for review`; }catch(e){document.getElementById('fcReview').textContent=e.message;}}
+function renderFlashcard(){const el=document.getElementById('fcReview');if(!flashcardQueue.length){el.innerHTML='<p class="muted">No cards due right now. Add cards or come back on the scheduled review date.</p>';return;}if(flashcardIndex>=flashcardQueue.length)flashcardIndex=0;const c=flashcardQueue[flashcardIndex];el.innerHTML=`<div class="tool-item"><small>Card ${flashcardIndex+1} of ${flashcardQueue.length}</small><h2>${escapeHtml(c.front)}</h2><button class="secondary" onclick="document.getElementById('fcAnswer').hidden=false">Show Answer</button><div id="fcAnswer" class="flashcard-answer" hidden>${escapeHtml(c.back)}</div><div class="tool-actions"><button class="secondary" onclick="rateFlashcard('Hard')">Hard</button><button class="secondary" onclick="rateFlashcard('Good')">Good</button><button class="primary" onclick="rateFlashcard('Easy')">Easy</button></div></div>`;}
+async function addFlashcard(){try{await api('/api/flashcards',{method:'POST',body:JSON.stringify({front:document.getElementById('fcFront').value,back:document.getElementById('fcBack').value})});document.getElementById('fcFront').value='';document.getElementById('fcBack').value='';await loadFlashcards();}catch(e){alert(e.message);}}
+async function rateFlashcard(rating){const c=flashcardQueue[flashcardIndex];try{await api('/api/flashcards/'+encodeURIComponent(c.id),{method:'PUT',body:JSON.stringify({rating})});flashcardQueue.splice(flashcardIndex,1);renderFlashcard();document.getElementById('fcStatus').textContent=`Rated ${rating}. Review schedule updated.`;}catch(e){alert(e.message);}}
+async function loadReferences(){try{const q=document.getElementById('refSearch').value;const d=await api('/api/reference-library?q='+encodeURIComponent(q));document.getElementById('refResults').innerHTML=d.entries.map(e=>`<div class="tool-item"><b>${escapeHtml(e.title)}</b> <small>${escapeHtml(e.category)}</small><pre>${escapeHtml(e.content)}</pre><button class="secondary" onclick="deleteReference('${e.id}')">Delete</button></div>`).join('')||'<p class="muted">No matching references.</p>';}catch(e){document.getElementById('refResults').textContent=e.message;}}
+async function addReference(){try{await api('/api/reference-library',{method:'POST',body:JSON.stringify({title:document.getElementById('refTitle').value,category:document.getElementById('refCategory').value,content:document.getElementById('refContent').value})});['refTitle','refCategory','refContent'].forEach(id=>document.getElementById(id).value='');loadReferences();}catch(e){alert(e.message);}}
+async function deleteReference(id){try{await api('/api/reference-library/'+encodeURIComponent(id),{method:'DELETE'});loadReferences();}catch(e){alert(e.message);}}
+async function createStudyRoom(){try{const d=await api('/api/study-rooms',{method:'POST',body:JSON.stringify({})});currentRoomCode=d.code;document.getElementById('roomCode').value=d.code;document.getElementById('roomStatus').innerHTML=`<p>Room code: <b>${d.code}</b></p><p>Share link: <a href="${d.share_url}" target="_blank">${d.share_url}</a></p>`;startRoomPolling();}catch(e){alert(e.message);}}
+function joinStudyRoom(){currentRoomCode=document.getElementById('roomCode').value.trim().toUpperCase();if(!currentRoomCode)return alert('Enter a room code.');startRoomPolling();}
+function startRoomPolling(){if(roomPollHandle)clearInterval(roomPollHandle);syncRoom();roomPollHandle=setInterval(syncRoom,2000);}
+async function syncRoom(){if(!currentRoomCode)return;try{const d=await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode));const q=d.quiz;document.getElementById('roomStatus').innerHTML=`<p>Connected to room <b>${currentRoomCode}</b>. Share this code with your study group.</p>`;if(!q){document.getElementById('roomQuiz').innerHTML='<p class="muted">Waiting for the room host to start a quiz.</p>';return;}const expired=q.ends_at&&Date.now()>new Date(q.ends_at).getTime();document.getElementById('roomQuiz').innerHTML=`<div class="tool-item"><h2>${escapeHtml(q.title)}</h2><p>${escapeHtml(q.question)}</p>${q.options.map((o,i)=>`<button class="secondary" style="display:block;width:100%;margin:6px 0" onclick="submitRoomAnswer(${i})" ${expired?'disabled':''}>${String.fromCharCode(65+i)}. ${escapeHtml(o)}</button>`).join('')}<p>${expired?'Challenge ended':`Ends: ${new Date(q.ends_at).toLocaleTimeString()}`}</p><small>${Object.keys(q.responses||{}).length} response(s) submitted</small></div>`;}catch(e){document.getElementById('roomStatus').textContent=e.message;}}
+async function startRoomQuiz(){if(!currentRoomCode)return alert('Create or join a room first.');const options=['roomOptA','roomOptB','roomOptC','roomOptD'].map(id=>document.getElementById(id).value.trim());if(!document.getElementById('roomQuestion').value.trim()||options.some(x=>!x))return alert('Enter a question and all four options.');const minutes=Math.max(1,Math.min(60,Number(document.getElementById('roomDuration').value)||5));try{await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode),{method:'POST',body:JSON.stringify({title:document.getElementById('roomQuizTitle').value||'Study Challenge',question:document.getElementById('roomQuestion').value,options,ends_at:new Date(Date.now()+minutes*60000).toISOString(),responses:{}})});syncRoom();}catch(e){alert(e.message);}}
+async function submitRoomAnswer(index){if(!currentRoomCode)return;try{const d=await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode));const q=d.quiz;if(!q||Date.now()>new Date(q.ends_at).getTime())return alert('This challenge has ended.');q.responses=q.responses||{};q.responses[localStorage.getItem('sm_room_member')||(localStorage.setItem('sm_room_member',crypto.randomUUID()),localStorage.getItem('sm_room_member'))]=index;await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode),{method:'POST',body:JSON.stringify(q)});syncRoom();}catch(e){alert(e.message);}}
+function setPomodoro(minutes){pausePomodoro();pomoSeconds=minutes*60;pomoRemaining=pomoSeconds;renderPomodoro();document.getElementById('pomodoroStatus').textContent=minutes<=15?'Break selected.':'Focus session selected.';}
+function renderPomodoro(){const m=String(Math.floor(pomoRemaining/60)).padStart(2,'0'),s=String(pomoRemaining%60).padStart(2,'0');document.getElementById('pomodoroClock').textContent=`${m}:${s}`;document.title=`${m}:${s} · SmartStudyMate`; }
+function startPomodoro(){if(pomoInterval)return;pomoInterval=setInterval(()=>{if(pomoRemaining>0){pomoRemaining--;renderPomodoro();}else{pausePomodoro();document.getElementById('pomodoroStatus').textContent='Session complete! Take a break or start the next focus session.';alert('Pomodoro session complete!');}},1000);document.getElementById('pomodoroStatus').textContent='Timer running.';}
+function pausePomodoro(){if(pomoInterval){clearInterval(pomoInterval);pomoInterval=null;}document.getElementById('pomodoroStatus').textContent='Timer paused.';}
+function resetPomodoro(){pausePomodoro();pomoRemaining=pomoSeconds;renderPomodoro();}
+async function loadFocusTasks(){try{const d=await api('/api/tasks');const sel=document.getElementById('focusTask');sel.innerHTML='<option value="">Choose a task (optional)</option>'+(d.tasks||[]).filter(t=>t.status!=='Completed').map(t=>`<option value="${escapeHtml(t.id)}">${escapeHtml(t.title)}</option>`).join('');}catch(e){}}
+async function loadExamChecklist(){const examDate=document.getElementById('checkExamDate').value;if(!examDate)return alert('Select your exam date.');try{const d=await api('/api/exam-checklist',{method:'POST',body:JSON.stringify({exam_date:examDate})});document.getElementById('checklistStatus').textContent=d.is_48_hour_window?'You are within the final 48-hour preparation window.':'Checklist prepared for your exam date.';document.getElementById('checklistItems').innerHTML=d.checklist.items.map((it,i)=>`<label class="check-row"><input type="checkbox" ${it.done?'checked':''} onchange="updateChecklistItem(${i},this.checked)"><span>${escapeHtml(it.label)}</span></label>`).join('');}catch(e){alert(e.message);}}
+async function updateChecklistItem(index,done){try{await api('/api/exam-checklist',{method:'PUT',body:JSON.stringify({exam_date:document.getElementById('checkExamDate').value,index,done})});}catch(e){alert(e.message);}}
+// Load add-on views on navigation while preserving the original pages and handlers.
+document.querySelectorAll('nav button').forEach(b=>{const prior=b.onclick;b.addEventListener('click',()=>{if(b.dataset.page==='flashcards')loadFlashcards();if(b.dataset.page==='references')loadReferences();if(b.dataset.page==='focus')loadFocusTasks();});});
+const roomFromLink=new URLSearchParams(location.search).get('room');if(roomFromLink){document.getElementById('roomCode').value=roomFromLink;currentRoomCode=roomFromLink.toUpperCase();startRoomPolling();}
+
 </script>
 
 <script>
