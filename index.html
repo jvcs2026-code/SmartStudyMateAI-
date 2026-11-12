@@ -233,28 +233,6 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
 @media(max-width:850px){.app-layout{grid-template-columns:1fr;overflow:auto}aside{padding:10px 14px;gap:8px}.logo-area{min-height:55px;padding-bottom:8px}.brand-mark{width:42px;height:42px;font-size:30px}nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}nav button{min-height:40px;font-size:12px;padding:8px}main{padding:0 16px 22px}.app-topbar{height:76px}.welcome-hero{min-height:280px}.welcome-copy{width:65%}.hero-art{right:-12%;opacity:.8}.feature-cards{grid-template-columns:1fr}.feature-card{min-height:110px}.redesigned-bottom{grid-template-columns:1fr}}
 @media(max-width:520px){.welcome-hero{padding:25px 20px;min-height:360px;align-items:flex-start}.welcome-copy{width:100%}.welcome-copy p{font-size:15px;max-width:85%}.hero-art{width:100%;right:-25%;top:145px;bottom:-30px;opacity:.5;transform:scale(.8)}.global-search{width:100%;height:46px}.topbar-actions{gap:4px}.notification-button{display:none}.progress-overview{grid-template-columns:1fr}.weekly-chart{border-left:0}.progress-metrics{gap:5px}.progress-metrics>div{grid-template-columns:30px 1fr;padding:6px}.metric-icon{font-size:20px}.progress-metrics small{font-size:9px}.activity-panel,.progress-panel{padding:18px 14px}}
 
-
-/* AI Tutor image generation mode */
-.tutor-mode-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
-.tutor-mode-tab{border:1px solid #59408f;border-radius:12px;padding:11px 18px;background:#151238;color:#dcd5ff;cursor:pointer;font-weight:650}
-.tutor-mode-tab.active{background:linear-gradient(100deg,#8d2fe0,#4d32c9);border-color:#b45cff;color:white;box-shadow:0 5px 18px #782bd544}
-.tutor-mode-panel[hidden]{display:none!important}
-.image-generator-card{padding:24px}
-.image-generator-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:20px}
-.image-generator-heading h2{font-size:23px;margin:7px 0}
-.image-generator-heading p{margin:0;max-width:650px}
-.image-generator-kicker{font-size:10px;letter-spacing:1.7px;color:#c58cff;font-weight:800}
-.image-generator-symbol{width:66px;height:66px;flex:0 0 66px;display:grid;place-items:center;border-radius:20px;background:linear-gradient(145deg,#2dd7ff,#7b32ee);color:white;font-size:36px;box-shadow:0 0 25px #762cff66}
-.image-generator-card textarea{min-height:115px}
-.image-generator-options{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:14px 0 18px}
-.image-generator-options>div{min-width:0}
-#generateImageButton{min-width:220px}
-.generated-image-area{margin-top:18px}
-.generated-study-image{display:block;max-width:100%;max-height:650px;margin:0 auto;border:1px solid #6243a8;border-radius:16px;box-shadow:0 12px 35px #02011688}
-.generated-image-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}
-.generated-image-placeholder{padding:38px 18px;border:1px dashed #59408f;border-radius:15px;text-align:center;color:#bcb3df;background:#0d0b28}
-@media(max-width:600px){.image-generator-options{grid-template-columns:1fr}.image-generator-heading{align-items:flex-start}.image-generator-symbol{width:48px;height:48px;flex-basis:48px;font-size:27px}}
-
 </style>
 </head>
 <body>
@@ -357,73 +335,32 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
 
       <!-- 5. UNIFIED AI VOICE & TEXT TUTOR -->
       <section id="tutor" class="page">
-        <h1>AI Voice, Text & Picture Tutor</h1>
-        <p class="muted">Ask questions by typing or speaking, or create an educational picture from a text description.</p>
-
-        <div class="tutor-mode-tabs">
-          <button class="tutor-mode-tab active" type="button" onclick="switchTutorMode('text', this)">Text & Voice Tutor</button>
-          <button class="tutor-mode-tab" type="button" onclick="switchTutorMode('image', this)">Picture Generator</button>
-        </div>
-
-        <div id="textTutorMode" class="tutor-mode-panel">
-          <div class="card">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-              <label style="margin:0">Ask a Question (Text or Voice)</label>
-              <label style="margin:0;display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:500">
-                <input type="checkbox" id="autoSpeakToggle" checked style="width:auto"> Auto-speak AI answers aloud
-              </label>
-            </div>
-            <textarea id="tutorQuestion" placeholder="Type here or click Speak Question. Example: Explain Newton's second law with an example..."></textarea>
-            <div class="voice-controls">
-              <button class="primary" id="tutorButton" onclick="askTutor(false)">Ask AI Tutor</button>
-              <button class="mic-btn" id="micButton" onclick="toggleVoiceInput()">Speak Question</button>
-              <span id="voiceStatus" class="smalltext"></span>
-            </div>
-            <div id="tutorAnswer"></div>
-            <div class="tts-bar" id="ttsControls" style="display:none">
-              <strong style="font-size:13px">Spoken Explanation:</strong>
-              <button class="small" onclick="speakTutorAnswer()">Play / Replay</button>
-              <button class="small" onclick="pauseResumeSpeech()">Pause / Resume</button>
-              <button class="small" onclick="stopSpeech()">Stop</button>
-              <select id="speechRate" style="max-width:130px;padding:6px 10px" aria-label="Speech speed">
-                <option value="0.85">0.85x Slow</option>
-                <option value="1" selected>1.0x Normal</option>
-                <option value="1.2">1.2x Fast</option>
-              </select>
-            </div>
+        <h1>AI Voice & Text Tutor</h1>
+        <p class="muted">Type your question or use your microphone to ask by voice. Listen to spoken explanations with built-in Text-to-Speech.</p>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+            <label style="margin:0">Ask a Question (Text or Voice)</label>
+            <label style="margin:0;display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:500">
+              <input type="checkbox" id="autoSpeakToggle" checked style="width:auto"> Auto-speak AI answers aloud
+            </label>
           </div>
-        </div>
-
-        <div id="imageTutorMode" class="tutor-mode-panel" hidden>
-          <div class="card image-generator-card">
-            <div class="image-generator-heading">
-              <div><span class="image-generator-kicker">SMARTSTUDYMATE AI IMAGE LAB</span><h2>Turn your ideas into study pictures</h2>
-                <p class="muted">Create diagrams, science illustrations, history scenes, maps and other learning visuals from a description.</p>
-              </div>
-              <div class="image-generator-symbol" aria-hidden="true">✦</div>
-            </div>
-            <label for="imagePrompt">Describe the picture you want</label>
-            <textarea id="imagePrompt" rows="4" maxlength="1200" placeholder="Example: Create a clear labelled educational diagram of the human digestive system for a Class 7 student, with a clean white background."></textarea>
-            <div class="image-generator-options">
-              <div><label for="imageStyle">Picture style</label>
-                <select id="imageStyle">
-                  <option value="Educational textbook illustration">Educational textbook illustration</option>
-                  <option value="Simple labelled diagram">Simple labelled diagram</option>
-                  <option value="Realistic scientific illustration">Realistic scientific illustration</option>
-                  <option value="Colourful 3D educational illustration">Colourful 3D educational illustration</option>
-                  <option value="Historical scene illustration">Historical scene illustration</option>
-                  <option value="Infographic style">Infographic style</option>
-                </select>
-              </div>
-              <div><label for="imageLevel">Learning level</label>
-                <select id="imageLevel">
-                  <option>School level</option><option>Beginner</option><option>Intermediate</option><option>Advanced</option>
-                </select>
-              </div>
-            </div>
-            <button class="primary" id="generateImageButton" onclick="generateTutorImage()">Generate Study Picture</button>
-            <p id="imageGenerationStatus" class="smalltext" role="status" aria-live="polite"></p>
-            <div id="generatedImageArea" class="generated-image-area" aria-live="polite"></div>
+          <textarea id="tutorQuestion" placeholder="Type here or click 'Speak Question' and ask: Explain Newton's second law of motion with an example..."></textarea>
+          <div class="voice-controls">
+            <button class="primary" id="tutorButton" onclick="askTutor(false)">Ask AI Tutor</button>
+            <button class="mic-btn" id="micButton" onclick="toggleVoiceInput()">🎤 Speak Question</button>
+            <span id="voiceStatus" class="smalltext"></span>
+          </div>
+          <div id="tutorAnswer"></div>
+          <div class="tts-bar" id="ttsControls" style="display:none">
+            <strong style="font-size:13px">Spoken Explanation:</strong>
+            <button class="small" onclick="speakTutorAnswer()">▶ Play / Replay</button>
+            <button class="small" onclick="pauseResumeSpeech()">⏸ Pause / Resume</button>
+            <button class="small" onclick="stopSpeech()">⏹ Stop</button>
+            <select id="speechRate" style="max-width:130px;padding:6px 10px" aria-label="Speech speed">
+              <option value="0.85">0.85x Slow</option>
+              <option value="1" selected>1.0x Normal</option>
+              <option value="1.2">1.2x Fast</option>
+            </select>
           </div>
         </div>
       </section>
@@ -818,53 +755,6 @@ async function askTutor(fromVoice = false) {
     out.innerHTML = '<div class="notice error">' + escapeHtml(e.message) + '</div>';
   } finally {
     btn.disabled = false;
-  }
-}
-
-
-/* Picture generation for the AI Tutor */
-let lastGeneratedStudyImage = '';
-
-function switchTutorMode(mode, clickedButton) {
-  document.getElementById('textTutorMode').hidden = mode !== 'text';
-  document.getElementById('imageTutorMode').hidden = mode !== 'image';
-  document.querySelectorAll('.tutor-mode-tab').forEach(tab => tab.classList.toggle('active', tab === clickedButton));
-}
-
-async function generateTutorImage() {
-  const prompt = document.getElementById('imagePrompt').value.trim();
-  const style = document.getElementById('imageStyle').value;
-  const level = document.getElementById('imageLevel').value;
-  const button = document.getElementById('generateImageButton');
-  const status = document.getElementById('imageGenerationStatus');
-  const area = document.getElementById('generatedImageArea');
-
-  if (!prompt) {
-    alert('Please describe the picture you want to generate.');
-    return;
-  }
-  button.disabled = true;
-  status.textContent = 'Creating your study picture. This may take a little while...';
-  area.innerHTML = '<div class="generated-image-placeholder">Generating your educational picture...</div>';
-
-  try {
-    const result = await api('/api/generate-image', {
-      method: 'POST',
-      body: JSON.stringify({ prompt, style, level })
-    });
-    lastGeneratedStudyImage = result.image;
-    area.innerHTML = `
-      <img class="generated-study-image" src="${result.image}" alt="AI-generated educational study picture">
-      <div class="generated-image-actions">
-        <a class="primary" href="${result.image}" download="SmartStudyMate_Study_Picture.png" style="display:inline-block;text-decoration:none;padding:10px 16px;border-radius:10px">Download Picture</a>
-        <button class="small" type="button" onclick="generateTutorImage()">Generate Another</button>
-      </div>`;
-    status.textContent = 'Your study picture is ready.';
-  } catch (error) {
-    area.innerHTML = '<div class="notice error">' + escapeHtml(error.message) + '</div>';
-    status.textContent = 'Picture generation could not be completed.';
-  } finally {
-    button.disabled = false;
   }
 }
 
