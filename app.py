@@ -204,7 +204,7 @@ def generate_tutor_image():
         if level not in {"School level", "Beginner", "Intermediate", "Advanced"}:
             level = "School level"
 
-        image_model = os.getenv("GEMINI_IMAGE_MODEL", "gemini-2.5-flash-image")
+        image_model = os.getenv("GEMINI_IMAGE_MODEL", "gemini-3.5-flash-lite-image")
         image_prompt = (
             "Create one clear, high-quality educational picture for a student. "
             "Use accurate, age-appropriate visual content. Avoid unnecessary decorative text. "
