@@ -4,11 +4,11 @@ import json
 import time
 import random
 import uuid
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from html.parser import HTMLParser
 from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
-from flask import send_from_directory
+from flask import Flask, request, jsonify, send_from_directory
 
 from flask import Flask, request, jsonify, send_from_directory
 from dotenv import load_dotenv
@@ -809,8 +809,122 @@ def cbse_papers():
         }), 503
 
 
+
 # ==================================================
-# 15. START APPLICATION
+# 15. NEW STUDY TOOLS: FLASHCARDS, REFERENCE LIBRARY, ROOMS & CHECKLISTS
+# ==================================================
+FLASHCARD_FILE = os.path.join(BASE_DIR, "flashcards.json")
+REFERENCE_FILE = os.path.join(BASE_DIR, "reference_library.json")
+ROOM_FILE = os.path.join(BASE_DIR, "study_rooms.json")
+CHECKLIST_FILE = os.path.join(BASE_DIR, "exam_checklists.json")
+
+def read_json_file(path, default):
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            value = json.load(f)
+        return value
+    except (OSError, json.JSONDecodeError):
+        return default
+
+def write_json_file(path, value):
+    temp = path + ".tmp"
+    with open(temp, "w", encoding="utf-8") as f:
+        json.dump(value, f, indent=2, ensure_ascii=False)
+    os.replace(temp, path)
+
+@app.route("/api/flashcards", methods=["GET", "POST"])
+def flashcards_api():
+    cards = read_json_file(FLASHCARD_FILE, [])
+    if request.method == "GET":
+        today = date.today().isoformat()
+        return jsonify({"cards": cards, "due_cards": [c for c in cards if c.get("next_review", "") <= today]})
+    data = request.get_json(silent=True) or {}
+    front, back = str(data.get("front", "")).strip(), str(data.get("back", "")).strip()
+    if not front or not back:
+        return jsonify({"error": "Both question and answer are required."}), 400
+    card = {"id": str(uuid.uuid4()), "front": front[:2000], "back": back[:4000], "interval": 0, "ease": 2.5, "repetitions": 0, "next_review": date.today().isoformat(), "created_at": datetime.now().isoformat(timespec="seconds")}
+    cards.append(card); write_json_file(FLASHCARD_FILE, cards)
+    return jsonify({"card": card, "message": "Flashcard added."}), 201
+
+@app.route("/api/flashcards/<card_id>", methods=["PUT", "DELETE"])
+def flashcard_detail(card_id):
+    cards = read_json_file(FLASHCARD_FILE, [])
+    card = next((c for c in cards if c.get("id") == card_id), None)
+    if card is None: return jsonify({"error": "Flashcard not found."}), 404
+    if request.method == "DELETE":
+        cards.remove(card); write_json_file(FLASHCARD_FILE, cards); return jsonify({"message": "Deleted."})
+    rating = str((request.get_json(silent=True) or {}).get("rating", "")).title()
+    if rating not in ("Hard", "Good", "Easy"): return jsonify({"error": "Rating must be Hard, Good or Easy."}), 400
+    intervals = {"Hard": 1, "Good": 3, "Easy": 7}
+    if rating == "Hard": card["interval"] = 1; card["repetitions"] = 0
+    else:
+        card["repetitions"] = int(card.get("repetitions", 0)) + 1
+        card["interval"] = intervals[rating] if card["repetitions"] == 1 else max(intervals[rating], round(float(card.get("interval", 1)) * (2.0 if rating == "Good" else 2.8)))
+    card["ease"] = max(1.3, float(card.get("ease", 2.5)) + (0.15 if rating == "Easy" else -0.15 if rating == "Hard" else 0))
+    card["next_review"] = (date.today() + timedelta(days=card["interval"])).isoformat()
+    write_json_file(FLASHCARD_FILE, cards); return jsonify({"card": card, "message": "Review saved."})
+
+@app.route("/api/reference-library", methods=["GET", "POST"])
+def reference_library_api():
+    entries = read_json_file(REFERENCE_FILE, [])
+    if request.method == "GET":
+        term = request.args.get("q", "").lower().strip()
+        found = [e for e in entries if not term or term in (e.get("title", "") + " " + e.get("category", "") + " " + e.get("content", "")).lower()]
+        return jsonify({"entries": found})
+    data = request.get_json(silent=True) or {}
+    title, category, content = (str(data.get(k, "")).strip() for k in ("title", "category", "content"))
+    if not title or not content: return jsonify({"error": "Title and code/formula are required."}), 400
+    entry = {"id": str(uuid.uuid4()), "title": title[:150], "category": category[:80] or "General", "content": content[:10000], "created_at": datetime.now().isoformat(timespec="seconds")}
+    entries.append(entry); write_json_file(REFERENCE_FILE, entries); return jsonify({"entry": entry}), 201
+
+@app.route("/api/reference-library/<entry_id>", methods=["DELETE"])
+def reference_library_delete(entry_id):
+    entries = read_json_file(REFERENCE_FILE, []); updated = [e for e in entries if e.get("id") != entry_id]
+    if len(updated) == len(entries): return jsonify({"error": "Entry not found."}), 404
+    write_json_file(REFERENCE_FILE, updated); return jsonify({"message": "Deleted."})
+
+@app.route("/api/study-rooms", methods=["POST"])
+def create_study_room():
+    rooms = read_json_file(ROOM_FILE, {})
+    code = uuid.uuid4().hex[:6].upper()
+    rooms[code] = {"code": code, "quiz": None, "updated_at": datetime.now().isoformat(timespec="seconds")}
+    write_json_file(ROOM_FILE, rooms); return jsonify({"code": code, "share_url": request.host_url.rstrip("/") + "/?room=" + code}), 201
+
+@app.route("/api/study-rooms/<code>", methods=["GET", "POST"])
+def study_room(code):
+    code = code.upper(); rooms = read_json_file(ROOM_FILE, {})
+    if code not in rooms: return jsonify({"error": "Study room not found."}), 404
+    if request.method == "POST":
+        data = request.get_json(silent=True) or {}
+        # Shared quiz state contains only question text, options, timing and responses.
+        rooms[code]["quiz"] = {"title": str(data.get("title", "Study Challenge"))[:120], "question": str(data.get("question", ""))[:1000], "options": data.get("options", [])[:4] if isinstance(data.get("options", []), list) else [], "ends_at": data.get("ends_at"), "responses": data.get("responses", {}) if isinstance(data.get("responses", {}), dict) else {}}
+        rooms[code]["updated_at"] = datetime.now().isoformat(timespec="seconds"); write_json_file(ROOM_FILE, rooms)
+    return jsonify(rooms[code])
+
+@app.route("/api/exam-checklist", methods=["GET", "POST"])
+def exam_checklist():
+    data = request.get_json(silent=True) or {} if request.method == "POST" else request.args
+    exam_date = str(data.get("exam_date", "")).strip()
+    try: target = datetime.combine(date.fromisoformat(exam_date), datetime.min.time())
+    except ValueError: return jsonify({"error": "Enter the exam date in YYYY-MM-DD format."}), 400
+    hours_left = (target - datetime.now()).total_seconds() / 3600
+    if hours_left < 0: return jsonify({"error": "The exam date has passed."}), 400
+    checklist = read_json_file(CHECKLIST_FILE, {})
+    key = exam_date
+    if key not in checklist:
+        checklist[key] = {"exam_date": key, "items": [{"label": "Hall ticket / admit card", "done": False}, {"label": "Required stationery (pens, pencils, eraser, ruler)", "done": False}, {"label": "School ID and permitted documents", "done": False}, {"label": "Digital backup of permitted study materials", "done": False}, {"label": "Confirm exam venue and travel plan", "done": False}, {"label": "Prepare a calm 2-hour revision warm-up", "done": False}, {"label": "Pack water and other permitted essentials", "done": False}], "generated_at": datetime.now().isoformat(timespec="seconds")}
+        write_json_file(CHECKLIST_FILE, checklist)
+    return jsonify({"checklist": checklist[key], "hours_until_exam": round(hours_left, 1), "is_48_hour_window": 0 <= hours_left <= 48})
+
+@app.route("/api/exam-checklist", methods=["PUT"])
+def update_exam_checklist():
+    data = request.get_json(silent=True) or {}; exam_date = str(data.get("exam_date", "")); index = data.get("index"); done = bool(data.get("done"))
+    checklist = read_json_file(CHECKLIST_FILE, {})
+    if exam_date not in checklist or not isinstance(index, int) or not 0 <= index < len(checklist[exam_date]["items"]): return jsonify({"error": "Checklist item not found."}), 404
+    checklist[exam_date]["items"][index]["done"] = done; write_json_file(CHECKLIST_FILE, checklist); return jsonify({"checklist": checklist[exam_date]})
+
+# ==================================================
+# 16. START APPLICATION
 # ==================================================
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True)
