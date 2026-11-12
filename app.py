@@ -894,12 +894,59 @@ def create_study_room():
 def study_room(code):
     code = code.upper(); rooms = read_json_file(ROOM_FILE, {})
     if code not in rooms: return jsonify({"error": "Study room not found."}), 404
+    room = rooms[code]
+    # Upgrade rooms created by the earlier single-question version without losing that question.
+    quiz = room.get("quiz")
+    if quiz and "questions" not in quiz:
+        legacy_question = {"id": str(uuid.uuid4()), "question": quiz.get("question", ""), "options": quiz.get("options", []), "responses": quiz.get("responses", {})}
+        quiz["questions"] = [legacy_question] if legacy_question["question"] else []
+        quiz.pop("question", None); quiz.pop("options", None); quiz.pop("responses", None)
+        room["quiz"] = quiz
     if request.method == "POST":
         data = request.get_json(silent=True) or {}
-        # Shared quiz state contains only question text, options, timing and responses.
-        rooms[code]["quiz"] = {"title": str(data.get("title", "Study Challenge"))[:120], "question": str(data.get("question", ""))[:1000], "options": data.get("options", [])[:4] if isinstance(data.get("options", []), list) else [], "ends_at": data.get("ends_at"), "responses": data.get("responses", {}) if isinstance(data.get("responses", {}), dict) else {}}
-        rooms[code]["updated_at"] = datetime.now().isoformat(timespec="seconds"); write_json_file(ROOM_FILE, rooms)
-    return jsonify(rooms[code])
+        action = data.get("action", "add_question")
+        quiz = room.get("quiz") or {"title": "Study Challenge", "questions": [], "ends_at": None, "started": False}
+        quiz.setdefault("questions", [])
+        if action == "add_question":
+            question = str(data.get("question", "")).strip()
+            options = data.get("options", [])
+            if not question or not isinstance(options, list) or len(options) != 4 or any(not str(o).strip() for o in options):
+                return jsonify({"error": "Enter a question and all four options before adding it."}), 400
+            quiz["questions"].append({"id": str(uuid.uuid4()), "question": question[:1000], "options": [str(o).strip()[:500] for o in options], "responses": {}})
+            quiz["title"] = str(data.get("title") or quiz.get("title") or "Study Challenge")[:120]
+            quiz["started"] = False
+        elif action == "start_quiz":
+            if not quiz.get("questions"):
+                return jsonify({"error": "Add at least one question before starting the challenge."}), 400
+            minutes = max(1, min(180, int(data.get("duration", 5))))
+            quiz["title"] = str(data.get("title") or quiz.get("title") or "Study Challenge")[:120]
+            quiz["ends_at"] = (datetime.now() + timedelta(minutes=minutes)).isoformat()
+            quiz["started"] = True
+        elif action == "clear_questions":
+            quiz["questions"] = []; quiz["started"] = False; quiz["ends_at"] = None
+        else:
+            return jsonify({"error": "Unknown study-room action."}), 400
+        room["quiz"] = quiz
+        room["updated_at"] = datetime.now().isoformat(timespec="seconds")
+        write_json_file(ROOM_FILE, rooms)
+    return jsonify(room)
+
+@app.route("/api/study-rooms/<code>/answers", methods=["POST"])
+def submit_study_room_answer(code):
+    code = code.upper(); rooms = read_json_file(ROOM_FILE, {})
+    if code not in rooms: return jsonify({"error": "Study room not found."}), 404
+    data = request.get_json(silent=True) or {}
+    quiz = rooms[code].get("quiz") or {}
+    if not quiz.get("started") or not quiz.get("ends_at") or datetime.fromisoformat(quiz["ends_at"]) < datetime.now():
+        return jsonify({"error": "This challenge has ended or has not started."}), 400
+    question = next((q for q in quiz.get("questions", []) if q.get("id") == data.get("question_id")), None)
+    member = str(data.get("member", "")).strip()
+    answer = data.get("answer")
+    if question is None or not member or not isinstance(answer, int) or answer not in range(4):
+        return jsonify({"error": "Invalid answer submission."}), 400
+    question.setdefault("responses", {})[member] = answer
+    write_json_file(ROOM_FILE, rooms)
+    return jsonify({"message": "Answer submitted.", "response_count": len(question["responses"])})
 
 @app.route("/api/exam-checklist", methods=["GET", "POST"])
 def exam_checklist():
