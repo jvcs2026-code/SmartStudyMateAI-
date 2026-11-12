@@ -1,4 +1,5 @@
 import os
+import base64
 import re
 import json
 import time
@@ -169,6 +170,70 @@ Student question:
         return jsonify({"answer": answer})
     except Exception as exc:
         return handle_error(exc, "AI Tutor")
+
+
+
+
+# ==================================================
+# 5A. AI TUTOR PICTURE GENERATOR
+# ==================================================
+@app.route("/api/generate-image", methods=["POST"])
+def generate_tutor_image():
+    try:
+        require_client()
+        data = request.get_json(silent=True) or {}
+        prompt = str(data.get("prompt", "")).strip()
+        style = str(data.get("style", "Educational textbook illustration")).strip()
+        level = str(data.get("level", "School level")).strip()
+
+        if not prompt:
+            return jsonify({"error": "Please describe the picture you want to generate."}), 400
+        if len(prompt) > 1200:
+            return jsonify({"error": "Please keep the picture description under 1,200 characters."}), 400
+
+        allowed_styles = {
+            "Educational textbook illustration",
+            "Simple labelled diagram",
+            "Realistic scientific illustration",
+            "Colourful 3D educational illustration",
+            "Historical scene illustration",
+            "Infographic style",
+        }
+        if style not in allowed_styles:
+            style = "Educational textbook illustration"
+        if level not in {"School level", "Beginner", "Intermediate", "Advanced"}:
+            level = "School level"
+
+        image_model = os.getenv("GEMINI_IMAGE_MODEL", "gemini-2.5-flash-image")
+        image_prompt = (
+            "Create one clear, high-quality educational picture for a student. "
+            "Use accurate, age-appropriate visual content. Avoid unnecessary decorative text. "
+            "If labels are requested, make them short, correctly spelled, and readable. "
+            f"Learning level: {level}. Visual style: {style}. "
+            f"Student's picture request: {prompt}"
+        )
+
+        response = client.models.generate_content(
+            model=image_model,
+            contents=image_prompt,
+            config=types.GenerateContentConfig(response_modalities=["TEXT", "IMAGE"]),
+        )
+
+        image_part = None
+        for part in (response.parts or []):
+            if getattr(part, "inline_data", None) is not None:
+                image_part = part
+                break
+
+        if image_part is None:
+            raise ValueError("The image model did not return an image. Please try a different description.")
+
+        image_bytes = image_part.inline_data.data
+        mime_type = getattr(image_part.inline_data, "mime_type", None) or "image/png"
+        encoded = base64.b64encode(image_bytes).decode("ascii")
+        return jsonify({"image": f"data:{mime_type};base64,{encoded}"})
+    except Exception as exc:
+        return handle_error(exc, "AI Tutor Picture Generator")
 
 
 # ==================================================
