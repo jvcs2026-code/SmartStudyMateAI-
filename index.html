@@ -128,6 +128,111 @@ button:disabled{opacity:.5;cursor:not-allowed}
   .card,.paper-sheet,.result-block{background:#fff!important;color:#000!important;border:1px solid #ccc!important;box-shadow:none!important}
   p,.muted,.smalltext,.paper-meta{color:#222!important}
 }
+
+/* ===== SmartStudyMate AI: reference dashboard theme ===== */
+:root{--bg:#080720;--panel:#111034;--card-bg:#111034;--text:#f5f2ff;--muted:#b7b2dc;--line:rgba(139,103,255,.24);--accent:#a52cff}
+body{display:block;padding:0;background:#07051c;color:var(--text)}
+.browser-window{max-width:none;width:100%;height:100vh;min-height:700px;border:0;border-radius:0;box-shadow:none;background:#080720}
+.window-header{display:none}
+.app-layout{grid-template-columns:308px minmax(0,1fr);height:100%;min-height:0}
+aside{padding:26px 18px 18px;background:linear-gradient(180deg,#0d0b2c 0%,#100d35 75%,#171044 100%);border-right:1px solid rgba(143,112,255,.24);justify-content:flex-start;gap:20px}
+.logo-area{min-height:82px;padding:4px 12px 22px;gap:13px;font-size:17px;letter-spacing:-.2px}
+.logo-area>div:last-child{display:flex;flex-direction:column;gap:5px}
+.logo-area strong{font-size:17px;color:#fff;white-space:nowrap}
+.logo-area small{font-size:12px;color:#b9b2e6;font-weight:500}
+.brand-mark{width:58px;height:58px;display:grid;place-items:center;border-radius:18px;color:#d79cff;font-size:42px;font-weight:800;background:radial-gradient(circle at 35% 30%,#8c35ff,#2426a9 72%);box-shadow:0 0 26px #722cff66}
+nav{gap:7px}
+nav button{min-height:48px;padding:12px 15px;border-radius:13px;color:#d1cbed;font-size:14px;font-weight:550;display:flex;align-items:center;gap:12px}
+nav button::before{content:"";width:20px;height:20px;flex:0 0 20px;border-radius:6px;background:linear-gradient(145deg,#d4b8ff,#7776ff);opacity:.9;mask:radial-gradient(circle,#000 58%,transparent 62%)}
+nav button[data-page="dashboard"]::before{content:"⌂";mask:none;background:none;color:#fff;font-size:25px;line-height:18px}
+nav button.active{background:linear-gradient(100deg,#6e20c9,#3a147d);border-color:#7b2ee7;box-shadow:0 5px 22px #6818c866,inset 0 0 0 1px #9d54ff33;color:#fff}
+nav button:hover{background:rgba(128,64,255,.18);color:#fff}
+.upgrade-box{margin-top:auto;padding:24px 16px;border-radius:18px;text-align:center;background:linear-gradient(145deg,#160d45,#0b0a2c);border:1px solid #5521a7;box-shadow:0 0 24px #39117b2b}
+.upgrade-box>div{font-size:18px!important;color:#ffd85c}
+.upgrade-box p{font-size:12px;line-height:1.5;color:#c6bce9;margin:10px 0 14px}
+main{padding:0 30px 28px;overflow-y:auto;background:radial-gradient(ellipse at 86% 2%,#1b0c61 0,transparent 32%),radial-gradient(ellipse at 25% 95%,#151044 0,transparent 40%),#080720}
+.app-topbar{height:92px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.global-search{height:54px;width:min(640px,70%);display:flex;align-items:center;gap:14px;padding:0 24px;border:1px solid #42307d;border-radius:30px;background:#11102eaa;box-shadow:inset 0 0 18px #1d1550}
+.global-search>span{font-size:28px;color:#bba8ff;line-height:1}
+.global-search input{border:0;background:transparent;padding:0;color:#fff;outline:none;box-shadow:none;font-size:15px}
+.global-search input:focus{box-shadow:none}
+.topbar-actions{display:flex;align-items:center;gap:20px}
+.notification-button,.avatar-button{border:0;cursor:pointer;color:#fff}
+.notification-button{background:transparent;font-size:27px;width:42px;height:42px}
+.avatar-button{width:48px;height:48px;border-radius:50%;font-size:20px;font-weight:700;background:linear-gradient(145deg,#9c2cff,#5600c8);box-shadow:0 0 20px #832cff66}
+.page{max-width:1600px;margin:0 auto}
+.welcome-hero{min-height:306px;position:relative;overflow:hidden;display:flex;align-items:center;border:1px solid #6d28bd;border-radius:22px;margin:14px 0 26px;padding:34px 5%;background:radial-gradient(ellipse at 78% 55%,#1729a5 0,#11105b 31%,transparent 58%),linear-gradient(110deg,#1b1049 0%,#090d3a 53%,#260d72 100%);box-shadow:inset 0 0 40px #3d20a633,0 12px 35px #03021466}
+.welcome-hero:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 55%,#255bff22 55.2%,transparent 76%);pointer-events:none}
+.welcome-copy{position:relative;z-index:2;width:57%;max-width:670px}
+.eyebrow{font-size:10px;letter-spacing:2px;font-weight:800;color:#c4a4ff;margin-bottom:10px}
+.welcome-copy h1{font-size:clamp(30px,3.3vw,54px);line-height:1.08;letter-spacing:-1.7px;margin:0 0 15px}
+.welcome-copy h1 span{background:linear-gradient(90deg,#fff,#d58aff 48%,#9e5cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.welcome-copy p{max-width:570px;color:#eeeaff;font-size:18px;line-height:1.45;margin:0 0 20px}
+.hero-start{border-radius:13px!important;padding:12px 22px!important;background:linear-gradient(100deg,#d047ff,#6a13d6)!important;box-shadow:0 5px 20px #a52cff55!important;font-size:15px}
+.hero-start span{font-size:21px;margin-left:15px}
+.hero-art{position:absolute;right:4%;top:0;bottom:0;width:43%;min-width:300px;display:flex;align-items:center;justify-content:center}
+.study-robot{position:relative;width:210px;height:245px;z-index:2;filter:drop-shadow(0 12px 22px #05021d)}
+.robot-head{position:absolute;top:32px;left:42px;width:132px;height:104px;border-radius:46% 46% 42% 42%;background:linear-gradient(145deg,#fff,#a9d9ff 48%,#4d69d7);border:5px solid #7ec9ff;box-shadow:inset -10px -10px 18px #2948a8,0 0 28px #16baff88}
+.robot-ear{position:absolute;right:-20px;top:30px;width:28px;height:42px;border-radius:14px;background:linear-gradient(90deg,#9aeaff,#4c47d5);border:4px solid #79caff}
+.robot-eyes{position:absolute;top:34px;left:25px;display:flex;gap:26px}
+.robot-eyes i{width:17px;height:23px;border-radius:50%;background:#00eaff;box-shadow:0 0 15px #00eaff}
+.robot-smile{position:absolute;bottom:19px;left:53px;width:23px;height:10px;border-bottom:3px solid #00d9ff;border-radius:50%}
+.robot-cap{position:absolute;z-index:3;top:8px;left:55px;width:105px;height:37px;border-radius:70% 70% 8px 8px;background:linear-gradient(160deg,#172d79,#050c37);border:3px solid #8c9bff;transform:rotate(-5deg)}
+.robot-cap:after{content:"";position:absolute;width:135px;height:8px;left:-18px;bottom:-7px;border-radius:50%;background:linear-gradient(90deg,#a24dff,#29bfff,#a24dff)}
+.robot-body{position:absolute;top:130px;left:48px;width:120px;height:105px;border-radius:35px 35px 28px 28px;background:linear-gradient(145deg,#eafaff,#8ba9f8 60%,#4554b8);border:4px solid #8bd8ff;box-shadow:inset -12px -8px 16px #3448a4}
+.robot-book{position:absolute;left:7px;top:28px;width:100px;height:64px;transform:rotate(-5deg);border-radius:8px;background:linear-gradient(100deg,#05a9ff 0 49%,#071c70 50%);border:3px solid #65dcff;box-shadow:0 0 18px #00bfff88;display:grid;place-items:center;color:#dffaff;font-size:10px;font-weight:900;letter-spacing:2px}
+.orbit{position:absolute;border:2px solid #b344ff;border-radius:50%;width:370px;height:125px;transform:rotate(-13deg);box-shadow:0 0 18px #a32cff99}
+.orbit-two{width:310px;height:175px;transform:rotate(35deg);border-color:#168cff88}
+.float-book,.float-cap{position:absolute;color:#3acaff;font-size:45px;text-shadow:0 0 20px #00aaff;z-index:1}
+.float-book{left:5%;top:20%}.float-cap{right:3%;top:20%;color:#a45cff}
+.hero-spark{position:absolute;width:8px;height:8px;background:#fff;border-radius:50%;box-shadow:0 0 18px 5px #b33cff}
+.spark-one{left:18%;top:58%}.spark-two{right:12%;bottom:24%}
+.feature-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:0 0 26px}
+.feature-card{min-height:146px;position:relative;display:flex;align-items:flex-start;gap:18px;text-align:left;padding:25px 24px;border-radius:19px;border:1px solid #5931a0;background:linear-gradient(135deg,#191441,#11102f);color:#fff;cursor:pointer;transition:.2s}
+.feature-card:hover{transform:translateY(-3px);border-color:#b44dff;box-shadow:0 10px 28px #7124c744}
+.feature-upload{border-left:2px solid #11c9ff}.feature-tutor{border-left:2px solid #17bfff}.feature-quiz{border-left:2px solid #12dfc4;background:linear-gradient(135deg,#103c50,#171037)}
+.feature-icon{width:54px;height:56px;flex:0 0 54px;display:grid;place-items:center;border-radius:12px;font-size:32px;font-weight:800;color:#061342;background:linear-gradient(145deg,#39d6ff,#2775ff);box-shadow:0 5px 18px #168cff55}
+.feature-tutor .feature-icon{background:linear-gradient(145deg,#3dbdff,#5245e8);color:#07123d}
+.feature-quiz .feature-icon{background:linear-gradient(145deg,#2af0cf,#0c9da9);color:#063b48}
+.feature-copy{display:flex;flex-direction:column;gap:8px;padding-right:24px}
+.feature-copy b{font-size:18px}.feature-copy small{font-size:14px;line-height:1.5;color:#d2cbed}
+.feature-arrow{position:absolute;right:18px;bottom:16px;width:38px;height:38px;display:grid;place-items:center;border-radius:50%;background:#4b1d91;color:white;font-size:24px}
+.redesigned-bottom{grid-template-columns: .9fr 1.1fr;gap:24px}
+.activity-panel,.progress-panel{min-width:0;padding:23px 26px;border-radius:20px;border:1px solid #49318c;background:linear-gradient(145deg,#111032,#0b0a27);box-shadow:0 8px 28px #02011666}
+.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid #28234d}
+.panel-heading h2{font-size:18px;margin:0}
+.heading-symbol{color:#ffce32;font-size:26px;margin-right:8px}.chart-symbol{color:#27c9ff}
+.text-link{border:0;background:none;color:#bd4dff;font-size:14px;font-weight:700;cursor:pointer}
+.activity-row{min-height:66px;display:flex;align-items:center;gap:14px;border-bottom:1px solid #242044}
+.activity-row:last-of-type{border-bottom:0}
+.activity-row>div{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+.activity-row b{font-size:14px}.activity-row small{font-size:12px;color:#bcb5dc}
+.activity-row time{font-size:11px;color:#a49acb}
+.activity-icon{width:44px;height:44px;flex:0 0 44px;border-radius:11px;display:grid;place-items:center;font-size:23px;color:#fff}
+.notes-activity{background:linear-gradient(145deg,#28d6a9,#079b8c)}.planner-activity{background:linear-gradient(145deg,#ffbd68,#eb4d9b)}.paper-activity{background:linear-gradient(145deg,#26d6f4,#1472db)}
+.progress-overview{display:grid;grid-template-columns:180px minmax(0,1fr);gap:15px;align-items:center;padding:12px 0 8px}
+.progress-ring{width:128px;height:128px;margin:0 auto;background:conic-gradient(#08d7ed 0 75%,#272050 75%);box-shadow:0 0 20px #05c5ed22}
+.progress-ring:before{inset:9px;background:#111032}
+.progress-ring strong{font-size:30px}
+.progress-ring small{position:relative;z-index:1;font-size:9px;color:#c9c3e6;margin-top:-30px}
+.weekly-chart{height:135px;display:flex;align-items:flex-end;justify-content:space-around;gap:9px;padding:10px 2px 0;border-left:1px solid #242044}
+.week-bar{height:100%;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:7px}
+.week-bar i{display:block;width:min(28px,75%);height:var(--bar);border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#bd5cff,#226dff);box-shadow:0 0 12px #5a45ff55}
+.week-bar:nth-child(odd) i{background:linear-gradient(180deg,#29c9ff,#226dff)}
+.week-bar small{font-size:11px;color:#d4cdec}
+.progress-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:4px}
+.progress-metrics>div{min-height:66px;display:grid;grid-template-columns:42px 1fr;grid-template-rows:1fr 1fr;align-items:center;padding:8px 10px;border-radius:13px;background:#19163f}
+.metric-icon{grid-row:1/3;font-size:26px;color:#17d8ff}.metric-tasks{color:#27e2c0}.metric-mcqs{color:#ffc52d}
+.progress-metrics b{font-size:19px}.progress-metrics small{font-size:10px;color:#c0b9e0}
+h1{color:#fff}
+.card{background:linear-gradient(145deg,#17143c,#0e0c2b);border-color:#44317f}
+input,select,textarea{background:#090821;border-color:#40336e;color:#fff}
+button.primary{background:linear-gradient(100deg,#c43cff,#6417d4);box-shadow:0 4px 14px #8c28d744}
+button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6ddff}
+@media(max-width:1150px){.app-layout{grid-template-columns:250px minmax(0,1fr)}aside{padding-left:13px;padding-right:13px}.feature-cards{gap:12px}.feature-card{padding:18px 14px;gap:12px}.progress-overview{grid-template-columns:135px 1fr}.progress-ring{width:112px;height:112px}}
+@media(max-width:850px){.app-layout{grid-template-columns:1fr;overflow:auto}aside{padding:10px 14px;gap:8px}.logo-area{min-height:55px;padding-bottom:8px}.brand-mark{width:42px;height:42px;font-size:30px}nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}nav button{min-height:40px;font-size:12px;padding:8px}main{padding:0 16px 22px}.app-topbar{height:76px}.welcome-hero{min-height:280px}.welcome-copy{width:65%}.hero-art{right:-12%;opacity:.8}.feature-cards{grid-template-columns:1fr}.feature-card{min-height:110px}.redesigned-bottom{grid-template-columns:1fr}}
+@media(max-width:520px){.welcome-hero{padding:25px 20px;min-height:360px;align-items:flex-start}.welcome-copy{width:100%}.welcome-copy p{font-size:15px;max-width:85%}.hero-art{width:100%;right:-25%;top:145px;bottom:-30px;opacity:.5;transform:scale(.8)}.global-search{width:100%;height:46px}.topbar-actions{gap:4px}.notification-button{display:none}.progress-overview{grid-template-columns:1fr}.weekly-chart{border-left:0}.progress-metrics{gap:5px}.progress-metrics>div{grid-template-columns:30px 1fr;padding:6px}.metric-icon{font-size:20px}.progress-metrics small{font-size:9px}.activity-panel,.progress-panel{padding:18px 14px}}
+
 </style>
 </head>
 <body>
@@ -139,16 +244,16 @@ button:disabled{opacity:.5;cursor:not-allowed}
   <div class="app-layout">
     <aside>
       <div>
-        <div class="logo-area"><div class="logo-icon"></div>SmartStudy<span>Mate</span></div>
+        <div class="logo-area"><div class="brand-mark" aria-hidden="true">✧</div><div><strong>SmartStudyMate AI</strong><small>Learn · Practice · Excel</small></div></div>
         <nav>
           <button class="active" data-page="dashboard">Dashboard</button>
-          <button data-page="tutor">AI Voice & Text Tutor</button>
+          <button data-page="tutor">AI Tutor</button>
           <button data-page="progress">Exam Progress Tracker</button>
-          <button data-page="paper-gen">AI Question Paper Generator</button>
+          <button data-page="paper-gen">Question Paper Generator</button>
           <button data-page="revision">AI Revision Assistant</button>
           <button data-page="analytics">Performance Analytics</button>
-          <button data-page="planner">Smart AI Study Planner</button>
-          <button data-page="exam">Exam Preparation Mode</button>
+          <button data-page="planner">AI Study Planner</button>
+          <button data-page="exam">Exam Preparation</button>
           <button data-page="mcq">One-Mark MCQ Generator</button>
           <button data-page="papers">CBSE Sample Papers</button>
           <button data-page="notes">Smart Study Notes</button>
@@ -165,34 +270,64 @@ button:disabled{opacity:.5;cursor:not-allowed}
     <main>
       <!-- DASHBOARD -->
       <section id="dashboard" class="page active">
-        <div class="nebula-hero">
-          <div class="nebula-orb">S</div>
-          <div class="nebula-title">Welcome to your cognitive co-pilot</div>
-          <div class="nebula-subtitle">I am SmartStudyMate. Ask questions by voice or text, generate full question papers, and track your exam readiness.</div>
-          <div class="nebula-action-grid">
-            <div class="nebula-action-card" onclick="showPage('tutor')"><h3>AI Voice & Text Tutor</h3><p>Speak or type questions and listen to clear spoken explanations.</p></div>
-            <div class="nebula-action-card" onclick="showPage('paper-gen')"><h3>Question Paper Generator</h3><p>Create custom full-marks exam papers with complete answer keys.</p></div>
-            <div class="nebula-action-card" onclick="showPage('revision')"><h3>AI Revision Assistant</h3><p>Get instant chapter summaries, key questions, and last-minute notes.</p></div>
-            <div class="nebula-action-card" onclick="showPage('progress')"><h3>Exam Progress Tracker</h3><p>Track subject & chapter completion and overall exam readiness.</p></div>
+        <div class="welcome-hero">
+          <div class="welcome-copy">
+            <div class="eyebrow">YOUR PERSONAL LEARNING SPACE</div>
+            <h1>Welcome to<br><span>SmartStudyMate AI</span></h1>
+            <p>Your personal AI study workspace. Plan, practise and prepare for every exam.</p>
+            <button class="primary hero-start" onclick="showPage('tutor')">Start Learning <span aria-hidden="true">→</span></button>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <div class="float-book">▤</div><div class="float-cap">◆</div>
+            <div class="study-robot">
+              <div class="robot-cap"></div>
+              <div class="robot-head"><div class="robot-ear"></div><div class="robot-eyes"><i></i><i></i></div><div class="robot-smile"></div></div>
+              <div class="robot-body"><div class="robot-book"><span>STUDY</span></div></div>
+            </div>
+            <div class="hero-spark spark-one"></div><div class="hero-spark spark-two"></div>
           </div>
         </div>
-        <div class="dashboard-bottom">
-          <div class="card" style="margin:0">
-            <h2>Quick Study Tools</h2>
-            <div class="document-row"><div class="document-left"><div class="document-icon">STAT</div><div><b>Student Performance Analytics</b><div class="smalltext">Weekly/monthly reports & weak topic detection</div></div></div><button class="small" onclick="showPage('analytics')">Open</button></div>
-            <div class="document-row"><div class="document-left"><div class="document-icon">MCQ</div><div><b>One-Mark MCQ Generator</b><div class="smalltext">Practice syllabus-based objective questions</div></div></div><button class="small" onclick="showPage('mcq')">Open</button></div>
-            <div class="document-row"><div class="document-left"><div class="document-icon">PDF</div><div><b>CBSE Sample Papers</b><div class="smalltext">Official sample papers and marking schemes</div></div></div><button class="small" onclick="showPage('papers')">Open</button></div>
+
+        <div class="feature-cards">
+          <button class="feature-card feature-upload" onclick="showPage('library')">
+            <span class="feature-icon">▤</span><span class="feature-copy"><b>Upload &amp; Learn</b><small>Choose a textbook or document and organise your learning.</small></span><span class="feature-arrow">→</span>
+          </button>
+          <button class="feature-card feature-tutor" onclick="showPage('tutor')">
+            <span class="feature-icon">▰</span><span class="feature-copy"><b>AI Tutor</b><small>Get clear explanations and answers to your questions.</small></span><span class="feature-arrow">→</span>
+          </button>
+          <button class="feature-card feature-quiz" onclick="showPage('mcq')">
+            <span class="feature-icon">✓</span><span class="feature-copy"><b>Generate Quiz</b><small>Create syllabus-based one-mark practice questions.</small></span><span class="feature-arrow">→</span>
+          </button>
+        </div>
+
+        <div class="dashboard-bottom redesigned-bottom">
+          <div class="activity-panel">
+            <div class="panel-heading"><h2><span class="heading-symbol">ϟ</span> Recent Activity</h2><button class="text-link" onclick="showPage('notes')">View All →</button></div>
+            <div class="activity-row"><span class="activity-icon notes-activity">▤</span><div><b>Study Notes</b><small>Your revision notes are saved here</small></div><time>Recently</time></div>
+            <div class="activity-row"><span class="activity-icon planner-activity">▣</span><div><b>Study Planner</b><small>Your study schedule is ready</small></div><time>Planner</time></div>
+            <div class="activity-row"><span class="activity-icon paper-activity">▧</span><div><b>CBSE Papers</b><small>Find sample papers and marking schemes</small></div><time>Practice</time></div>
+            <div id="notesList" hidden></div>
           </div>
-          <div class="card" style="margin:0">
-            <h2>Exam Readiness Overview</h2>
-            <div style="display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center">
-              <div class="progress-ring" id="dashRing"><strong id="dashRingText">0%</strong></div>
-              <div><div class="smalltext">Task completion & weekly momentum</div><div class="progress-bars"><i style="height:45%"></i><i style="height:68%"></i><i style="height:82%"></i><i style="height:60%"></i><i style="height:88%"></i><i style="height:74%"></i><i style="height:95%"></i></div><div class="smalltext">Mon Tue Wed Thu Fri Sat Sun</div></div>
+
+          <div class="progress-panel">
+            <div class="panel-heading"><h2><span class="heading-symbol chart-symbol">▥</span> Your Learning Progress</h2></div>
+            <div class="progress-overview">
+              <div class="progress-ring" id="dashRing"><strong id="dashRingText">0%</strong><small>Overall Progress</small></div>
+              <div class="weekly-chart" aria-label="Weekly study activity">
+                <div class="week-bar" style="--bar:48%"><i></i><small>Mon</small></div>
+                <div class="week-bar" style="--bar:68%"><i></i><small>Tue</small></div>
+                <div class="week-bar" style="--bar:86%"><i></i><small>Wed</small></div>
+                <div class="week-bar" style="--bar:60%"><i></i><small>Thu</small></div>
+                <div class="week-bar" style="--bar:78%"><i></i><small>Fri</small></div>
+                <div class="week-bar" style="--bar:82%"><i></i><small>Sat</small></div>
+                <div class="week-bar" style="--bar:96%"><i></i><small>Sun</small></div>
+              </div>
             </div>
-            <div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 0">
-              <div><div class="smalltext">Saved Notes</div><div class="stat" id="noteCount">0</div></div>
-              <div><div class="smalltext">Study Tasks</div><div class="stat" id="taskCount">0</div></div>
-              <div><div class="smalltext">MCQs Practiced</div><div class="stat" id="mcqCount">0</div></div>
+            <div class="progress-metrics">
+              <div><span class="metric-icon metric-notes">▤</span><b id="noteCount">0</b><small>Saved Notes</small></div>
+              <div><span class="metric-icon metric-tasks">✓</span><b id="taskCount">0</b><small>Study Tasks</small></div>
+              <div><span class="metric-icon metric-mcqs">★</span><b id="mcqCount">0</b><small>MCQs Done</small></div>
             </div>
           </div>
         </div>
@@ -1213,5 +1348,25 @@ refresh();
 loadProfile();
 loadSmartTasks();
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const search = document.getElementById('globalSearch');
+  if (!search) return;
+  search.addEventListener('keydown', function (event) {
+    if (event.key !== 'Enter') return;
+    const term = search.value.trim().toLowerCase();
+    if (!term) return;
+    const match = [...document.querySelectorAll('nav button')].find(button =>
+      button.textContent.toLowerCase().includes(term)
+    );
+    if (match) showPage(match.dataset.page);
+    else search.setCustomValidity('No matching study section found.');
+    search.reportValidity();
+    search.setCustomValidity('');
+  });
+});
+</script>
+
 </body>
 </html>
