@@ -243,6 +243,17 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
 .check-row{display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1px solid #40336e}
 .check-row input{width:auto!important}
 
+/* Friend Chat Box Styles */
+.chat-container-box{display:flex;flex-direction:column;height:420px;background:#090821;border:1px solid #40336e;border-radius:12px;overflow:hidden;margin-top:12px}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.chat-bubble{max-width:75%;padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.4}
+.chat-bubble.mine{background:#6417d4;color:#fff;align-self:flex-end;border-bottom-right-radius:2px}
+.chat-bubble.theirs{background:#21194b;color:#e6ddff;align-self:flex-start;border-bottom-left-radius:2px}
+.chat-bubble b{display:block;font-size:11px;color:#bba8ff;margin-bottom:3px}
+.chat-bubble time{display:block;font-size:9px;color:#a49acb;margin-top:4px;text-align:right}
+.chat-input-area{display:flex;gap:8px;padding:12px;background:#111034;border-top:1px solid #40336e}
+.chat-input-area input{flex:1;margin:0}
+
 </style>
 </head>
 <body>
@@ -270,6 +281,7 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
           <button data-page="library">📖 Textbook Library</button>
           <button data-page="flashcards">🗂️ Flashcards</button>
           <button data-page="references">🧮 Formula & Code Library</button>
+          <button data-page="friendchat">💬 Chat With Friends</button>
           <button data-page="studyroom">👥 Collaborative Study Room</button>
           <button data-page="focus">⏱️ Pomodoro Focus</button>
           <button data-page="checklist">✅ Exam-Day Checklist</button>
@@ -623,7 +635,7 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
       <!-- ONE-MARK MCQ GENERATOR -->
       <section id="mcq" class="page">
         <h1>One-Mark MCQ Generator</h1><p class="muted">One-Mark MCQ Generator scores in Performance Analytics.</p>
-        <div class="card"><div class="row"><div><label>Class</label><select id="mcqClass"><option value="">Select class</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option></select></div><div><label>Subject</label><select id="mcqSubject"><option value="">Select subject</option><option>Computer Science</option><option>Artificial Intelligence</option><option>Informatics Practices</option><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>Science</option><option>English</option></select></div></div>
+        <div class="card"><div class="row"><div><label>Class</label><select id="mcqClass"><option value="">Select class</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option></select></div><div><label>Subject</label><select id="mcqSubject"><option value="">Select subject</option><option>Social Science</option><option>Computer Science</option><option>Artificial Intelligence</option><option>Informatics Practices</option><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>Science</option><option>English</option></select></div></div>
         <label>Syllabus portion / chapter / topics</label><textarea id="mcqPortion" placeholder="Example: Python functions, arguments and return values"></textarea><div class="row"><div><label>Number of questions</label><select id="mcqNumber"><option>5</option><option selected>10</option><option>15</option><option>20</option><option>30</option></select></div><div><label>Mode</label><select id="mcqMode"><option value="practice">Practice mode (show score after submit)</option><option value="study">Study mode (show answers and explanations)</option></select></div></div>
         <button class="primary" id="generateButton" onclick="generateMCQs()">Generate MCQs using AI</button><button class="secondary" onclick="downloadMCQs()">Download TXT</button><button class="secondary" onclick="printMCQs()">Print / Save PDF</button><div id="mcqStatus"></div><div id="mcqResults"></div><div id="mcqSources"></div></div>
       </section>
@@ -646,6 +658,27 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
         <div class="card"><input id="refTitle" placeholder="Title (e.g. Python list comprehension)"><input id="refCategory" placeholder="Category (Python / SQL / Physics)"><textarea id="refContent" placeholder="Enter formula, syntax or code snippet"></textarea><button class="primary" onclick="addReference()">Save Reference</button></div>
         <div class="card"><input id="refSearch" placeholder="Search saved references…" oninput="loadReferences()"><div id="refResults"></div></div>
       </section>
+
+      <!-- ADD-ON: CHAT WITH FRIENDS (NEW DIRECT CHAT FEATURE) -->
+      <section id="friendchat" class="page">
+        <h1>Chat With Friends</h1>
+        <p class="muted">Send real-time messages, notes, and study questions to your friends in the shared chat stream.</p>
+        <div class="card">
+          <label>Your Name / Handle</label>
+          <input id="chatSenderName" placeholder="Enter your name (e.g. Alex)" oninput="saveChatName()">
+          <div class="chat-container-box">
+            <div class="chat-messages" id="chatMessagesBox">
+              <p class="muted" style="text-align:center;margin:auto">Loading messages...</p>
+            </div>
+            <div class="chat-input-area">
+              <input id="chatMessageInput" placeholder="Type a message to your friends..." onkeydown="if(event.key==='Enter')sendFriendMessage()">
+              <button class="primary" onclick="sendFriendMessage()" style="margin:0">Send</button>
+            </div>
+          </div>
+          <button class="secondary" onclick="loadFriendMessages()" style="margin-top:10px">🔄 Refresh Chat</button>
+        </div>
+      </section>
+
       <!-- ADD-ON: LIVE STUDY ROOM -->
       <section id="studyroom" class="page">
         <h1>Collaborative Study Room</h1><p class="muted">Create a room and share its code or link. Room members see the current timed MCQ challenge and synchronized responses.</p>
@@ -1432,10 +1465,11 @@ loadProfile();
 loadSmartTasks();
 
 // ==================================================
-// Added study tools: flashcards, references, study rooms, Pomodoro, checklist
+// Added study tools: flashcards, references, friend chat, study rooms, Pomodoro, checklist
 // ==================================================
 let flashcardQueue = [], flashcardIndex = 0, currentRoomCode = '', roomPollHandle = null;
-let pomoSeconds = 25*60, pomoRemaining = pomoSeconds, pomoInterval = null;
+let friendChatPollHandle = null;
+
 async function loadFlashcards(){try{const d=await api('/api/flashcards');flashcardQueue=d.due_cards||[];flashcardIndex=0;renderFlashcard();document.getElementById('fcStatus').textContent=`${d.cards.length} saved · ${flashcardQueue.length} due for review`; }catch(e){document.getElementById('fcReview').textContent=e.message;}}
 function renderFlashcard(){const el=document.getElementById('fcReview');if(!flashcardQueue.length){el.innerHTML='<p class="muted">No cards due right now. Add cards or come back on the scheduled review date.</p>';return;}if(flashcardIndex>=flashcardQueue.length)flashcardIndex=0;const c=flashcardQueue[flashcardIndex];el.innerHTML=`<div class="tool-item"><small>Card ${flashcardIndex+1} of ${flashcardQueue.length}</small><h2>${escapeHtml(c.front)}</h2><button class="secondary" onclick="document.getElementById('fcAnswer').hidden=false">Show Answer</button><div id="fcAnswer" class="flashcard-answer" hidden>${escapeHtml(c.back)}</div><div class="tool-actions"><button class="secondary" onclick="rateFlashcard('Hard')">Hard</button><button class="secondary" onclick="rateFlashcard('Good')">Good</button><button class="primary" onclick="rateFlashcard('Easy')">Easy</button></div></div>`;}
 async function addFlashcard(){try{await api('/api/flashcards',{method:'POST',body:JSON.stringify({front:document.getElementById('fcFront').value,back:document.getElementById('fcBack').value})});document.getElementById('fcFront').value='';document.getElementById('fcBack').value='';await loadFlashcards();}catch(e){alert(e.message);}}
@@ -1443,12 +1477,68 @@ async function rateFlashcard(rating){const c=flashcardQueue[flashcardIndex];try{
 async function loadReferences(){try{const q=document.getElementById('refSearch').value;const d=await api('/api/reference-library?q='+encodeURIComponent(q));document.getElementById('refResults').innerHTML=(Array.isArray(d&&d.entries)?d.entries:[]).map(e=>`<div class="tool-item"><b>${escapeHtml(e.title)}</b> <small>${escapeHtml(e.category)}</small><pre>${escapeHtml(e.content)}</pre><button class="secondary" onclick="deleteReference('${e.id}')">Delete</button></div>`).join('')||'<p class="muted">No matching references.</p>';}catch(e){document.getElementById('refResults').textContent=e.message;}}
 async function addReference(){try{await api('/api/reference-library',{method:'POST',body:JSON.stringify({title:document.getElementById('refTitle').value,category:document.getElementById('refCategory').value,content:document.getElementById('refContent').value})});['refTitle','refCategory','refContent'].forEach(id=>document.getElementById(id).value='');loadReferences();}catch(e){alert(e.message);}}
 async function deleteReference(id){try{await api('/api/reference-library/'+encodeURIComponent(id),{method:'DELETE'});loadReferences();}catch(e){alert(e.message);}}
+
+/* Friend Chat Functions */
+function saveChatName() {
+  const name = document.getElementById('chatSenderName').value.trim();
+  localStorage.setItem('sm_chat_name', name || 'Anonymous');
+}
+async function loadFriendMessages() {
+  try {
+    const d = await api('/api/friend-chat');
+    const msgs = d.messages || [];
+    const box = document.getElementById('chatMessagesBox');
+    const myName = localStorage.getItem('sm_chat_name') || document.getElementById('chatSenderName').value.trim() || 'Anonymous';
+    if (!msgs.length) {
+      box.innerHTML = '<p class="muted" style="text-align:center;margin:auto">No messages yet. Say hello to your friends!</p>';
+      return;
+    }
+    box.innerHTML = msgs.map(m => {
+      const isMine = m.sender === myName;
+      return `<div class="chat-bubble ${isMine ? 'mine' : 'theirs'}">
+        <b>${escapeHtml(m.sender)}</b>
+        <span>${escapeHtml(m.message)}</span>
+        <time>${escapeHtml(m.timestamp)}</time>
+      </div>`;
+    }).join('');
+    box.scrollTop = box.scrollHeight;
+  } catch (e) {
+    console.error(e);
+  }
+}
+async function sendFriendMessage() {
+  const sender = localStorage.getItem('sm_chat_name') || document.getElementById('chatSenderName').value.trim() || 'Anonymous';
+  const input = document.getElementById('chatMessageInput');
+  const message = input.value.trim();
+  if (!message) return;
+  try {
+    await api('/api/friend-chat', {
+      method: 'POST',
+      body: JSON.stringify({ sender, message })
+    });
+    input.value = '';
+    loadFriendMessages();
+  } catch (e) {
+    alert(e.message);
+  }
+}
+function startFriendChatPolling() {
+  if (friendChatPollHandle) clearInterval(friendChatPollHandle);
+  loadFriendMessages();
+  friendChatPollHandle = setInterval(loadFriendMessages, 3000);
+}
+
 async function createStudyRoom(){try{const d=await api('/api/study-rooms',{method:'POST',body:JSON.stringify({})});currentRoomCode=d.code;document.getElementById('roomCode').value=d.code;document.getElementById('roomStatus').innerHTML=`<p>Room code: <b>${d.code}</b></p><p>Share link: <a href="${d.share_url}" target="_blank" rel="noopener">${d.share_url}</a></p>`;startRoomPolling();}catch(e){alert(e.message);}}
 function joinStudyRoom(){currentRoomCode=document.getElementById('roomCode').value.trim().toUpperCase();if(!currentRoomCode)return alert('Enter a room code.');startRoomPolling();}
 function startRoomPolling(){if(roomPollHandle)clearInterval(roomPollHandle);syncRoom();roomPollHandle=setInterval(syncRoom,2000);}
 function roomMemberId(){let id=localStorage.getItem('sm_room_member');if(!id){id=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'member-'+Date.now()+'-'+Math.random().toString(36).slice(2);localStorage.setItem('sm_room_member',id);}return id;}
 function saveRoomMemberName(){const name=document.getElementById('roomMemberName').value.trim();localStorage.setItem('sm_room_member_name',name||'Member');}
-document.addEventListener('DOMContentLoaded',()=>{const savedName=localStorage.getItem('sm_room_member_name');if(savedName&&document.getElementById('roomMemberName'))document.getElementById('roomMemberName').value=savedName;});
+document.addEventListener('DOMContentLoaded',()=>{
+  const savedName=localStorage.getItem('sm_room_member_name');
+  if(savedName&&document.getElementById('roomMemberName'))document.getElementById('roomMemberName').value=savedName;
+  const savedChatName=localStorage.getItem('sm_chat_name');
+  if(savedChatName&&document.getElementById('chatSenderName'))document.getElementById('chatSenderName').value=savedChatName;
+});
 
 async function syncRoom(){
   if(!currentRoomCode)return;
@@ -1573,6 +1663,7 @@ async function addRoomQuestion(){
 async function startRoomQuiz(){if(!currentRoomCode)return alert('Create or join a room first.');const minutes=Math.max(1,Math.min(180,Number(document.getElementById('roomDuration').value)||5));try{await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode),{method:'POST',body:JSON.stringify({action:'start_quiz',title:document.getElementById('roomQuizTitle').value||'Study Challenge',duration:minutes})});await syncRoom();}catch(e){alert(e.message);}}
 async function clearRoomQuestions(){if(!currentRoomCode)return alert('Create or join a room first.');if(!confirm('Clear every question in this room?'))return;try{await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode),{method:'POST',body:JSON.stringify({action:'clear_questions'})});await syncRoom();}catch(e){alert(e.message);}}
 async function submitRoomAnswer(questionId,index){if(!currentRoomCode)return;try{await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode)+'/answers',{method:'POST',body:JSON.stringify({question_id:questionId,answer:index,member:roomMemberId()})});syncRoom();}catch(e){alert(e.message);}}
+let pomoSeconds = 25*60, pomoRemaining = pomoSeconds, pomoInterval = null;
 function setPomodoro(minutes){pausePomodoro();pomoSeconds=minutes*60;pomoRemaining=pomoSeconds;renderPomodoro();document.getElementById('pomodoroStatus').textContent=minutes<=15?'Break selected.':'Focus session selected.';}
 function renderPomodoro(){const m=String(Math.floor(pomoRemaining/60)).padStart(2,'0'),s=String(pomoRemaining%60).padStart(2,'0');document.getElementById('pomodoroClock').textContent=`${m}:${s}`;document.title=`${m}:${s} · SmartStudyMate`; }
 function startPomodoro(){if(pomoInterval)return;pomoInterval=setInterval(()=>{if(pomoRemaining>0){pomoRemaining--;renderPomodoro();}else{pausePomodoro();document.getElementById('pomodoroStatus').textContent='Session complete! Take a break or start the next focus session.';alert('Pomodoro session complete!');}},1000);document.getElementById('pomodoroStatus').textContent='Timer running.';}
@@ -1581,8 +1672,17 @@ function resetPomodoro(){pausePomodoro();pomoRemaining=pomoSeconds;renderPomodor
 async function loadFocusTasks(){try{const d=await api('/api/tasks');const sel=document.getElementById('focusTask');sel.innerHTML='<option value="">Choose a task (optional)</option>'+(d.tasks||[]).filter(t=>t.status!=='Completed').map(t=>`<option value="${escapeHtml(t.id)}">${escapeHtml(t.title)}</option>`).join('');}catch(e){}}
 async function loadExamChecklist(){const examDate=document.getElementById('checkExamDate').value;if(!examDate)return alert('Select your exam date.');try{const d=await api('/api/exam-checklist',{method:'POST',body:JSON.stringify({exam_date:examDate})});document.getElementById('checklistStatus').textContent=d.is_48_hour_window?'You are within the final 48-hour preparation window.':'Checklist prepared for your exam date.';document.getElementById('checklistItems').innerHTML=(d&&d.checklist&&Array.isArray(d.checklist.items)?d.checklist.items:[]).map((it,i)=>`<label class="check-row"><input type="checkbox" ${it.done?'checked':''} onchange="updateChecklistItem(${i},this.checked)"><span>${escapeHtml(it.label)}</span></label>`).join('');}catch(e){alert(e.message);}}
 async function updateChecklistItem(index,done){try{await api('/api/exam-checklist',{method:'PUT',body:JSON.stringify({exam_date:document.getElementById('checkExamDate').value,index,done})});}catch(e){alert(e.message);}}
-// Load add-on views on navigation while preserving the original pages and handlers.
-document.querySelectorAll('nav button').forEach(b=>{const prior=b.onclick;b.addEventListener('click',()=>{if(b.dataset.page==='flashcards')loadFlashcards();if(b.dataset.page==='references')loadReferences();if(b.dataset.page==='focus')loadFocusTasks();});});
+
+// Load add-on views on navigation
+document.querySelectorAll('nav button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const pageId = b.dataset.page;
+    if(pageId==='flashcards') loadFlashcards();
+    if(pageId==='references') loadReferences();
+    if(pageId==='focus') loadFocusTasks();
+    if(pageId==='friendchat') startFriendChatPolling();
+  });
+});
 const roomFromLink=new URLSearchParams(location.search).get('room');if(roomFromLink){document.getElementById('roomCode').value=roomFromLink;currentRoomCode=roomFromLink.toUpperCase();startRoomPolling();}
 
 </script>
