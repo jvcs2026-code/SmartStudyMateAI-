@@ -948,7 +948,9 @@ def study_room(code):
         room["quiz"] = quiz
         room["updated_at"] = datetime.now().isoformat(timespec="seconds")
         write_json_file(ROOM_FILE, rooms)
-    return jsonify(room)
+    response_payload = dict(room)
+    response_payload["server_now"] = datetime.now().isoformat()
+    return jsonify(response_payload)
 
 @app.route("/api/study-rooms/<code>/answers", methods=["POST"])
 def submit_study_room_answer(code):
@@ -956,7 +958,7 @@ def submit_study_room_answer(code):
     if code not in rooms: return jsonify({"error": "Study room not found."}), 404
     data = request.get_json(silent=True) or {}
     quiz = rooms[code].get("quiz") or {}
-    if not quiz.get("started") or not quiz.get("ends_at") or datetime.fromisoformat(quiz["ends_at"]) < datetime.now():
+    if not quiz.get("started") or not quiz.get("ends_at") or (datetime.fromisoformat(quiz["ends_at"]) + timedelta(seconds=2)) < datetime.now():
         return jsonify({"error": "This challenge has ended or has not started."}), 400
     question = next((q for q in quiz.get("questions", []) if q.get("id") == data.get("question_id")), None)
     member = str(data.get("member", "")).strip()
