@@ -237,7 +237,7 @@ Generate exactly {number} questions.
 
 
 # ==================================================
-# 7. AI QUESTION PAPER GENERATOR (NEW)
+# 7. AI QUESTION PAPER GENERATOR
 # ==================================================
 @app.route("/api/generate-question-paper", methods=["POST"])
 def generate_question_paper():
@@ -312,7 +312,7 @@ Return ONLY valid JSON in this exact format:
 
 
 # ==================================================
-# 8. AI REVISION ASSISTANT (NEW)
+# 8. AI REVISION ASSISTANT
 # ==================================================
 @app.route("/api/revision-assistant", methods=["POST"])
 def revision_assistant():
@@ -374,7 +374,7 @@ Return ONLY valid JSON:
 
 
 # ==================================================
-# 9. STUDENT PERFORMANCE ANALYTICS (NEW)
+# 9. STUDENT PERFORMANCE ANALYTICS
 # ==================================================
 @app.route("/api/performance-analytics", methods=["POST"])
 def performance_analytics():
@@ -903,6 +903,7 @@ def study_room(code):
                 "author": "Member",
                 "question": quiz.get("question", ""),
                 "options": quiz.get("options", []) if isinstance(quiz.get("options", []), list) else [],
+                "correct_index": quiz.get("correct_index", 0),
                 "responses": quiz.get("responses", {}) if isinstance(quiz.get("responses", {}), dict) else {},
             }
             quiz["questions"] = [legacy_question] if legacy_question["question"] else []
@@ -919,6 +920,7 @@ def study_room(code):
             saved_question.setdefault("id", str(uuid.uuid4()))
             saved_question.setdefault("author", "Member")
             saved_question.setdefault("question", "")
+            saved_question.setdefault("correct_index", 0)
         room["quiz"] = quiz
         rooms[code] = room
         write_json_file(ROOM_FILE, rooms)
@@ -931,9 +933,22 @@ def study_room(code):
             question = str(data.get("question", "")).strip()
             author = str(data.get("author", "Member")).strip()[:50]
             options = data.get("options", [])
+            try:
+                correct_index = int(data.get("correct_index", 0))
+            except (ValueError, TypeError):
+                correct_index = 0
             if not question or not isinstance(options, list) or len(options) != 4 or any(not str(o).strip() for o in options):
                 return jsonify({"error": "Enter a question and all four options before adding it."}), 400
-            quiz["questions"].append({"id": str(uuid.uuid4()), "author": author, "question": question[:1000], "options": [str(o).strip()[:500] for o in options], "responses": {}})
+            if correct_index not in range(4):
+                return jsonify({"error": "Select a valid correct option (A, B, C, or D)."}), 400
+            quiz["questions"].append({
+                "id": str(uuid.uuid4()),
+                "author": author,
+                "question": question[:1000],
+                "options": [str(o).strip()[:500] for o in options],
+                "correct_index": correct_index,
+                "responses": {}
+            })
             quiz["title"] = str(data.get("title") or quiz.get("title") or "Study Challenge")[:120]
             quiz["started"] = False
         elif action == "start_quiz":
