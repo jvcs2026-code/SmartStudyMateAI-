@@ -257,10 +257,10 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
         <div class="logo-area"><div class="brand-mark" aria-hidden="true">⚛️</div><div><strong>SmartStudyMate AI</strong><small>Learn · Practice · Excel</small></div></div>
         <nav>
           <button class="active" data-page="dashboard">🏠 Dashboard</button>
-          <button data-page="tutor">💠 AI Tutor</button>
+          <button data-page="tutor">🤖 AI Tutor</button>
           <button data-page="progress">📈 Exam Progress Tracker</button>
           <button data-page="paper-gen">📝 Question Paper Generator</button>
-          <button data-page="revision">🤖 AI Revision Assistant</button>
+          <button data-page="revision">💠 AI Revision Assistant</button>
           <button data-page="analytics">📊 Performance Analytics</button>
           <button data-page="planner">📅 AI Study Planner</button>
           <button data-page="exam">⚡ Exam Preparation</button>
@@ -268,12 +268,12 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
           <button data-page="papers">📚 CBSE Sample Papers</button>
           <button data-page="notes">📓 Smart Study Notes</button>
           <button data-page="library">📖 Textbook Library</button>
-          <button data-page="profile">👤 My Profile</button>
           <button data-page="flashcards">🗂️ Flashcards</button>
           <button data-page="references">🧮 Formula & Code Library</button>
           <button data-page="studyroom">👥 Collaborative Study Room</button>
           <button data-page="focus">⏱️ Pomodoro Focus</button>
           <button data-page="checklist">✅ Exam-Day Checklist</button>
+          <button data-page="profile">👤 My Profile</button>
         </nav>
       </div>
       <div class="upgrade-box">
@@ -312,7 +312,7 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
             <span class="feature-icon">🤖</span><span class="feature-copy"><b>AI Tutor</b><small>Get clear explanations and answers to your questions.</small></span><span class="feature-arrow">→</span>
           </button>
           <button class="feature-card feature-quiz" onclick="showPage('mcq')">
-            <span class="feature-icon">🎯</span><span class="feature-copy"><b>Generate Quiz</b><small>Create syllabus-based one-mark practice questions.</small></span><span class="feature-arrow">→</span>
+            <span class="feature-icon">🎯</span><span class="feature-copy"><b>One-Mark MCQ Generator</b><small>Create syllabus-based one-mark practice questions.</small></span><span class="feature-arrow">→</span>
           </button>
         </div>
 
@@ -614,7 +614,7 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
 
       <!-- ONE-MARK MCQ GENERATOR -->
       <section id="mcq" class="page">
-        <h1>One-Mark MCQ Generator</h1><p class="muted">Generate syllabus-based practice questions and track your quiz scores in Performance Analytics.</p>
+        <h1>One-Mark MCQ Generator</h1><p class="muted">One-Mark MCQ Generator scores in Performance Analytics.</p>
         <div class="card"><div class="row"><div><label>Class</label><select id="mcqClass"><option value="">Select class</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option></select></div><div><label>Subject</label><select id="mcqSubject"><option value="">Select subject</option><option>Computer Science</option><option>Artificial Intelligence</option><option>Informatics Practices</option><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>Science</option><option>English</option></select></div></div>
         <label>Syllabus portion / chapter / topics</label><textarea id="mcqPortion" placeholder="Example: Python functions, arguments and return values"></textarea><div class="row"><div><label>Number of questions</label><select id="mcqNumber"><option>5</option><option selected>10</option><option>15</option><option>20</option><option>30</option></select></div><div><label>Mode</label><select id="mcqMode"><option value="practice">Practice mode (show score after submit)</option><option value="study">Study mode (show answers and explanations)</option></select></div></div>
         <button class="primary" id="generateButton" onclick="generateMCQs()">Generate MCQs using AI</button><button class="secondary" onclick="downloadMCQs()">Download TXT</button><button class="secondary" onclick="printMCQs()">Print / Save PDF</button><div id="mcqStatus"></div><div id="mcqResults"></div><div id="mcqSources"></div></div>
@@ -1408,7 +1408,57 @@ async function createStudyRoom(){try{const d=await api('/api/study-rooms',{metho
 function joinStudyRoom(){currentRoomCode=document.getElementById('roomCode').value.trim().toUpperCase();if(!currentRoomCode)return alert('Enter a room code.');startRoomPolling();}
 function startRoomPolling(){if(roomPollHandle)clearInterval(roomPollHandle);syncRoom();roomPollHandle=setInterval(syncRoom,2000);}
 function roomMemberId(){let id=localStorage.getItem('sm_room_member');if(!id){id=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'member-'+Date.now()+'-'+Math.random().toString(36).slice(2);localStorage.setItem('sm_room_member',id);}return id;}
-async function syncRoom(){if(!currentRoomCode)return;try{const d=await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode));const quiz=d&&d.quiz?d.quiz:null;const questions=quiz&&Array.isArray(quiz.questions)?quiz.questions:[];document.getElementById('roomStatus').innerHTML=`<p>Connected to room <b>${escapeHtml(currentRoomCode)}</b>. Share this code with your study group.</p>`;renderRoomQuestionBuilder(quiz);if(!questions.length){document.getElementById('roomQuiz').innerHTML='<p class="muted">No questions added yet. Add questions below to build your challenge.</p>';return;}const expired=quiz.ends_at&&Date.now()>new Date(quiz.ends_at).getTime();const active=Boolean(quiz.started)&&!expired;document.getElementById('roomQuiz').innerHTML=`<div class="tool-item"><h2>${escapeHtml(quiz.title||'Study Challenge')}</h2><p>${questions.length} question(s) in this challenge · ${active?'Challenge in progress':expired?'Challenge ended':'Ready to start'}</p>${questions.map((q,qi)=>{q=q&&typeof q==='object'?q:{};const options=Array.isArray(q.options)?q.options:[];const responses=q.responses&&typeof q.responses==='object'?q.responses:{};const answered=Object.prototype.hasOwnProperty.call(responses,roomMemberId());return `<div class="tool-item"><h3>Question ${qi+1}</h3><p>${escapeHtml(q.question||'Question text unavailable')}</p>${options.map((o,i)=>`<button class="secondary" style="display:block;width:100%;margin:6px 0" onclick="submitRoomAnswer('${escapeHtml(q.id||'')}',${i})" ${!active||answered?'disabled':''}>${String.fromCharCode(65+i)}. ${escapeHtml(String(o??''))}</button>`).join('')}${options.length!==4?'<small class="muted">This saved question has incomplete options. Please add it again to use it in a challenge.</small>':''}<small>${Object.keys(responses).length} response(s) · ${answered?'You answered':''}</small></div>`;}).join('')}<p>${active?`Ends: ${new Date(quiz.ends_at).toLocaleTimeString()}`:expired?'Challenge ended':'Host can start the challenge when ready.'}</p></div>`;}catch(e){document.getElementById('roomStatus').textContent=e.message;}}
+async function syncRoom(){
+  if(!currentRoomCode)return;
+  try{
+    const d=await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode));
+    const quiz=d&&d.quiz?d.quiz:null;
+    const questions=quiz&&Array.isArray(quiz.questions)?quiz.questions:[];
+    document.getElementById('roomStatus').innerHTML=`<p>Connected to room <b>${escapeHtml(currentRoomCode)}</b>. Share this code with your study group.</p>`;
+    renderRoomQuestionBuilder(quiz);
+    if(!questions.length){
+      document.getElementById('roomQuiz').innerHTML='<p class="muted">No questions added yet. Add questions below to build your challenge.</p>';
+      return;
+    }
+    const serverNow = d.server_now ? new Date(d.server_now).getTime() : Date.now();
+    const clientSkew = Date.now() - serverNow;
+    const endsAtTime = quiz.ends_at ? new Date(quiz.ends_at).getTime() + clientSkew : 0;
+    const expired = Boolean(quiz.ends_at) && (Date.now() > endsAtTime + 2000);
+    const active = Boolean(quiz.started) && !expired;
+
+    document.getElementById('roomQuiz').innerHTML=`
+      <div class="tool-item">
+        <h2>${escapeHtml(quiz.title||'Study Challenge')}</h2>
+        <p>${questions.length} question(s) in this challenge · <span style="color:${active?'#35d9ae':expired?'#ff7b74':'#ffbd2e'}">${active?'🟢 Challenge Active':expired?'🔴 Challenge Ended':'🟡 Ready to Start'}</span></p>
+        ${questions.map((q,qi)=>{
+          q=q&&typeof q==='object'?q:{};
+          const options=Array.isArray(q.options)?q.options:[];
+          const responses=q.responses&&typeof q.responses==='object'?q.responses:{};
+          const myAnswer = responses[roomMemberId()];
+          const answered = myAnswer !== undefined;
+          return `
+            <div class="tool-item">
+              <h3>Question ${qi+1}</h3>
+              <p>${escapeHtml(q.question||'Question text unavailable')}</p>
+              ${options.map((o,i)=>{
+                const isSelected = myAnswer === i;
+                return `
+                  <button class="secondary" style="display:block;width:100%;margin:6px 0;text-align:left;background:${isSelected?'#168cff':'#21194b'};border-color:${isSelected?'#35d9ae':'#48317c'}"
+                    onclick="submitRoomAnswer('${escapeHtml(q.id||'')}',${i})"
+                    ${!active?'disabled':''}>
+                    <b>${String.fromCharCode(65+i)}.</b> ${escapeHtml(String(o??''))} ${isSelected ? ' ✓ (Your Answer)' : ''}
+                  </button>`;
+              }).join('')}
+              ${options.length!==4?'<small class="muted">This saved question has incomplete options. Please add it again to use it in a challenge.</small>':''}
+              <small>${Object.keys(responses).length} response(s)${answered?' · <span style="color:#35d9ae">Answer submitted</span>':''}</small>
+            </div>`;
+        }).join('')}
+        <p>${active?`Ends: ${new Date(endsAtTime).toLocaleTimeString()}`:expired?'Challenge ended':'Host can start the challenge when ready.'}</p>
+      </div>`;
+  }catch(e){
+    document.getElementById('roomStatus').textContent=e.message;
+  }
+}
 function renderRoomQuestionBuilder(quiz){const questions=quiz&&Array.isArray(quiz.questions)?quiz.questions:[];const count=document.getElementById('roomQuestionCount');if(count)count.textContent=`${questions.length} question(s) saved in this room`;const list=document.getElementById('roomQuestionList');if(list)list.innerHTML=questions.map((q,i)=>`<div class="tool-item"><b>${i+1}. ${escapeHtml(q&&q.question?q.question:'Question text unavailable')}</b></div>`).join('');}
 async function addRoomQuestion(){if(!currentRoomCode)return alert('Create or join a room first.');const options=['roomOptA','roomOptB','roomOptC','roomOptD'].map(id=>document.getElementById(id).value.trim());const question=document.getElementById('roomQuestion').value.trim();if(!question||options.some(x=>!x))return alert('Enter a question and all four options.');try{await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode),{method:'POST',body:JSON.stringify({action:'add_question',title:document.getElementById('roomQuizTitle').value||'Study Challenge',question,options})});document.getElementById('roomQuestion').value='';['roomOptA','roomOptB','roomOptC','roomOptD'].forEach(id=>document.getElementById(id).value='');await syncRoom();}catch(e){alert(e.message);}}
 async function startRoomQuiz(){if(!currentRoomCode)return alert('Create or join a room first.');const minutes=Math.max(1,Math.min(180,Number(document.getElementById('roomDuration').value)||5));try{await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode),{method:'POST',body:JSON.stringify({action:'start_quiz',title:document.getElementById('roomQuizTitle').value||'Study Challenge',duration:minutes})});await syncRoom();}catch(e){alert(e.message);}}
