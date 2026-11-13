@@ -285,6 +285,14 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
     <main>
       <!-- DASHBOARD -->
       <section id="dashboard" class="page active">
+        <div class="app-topbar">
+          <div class="global-search"><span aria-hidden="true">🔍</span><input id="globalSearch" placeholder="Search study tools, sections, notes..."></div>
+          <div class="topbar-actions">
+            <button class="notification-button" aria-label="Notifications">🔔</button>
+            <button class="avatar-button" onclick="showPage('profile')" aria-label="Profile">SM</button>
+          </div>
+        </div>
+
         <div class="welcome-hero">
           <div class="welcome-copy">
             <div class="eyebrow">YOUR PERSONAL LEARNING SPACE</div>
@@ -650,7 +658,30 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
           <div id="roomStatus"></div>
           <div id="roomQuiz"></div>
         </div>
-        <div class="card"><h2>Build a Live MCQ Challenge</h2><p class="muted">Add as many questions as you need. Each question is saved to the room along with your author name; adding another will not replace earlier questions.</p><input id="roomQuizTitle" placeholder="Challenge title"><textarea id="roomQuestion" placeholder="Question"></textarea><input id="roomOptA" placeholder="Option A"><input id="roomOptB" placeholder="Option B"><input id="roomOptC" placeholder="Option C"><input id="roomOptD" placeholder="Option D"><button class="secondary" onclick="addRoomQuestion()">＋ Add question to challenge</button><div id="roomQuestionCount" class="muted">0 questions added</div><div id="roomQuestionList"></div><label>Duration (minutes)</label><input id="roomDuration" type="number" min="1" max="180" value="5"><button class="primary" onclick="startRoomQuiz()">Start synchronized quiz</button><button class="secondary" onclick="clearRoomQuestions()">Clear all questions</button></div>
+        <div class="card">
+          <h2>Build a Live MCQ Challenge</h2>
+          <p class="muted">Add questions along with their correct answer key so members receive instant auto-grading feedback when they submit answers.</p>
+          <input id="roomQuizTitle" placeholder="Challenge title">
+          <textarea id="roomQuestion" placeholder="Question"></textarea>
+          <input id="roomOptA" placeholder="Option A">
+          <input id="roomOptB" placeholder="Option B">
+          <input id="roomOptC" placeholder="Option C">
+          <input id="roomOptD" placeholder="Option D">
+          <label>Correct Answer</label>
+          <select id="roomCorrectOpt">
+            <option value="0">Option A</option>
+            <option value="1">Option B</option>
+            <option value="2">Option C</option>
+            <option value="3">Option D</option>
+          </select>
+          <button class="secondary" onclick="addRoomQuestion()">＋ Add question to challenge</button>
+          <div id="roomQuestionCount" class="muted">0 questions added</div>
+          <div id="roomQuestionList"></div>
+          <label>Duration (minutes)</label>
+          <input id="roomDuration" type="number" min="1" max="180" value="5">
+          <button class="primary" onclick="startRoomQuiz()">Start synchronized quiz</button>
+          <button class="secondary" onclick="clearRoomQuestions()">Clear all questions</button>
+        </div>
       </section>
       <!-- ADD-ON: POMODORO TIMER -->
       <section id="focus" class="page">
@@ -1448,16 +1479,26 @@ async function syncRoom(){
           const myAnswer = responses[roomMemberId()];
           const answered = myAnswer !== undefined;
           const authorName = q.author || 'Member';
+          const correctIdx = typeof q.correct_index === 'number' ? q.correct_index : 0;
+          const revealAnswer = answered || expired;
 
           let mySelectionHtml = '';
           if (answered && myAnswer >= 0 && myAnswer < options.length) {
-            mySelectionHtml = '<div style="margin-top:8px;font-size:12px;color:#22bfff"><b>You selected:</b> Option ' + String.fromCharCode(65 + myAnswer) + ' (' + escapeHtml(options[myAnswer]) + ')</div>';
+            const isRight = myAnswer === correctIdx;
+            mySelectionHtml = `<div style="margin-top:8px;font-size:12px;color:${isRight ? '#35d9ae' : '#ff7b74'}">
+              <b>${isRight ? '✅ Correct!' : '❌ Incorrect.'} You selected:</b> Option ${String.fromCharCode(65 + myAnswer)} (${escapeHtml(options[myAnswer])})
+              ${!isRight ? ` · <b>Correct Answer:</b> Option ${String.fromCharCode(65 + correctIdx)} (${escapeHtml(options[correctIdx])})` : ''}
+            </div>`;
+          } else if (expired && options[correctIdx]) {
+            mySelectionHtml = `<div style="margin-top:8px;font-size:12px;color:#35d9ae">
+              <b>✅ Correct Answer:</b> Option ${String.fromCharCode(65 + correctIdx)} (${escapeHtml(options[correctIdx])})
+            </div>`;
           }
 
           let friendResponsesHtml = '';
           const otherMembers = Object.entries(responses).filter(([mId]) => mId !== roomMemberId());
           if (otherMembers.length > 0) {
-            friendResponsesHtml = '<div style="margin-top:4px;font-size:12px;color:#35d9ae"><b>Friend selected:</b> ' + 
+            friendResponsesHtml = '<div style="margin-top:4px;font-size:12px;color:#35d9ae"><b>Friend responses:</b> ' + 
               otherMembers.map(([mId, ansIdx]) => 'Option ' + String.fromCharCode(65 + ansIdx)).join(', ') + 
               '</div>';
           }
@@ -1473,14 +1514,19 @@ async function syncRoom(){
               <p>${escapeHtml(q.question||'Question text unavailable')}</p>
               ${options.map((o,i)=>{
                 const isSelected = myAnswer === i;
+                const isCorrectOpt = revealAnswer && i === correctIdx;
+                const bg = isCorrectOpt ? '#134e3a' : (isSelected ? '#168cff' : '#21194b');
+                const border = isCorrectOpt ? '#35d9ae' : (isSelected ? '#ff7b74' : '#48317c');
                 return `
-                  <button class="secondary" style="display:block;width:100%;margin:6px 0;text-align:left;background:${isSelected?'#168cff':'#21194b'};border-color:${isSelected?'#35d9ae':'#48317c'}"
+                  <button class="secondary" style="display:block;width:100%;margin:6px 0;text-align:left;background:${bg};border-color:${border}"
                     onclick="submitRoomAnswer('${escapeHtml(q.id||'')}',${i})"
                     ${!active?'disabled':''}>
-                    <b>${String.fromCharCode(65+i)}.</b> ${escapeHtml(String(o??''))} ${isSelected ? ' ✓ (Your Answer)' : ''}
+                    <b>${String.fromCharCode(65+i)}.</b> ${escapeHtml(String(o??''))}
+                    ${isSelected ? ' (Your Choice)' : ''}
+                    ${isCorrectOpt ? ' ✅' : ''}
                   </button>`;
               }).join('')}
-              ${options.length!==4?'<small class="muted">This saved question has incomplete options. Please add it again to use it in a challenge.</small>':''}
+              ${options.length!==4?'<small class="muted">This saved question has incomplete options.</small>':''}
               <small>${Object.keys(responses).length} response(s)${answered?' · <span style="color:#35d9ae">Answer submitted</span>':''}</small>
               ${mySelectionHtml}
               ${friendResponsesHtml}
@@ -1504,10 +1550,23 @@ async function addRoomQuestion(){
   const author = localStorage.getItem('sm_room_member_name') || document.getElementById('roomMemberName').value.trim() || 'Member';
   const options=['roomOptA','roomOptB','roomOptC','roomOptD'].map(id=>document.getElementById(id).value.trim());
   const question=document.getElementById('roomQuestion').value.trim();
+  const correct_index=Number(document.getElementById('roomCorrectOpt').value);
   if(!question||options.some(x=>!x))return alert('Enter a question and all four options.');
   try{
-    await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode),{method:'POST',body:JSON.stringify({action:'add_question',author,title:document.getElementById('roomQuizTitle').value||'Study Challenge',question,options})});
-    document.getElementById('roomQuestion').value='';['roomOptA','roomOptB','roomOptC','roomOptD'].forEach(id=>document.getElementById(id).value='');
+    await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode),{
+      method:'POST',
+      body:JSON.stringify({
+        action:'add_question',
+        author,
+        title:document.getElementById('roomQuizTitle').value||'Study Challenge',
+        question,
+        options,
+        correct_index
+      })
+    });
+    document.getElementById('roomQuestion').value='';
+    ['roomOptA','roomOptB','roomOptC','roomOptD'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('roomCorrectOpt').value='0';
     await syncRoom();
   }catch(e){alert(e.message);}
 }
