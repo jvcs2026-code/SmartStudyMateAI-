@@ -10,7 +10,6 @@ from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
 from flask import Flask, request, jsonify, send_from_directory
 
-from flask import Flask, request, jsonify, send_from_directory
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -901,6 +900,7 @@ def study_room(code):
         if "questions" not in quiz:
             legacy_question = {
                 "id": str(uuid.uuid4()),
+                "author": "Member",
                 "question": quiz.get("question", ""),
                 "options": quiz.get("options", []) if isinstance(quiz.get("options", []), list) else [],
                 "responses": quiz.get("responses", {}) if isinstance(quiz.get("responses", {}), dict) else {},
@@ -917,6 +917,7 @@ def study_room(code):
             if not isinstance(saved_question.get("responses"), dict):
                 saved_question["responses"] = {}
             saved_question.setdefault("id", str(uuid.uuid4()))
+            saved_question.setdefault("author", "Member")
             saved_question.setdefault("question", "")
         room["quiz"] = quiz
         rooms[code] = room
@@ -928,10 +929,11 @@ def study_room(code):
         quiz.setdefault("questions", [])
         if action == "add_question":
             question = str(data.get("question", "")).strip()
+            author = str(data.get("author", "Member")).strip()[:50]
             options = data.get("options", [])
             if not question or not isinstance(options, list) or len(options) != 4 or any(not str(o).strip() for o in options):
                 return jsonify({"error": "Enter a question and all four options before adding it."}), 400
-            quiz["questions"].append({"id": str(uuid.uuid4()), "question": question[:1000], "options": [str(o).strip()[:500] for o in options], "responses": {}})
+            quiz["questions"].append({"id": str(uuid.uuid4()), "author": author, "question": question[:1000], "options": [str(o).strip()[:500] for o in options], "responses": {}})
             quiz["title"] = str(data.get("title") or quiz.get("title") or "Study Challenge")[:120]
             quiz["started"] = False
         elif action == "start_quiz":
