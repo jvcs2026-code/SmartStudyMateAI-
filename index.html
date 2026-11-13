@@ -1445,7 +1445,7 @@ async function syncRoom(){
           let friendResponsesHtml = '';
           const otherMembers = Object.entries(responses).filter(([mId]) => mId !== roomMemberId());
           if (otherMembers.length > 0) {
-            friendResponsesHtml = '<div style="margin-top:4px;font-size:12px;color:#35d9ae"><b>:</b> ' + 
+            friendResponsesHtml = '<div style="margin-top:4px;font-size:12px;color:#35d9ae"><b>Friend selected:</b> ' + 
               otherMembers.map(([mId, ansIdx]) => 'Option ' + String.fromCharCode(65 + ansIdx)).join(', ') + 
               '</div>';
           }
