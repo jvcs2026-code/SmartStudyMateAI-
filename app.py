@@ -816,6 +816,7 @@ FLASHCARD_FILE = os.path.join(BASE_DIR, "flashcards.json")
 REFERENCE_FILE = os.path.join(BASE_DIR, "reference_library.json")
 ROOM_FILE = os.path.join(BASE_DIR, "study_rooms.json")
 CHECKLIST_FILE = os.path.join(BASE_DIR, "exam_checklists.json")
+FRIEND_CHAT_FILE = os.path.join(BASE_DIR, "friend_chats.json")
 
 def read_json_file(path, default):
     try:
@@ -986,6 +987,31 @@ def submit_study_room_answer(code):
     write_json_file(ROOM_FILE, rooms)
     return jsonify({"message": "Answer submitted.", "response_count": len(question["responses"])})
 
+# ==================================================
+# 16. FRIEND CHAT API (NEW)
+# ==================================================
+@app.route("/api/friend-chat", methods=["GET", "POST"])
+def friend_chat_api():
+    chats = read_json_file(FRIEND_CHAT_FILE, [])
+    if request.method == "GET":
+        return jsonify({"messages": chats[-100:]}) # return last 100 messages
+    
+    data = request.get_json(silent=True) or {}
+    sender = str(data.get("sender", "Anonymous")).strip()[:50]
+    message = str(data.get("message", "")).strip()
+    if not message:
+        return jsonify({"error": "Message cannot be empty."}), 400
+    
+    msg_obj = {
+        "id": str(uuid.uuid4()),
+        "sender": sender,
+        "message": message[:2000],
+        "timestamp": datetime.now().strftime("%I:%M %p")
+    }
+    chats.append(msg_obj)
+    write_json_file(FRIEND_CHAT_FILE, chats[-500:]) # keep last 500 max on disk
+    return jsonify({"message": "Sent", "data": msg_obj}), 201
+
 @app.route("/api/exam-checklist", methods=["GET", "POST"])
 def exam_checklist():
     data = request.get_json(silent=True) or {} if request.method == "POST" else request.args
@@ -1009,7 +1035,7 @@ def update_exam_checklist():
     checklist[exam_date]["items"][index]["done"] = done; write_json_file(CHECKLIST_FILE, checklist); return jsonify({"checklist": checklist[exam_date]})
 
 # ==================================================
-# 16. START APPLICATION
+# 17. START APPLICATION
 # ==================================================
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True)
