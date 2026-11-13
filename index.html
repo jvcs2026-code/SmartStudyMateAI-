@@ -641,8 +641,16 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
       <!-- ADD-ON: LIVE STUDY ROOM -->
       <section id="studyroom" class="page">
         <h1>Collaborative Study Room</h1><p class="muted">Create a room and share its code or link. Room members see the current timed MCQ challenge and synchronized responses.</p>
-        <div class="card"><button class="primary" onclick="createStudyRoom()">Create Study Room</button><input id="roomCode" placeholder="Enter room code"><button class="secondary" onclick="joinStudyRoom()">Join Room</button><div id="roomStatus"></div><div id="roomQuiz"></div></div>
-        <div class="card"><h2>Build a Live MCQ Challenge</h2><p class="muted">Add as many questions as you need. Each question is saved to the room; adding another will not replace earlier questions.</p><input id="roomQuizTitle" placeholder="Challenge title"><textarea id="roomQuestion" placeholder="Question"></textarea><input id="roomOptA" placeholder="Option A"><input id="roomOptB" placeholder="Option B"><input id="roomOptC" placeholder="Option C"><input id="roomOptD" placeholder="Option D"><button class="secondary" onclick="addRoomQuestion()">＋ Add question to challenge</button><div id="roomQuestionCount" class="muted">0 questions added</div><div id="roomQuestionList"></div><label>Duration (minutes)</label><input id="roomDuration" type="number" min="1" max="180" value="5"><button class="primary" onclick="startRoomQuiz()">Start synchronized quiz</button><button class="secondary" onclick="clearRoomQuestions()">Clear all questions</button></div>
+        <div class="card">
+          <label>Your Display Name (for tracking who asks questions)</label>
+          <input id="roomMemberName" placeholder="Enter your name (e.g. Alex)" oninput="saveRoomMemberName()">
+          <button class="primary" onclick="createStudyRoom()">Create Study Room</button>
+          <input id="roomCode" placeholder="Enter room code">
+          <button class="secondary" onclick="joinStudyRoom()">Join Room</button>
+          <div id="roomStatus"></div>
+          <div id="roomQuiz"></div>
+        </div>
+        <div class="card"><h2>Build a Live MCQ Challenge</h2><p class="muted">Add as many questions as you need. Each question is saved to the room along with your author name; adding another will not replace earlier questions.</p><input id="roomQuizTitle" placeholder="Challenge title"><textarea id="roomQuestion" placeholder="Question"></textarea><input id="roomOptA" placeholder="Option A"><input id="roomOptB" placeholder="Option B"><input id="roomOptC" placeholder="Option C"><input id="roomOptD" placeholder="Option D"><button class="secondary" onclick="addRoomQuestion()">＋ Add question to challenge</button><div id="roomQuestionCount" class="muted">0 questions added</div><div id="roomQuestionList"></div><label>Duration (minutes)</label><input id="roomDuration" type="number" min="1" max="180" value="5"><button class="primary" onclick="startRoomQuiz()">Start synchronized quiz</button><button class="secondary" onclick="clearRoomQuestions()">Clear all questions</button></div>
       </section>
       <!-- ADD-ON: POMODORO TIMER -->
       <section id="focus" class="page">
@@ -1408,6 +1416,9 @@ async function createStudyRoom(){try{const d=await api('/api/study-rooms',{metho
 function joinStudyRoom(){currentRoomCode=document.getElementById('roomCode').value.trim().toUpperCase();if(!currentRoomCode)return alert('Enter a room code.');startRoomPolling();}
 function startRoomPolling(){if(roomPollHandle)clearInterval(roomPollHandle);syncRoom();roomPollHandle=setInterval(syncRoom,2000);}
 function roomMemberId(){let id=localStorage.getItem('sm_room_member');if(!id){id=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'member-'+Date.now()+'-'+Math.random().toString(36).slice(2);localStorage.setItem('sm_room_member',id);}return id;}
+function saveRoomMemberName(){const name=document.getElementById('roomMemberName').value.trim();localStorage.setItem('sm_room_member_name',name||'Member');}
+document.addEventListener('DOMContentLoaded',()=>{const savedName=localStorage.getItem('sm_room_member_name');if(savedName&&document.getElementById('roomMemberName'))document.getElementById('roomMemberName').value=savedName;});
+
 async function syncRoom(){
   if(!currentRoomCode)return;
   try{
@@ -1436,6 +1447,7 @@ async function syncRoom(){
           const responses=q.responses&&typeof q.responses==='object'?q.responses:{};
           const myAnswer = responses[roomMemberId()];
           const answered = myAnswer !== undefined;
+          const authorName = q.author || 'Member';
 
           let mySelectionHtml = '';
           if (answered && myAnswer >= 0 && myAnswer < options.length) {
@@ -1452,7 +1464,12 @@ async function syncRoom(){
 
           return `
             <div class="tool-item">
-              <h3>Question ${qi+1}</h3>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                <h3 style="margin:0">Question ${qi+1}</h3>
+                <span style="font-size:11px;padding:2px 8px;border-radius:12px;background:rgba(82,56,255,0.25);color:#d0bfff;border:1px solid rgba(82,56,255,0.4)">
+                  Added by ${escapeHtml(authorName)}
+                </span>
+              </div>
               <p>${escapeHtml(q.question||'Question text unavailable')}</p>
               ${options.map((o,i)=>{
                 const isSelected = myAnswer === i;
@@ -1475,8 +1492,25 @@ async function syncRoom(){
     document.getElementById('roomStatus').textContent=e.message;
   }
 }
-function renderRoomQuestionBuilder(quiz){const questions=quiz&&Array.isArray(quiz.questions)?quiz.questions:[];const count=document.getElementById('roomQuestionCount');if(count)count.textContent=`${questions.length} question(s) saved in this room`;const list=document.getElementById('roomQuestionList');if(list)list.innerHTML=questions.map((q,i)=>`<div class="tool-item"><b>${i+1}. ${escapeHtml(q&&q.question?q.question:'Question text unavailable')}</b></div>`).join('');}
-async function addRoomQuestion(){if(!currentRoomCode)return alert('Create or join a room first.');const options=['roomOptA','roomOptB','roomOptC','roomOptD'].map(id=>document.getElementById(id).value.trim());const question=document.getElementById('roomQuestion').value.trim();if(!question||options.some(x=>!x))return alert('Enter a question and all four options.');try{await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode),{method:'POST',body:JSON.stringify({action:'add_question',title:document.getElementById('roomQuizTitle').value||'Study Challenge',question,options})});document.getElementById('roomQuestion').value='';['roomOptA','roomOptB','roomOptC','roomOptD'].forEach(id=>document.getElementById(id).value='');await syncRoom();}catch(e){alert(e.message);}}
+function renderRoomQuestionBuilder(quiz){
+  const questions=quiz&&Array.isArray(quiz.questions)?quiz.questions:[];
+  const count=document.getElementById('roomQuestionCount');
+  if(count)count.textContent=`${questions.length} question(s) saved in this room`;
+  const list=document.getElementById('roomQuestionList');
+  if(list)list.innerHTML=questions.map((q,i)=>`<div class="tool-item"><b>${i+1}. ${escapeHtml(q&&q.question?q.question:'Question text unavailable')}</b> <small style="color:#bba8ff">(By ${escapeHtml(q.author||'Member')})</small></div>`).join('');
+}
+async function addRoomQuestion(){
+  if(!currentRoomCode)return alert('Create or join a room first.');
+  const author = localStorage.getItem('sm_room_member_name') || document.getElementById('roomMemberName').value.trim() || 'Member';
+  const options=['roomOptA','roomOptB','roomOptC','roomOptD'].map(id=>document.getElementById(id).value.trim());
+  const question=document.getElementById('roomQuestion').value.trim();
+  if(!question||options.some(x=>!x))return alert('Enter a question and all four options.');
+  try{
+    await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode),{method:'POST',body:JSON.stringify({action:'add_question',author,title:document.getElementById('roomQuizTitle').value||'Study Challenge',question,options})});
+    document.getElementById('roomQuestion').value='';['roomOptA','roomOptB','roomOptC','roomOptD'].forEach(id=>document.getElementById(id).value='');
+    await syncRoom();
+  }catch(e){alert(e.message);}
+}
 async function startRoomQuiz(){if(!currentRoomCode)return alert('Create or join a room first.');const minutes=Math.max(1,Math.min(180,Number(document.getElementById('roomDuration').value)||5));try{await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode),{method:'POST',body:JSON.stringify({action:'start_quiz',title:document.getElementById('roomQuizTitle').value||'Study Challenge',duration:minutes})});await syncRoom();}catch(e){alert(e.message);}}
 async function clearRoomQuestions(){if(!currentRoomCode)return alert('Create or join a room first.');if(!confirm('Clear every question in this room?'))return;try{await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode),{method:'POST',body:JSON.stringify({action:'clear_questions'})});await syncRoom();}catch(e){alert(e.message);}}
 async function submitRoomAnswer(questionId,index){if(!currentRoomCode)return;try{await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode)+'/answers',{method:'POST',body:JSON.stringify({question_id:questionId,answer:index,member:roomMemberId()})});syncRoom();}catch(e){alert(e.message);}}
