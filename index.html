@@ -116,6 +116,16 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .answer-box{margin-top:8px;padding:10px 12px;background:rgba(53,217,174,.09);border-left:3px solid #35d9ae;border-radius:6px;font-size:13px;color:#d6fff3;display:none}
 .show-answers .answer-box{display:block}
 
+/* Chat Bubbles */
+.chat-stream{height:350px;overflow-y:auto;background:#070d20;border:1px solid var(--line);border-radius:12px;padding:14px;margin:14px 0;display:flex;flex-direction:column;gap:10px}
+.chat-bubble{max-width:76%;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.08);line-height:1.4}
+.chat-bubble.me{align-self:flex-end;background:linear-gradient(120deg,#168cff,#5238ff)}
+.chat-bubble.other{align-self:flex-start;background:#1b1645}
+.chat-sender{font-size:11px;font-weight:700;margin-bottom:3px;color:#d5c8ff}
+.chat-bubble.me .chat-sender{color:#e0f4ff}
+.chat-text{font-size:14px;color:#fff;word-break:break-word}
+.chat-time{font-size:10px;color:rgba(255,255,255,.65);text-align:right;margin-top:4px}
+
 @media(max-width:1100px){.nebula-action-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-bottom{grid-template-columns:1fr}}
 @media(max-width:820px){.app-layout{grid-template-columns:1fr}aside{padding:12px;border-right:0;border-bottom:1px solid var(--line)}nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}main{padding:18px}.browser-window{height:100vh;border-radius:0}.progress-stats,.row-3{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.row,.row-3,.nebula-action-grid{grid-template-columns:1fr}.progress-stats{grid-template-columns:1fr 1fr}.nebula-title{font-size:24px}}
@@ -232,9 +242,8 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
 @media(max-width:850px){.app-layout{grid-template-columns:1fr;overflow:auto}aside{padding:10px 14px;gap:8px}.logo-area{min-height:55px;padding-bottom:8px}.brand-mark{width:42px;height:42px;font-size:30px}nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}nav button{min-height:40px;font-size:12px;padding:8px}main{padding:0 16px 22px}.app-topbar{height:76px}.welcome-hero{min-height:280px}.welcome-copy{width:65%}.hero-art{right:-12%;opacity:.8}.feature-cards{grid-template-columns:1fr}.feature-card{min-height:110px}.redesigned-bottom{grid-template-columns:1fr}}
 @media(max-width:520px){.welcome-hero{padding:25px 20px;min-height:360px;align-items:flex-start}.welcome-copy{width:100%}.welcome-copy p{font-size:15px;max-width:85%}.hero-art{width:100%;right:-25%;top:145px;bottom:-30px;opacity:.5;transform:scale(.8)}.global-search{width:100%;height:46px}.topbar-actions{gap:4px}.notification-button{display:none}.progress-overview{grid-template-columns:1fr}.weekly-chart{border-left:0}.progress-metrics{gap:5px}.progress-metrics>div{grid-template-columns:30px 1fr;padding:6px}.metric-icon{font-size:20px}.progress-metrics small{font-size:9px}.activity-panel,.progress-panel{padding:18px 14px}}
 
-
 /* Additional SmartStudyMate tools */
-#flashcards .card,#references .card,#studyroom .card,#focus .card,#checklist .card{margin:18px 0}
+#flashcards .card,#references .card,#studyroom .card,#focus .card,#checklist .card,#chat .card{margin:18px 0}
 #flashcards input,#references input,#studyroom input,#focus input,#checklist input{width:100%;margin:8px 0}
 .tool-item{padding:13px;margin:10px 0;background:#19163f;border:1px solid #44317f;border-radius:12px}
 .tool-item pre{white-space:pre-wrap;overflow-wrap:anywhere;color:#d9d0ff;font-size:13px}
@@ -242,18 +251,6 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
 .tool-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .check-row{display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1px solid #40336e}
 .check-row input{width:auto!important}
-
-/* Friend Chat Box Styles */
-.chat-container-box{display:flex;flex-direction:column;height:420px;background:#090821;border:1px solid #40336e;border-radius:12px;overflow:hidden;margin-top:12px}
-.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
-.chat-bubble{max-width:75%;padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.4}
-.chat-bubble.mine{background:#6417d4;color:#fff;align-self:flex-end;border-bottom-right-radius:2px}
-.chat-bubble.theirs{background:#21194b;color:#e6ddff;align-self:flex-start;border-bottom-left-radius:2px}
-.chat-bubble b{display:block;font-size:11px;color:#bba8ff;margin-bottom:3px}
-.chat-bubble time{display:block;font-size:9px;color:#a49acb;margin-top:4px;text-align:right}
-.chat-input-area{display:flex;gap:8px;padding:12px;background:#111034;border-top:1px solid #40336e}
-.chat-input-area input{flex:1;margin:0}
-
 </style>
 </head>
 <body>
@@ -281,11 +278,11 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
           <button data-page="library">📖 Textbook Library</button>
           <button data-page="flashcards">🗂️ Flashcards</button>
           <button data-page="references">🧮 Formula & Code Library</button>
-          <button data-page="friendchat">💬 Chat With Friends</button>
+          <button data-page="chat">💬 Chat With Friends</button>
           <button data-page="studyroom">👥 Collaborative Study Room</button>
           <button data-page="focus">⏱️ Pomodoro Focus</button>
           <button data-page="checklist">✅ Exam-Day Checklist</button>
-           <button data-page="profile">👤 My Profile</button>
+          <button data-page="profile">👤 My Profile</button>
         </nav>
       </div>
       <div class="upgrade-box">
@@ -652,6 +649,7 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
         <div class="card"><h2>Create a Flashcard</h2><input id="fcFront" placeholder="Question / Front of card"><textarea id="fcBack" placeholder="Answer / Back of card"></textarea><button class="primary" onclick="addFlashcard()">Add Flashcard</button><div id="fcStatus"></div></div>
         <div class="card"><div class="panel-heading"><h2>Review Cards</h2><button class="secondary" onclick="loadFlashcards()">Refresh</button></div><div id="fcReview">Loading cards…</div></div>
       </section>
+
       <!-- ADD-ON: SEARCHABLE FORMULA AND CODE LIBRARY -->
       <section id="references" class="page">
         <h1>Formula & Code Reference Library</h1><p class="muted">Save and search Python, SQL, physics formulas and other quick references.</p>
@@ -659,38 +657,70 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
         <div class="card"><input id="refSearch" placeholder="Search saved references…" oninput="loadReferences()"><div id="refResults"></div></div>
       </section>
 
-      <!-- ADD-ON: CHAT WITH FRIENDS (NEW DIRECT CHAT FEATURE) -->
-      <section id="friendchat" class="page">
+      <!-- ADD-ON: CHAT WITH FRIENDS (WITH STUDY CODE SUPPORT) -->
+      <section id="chat" class="page">
         <h1>Chat With Friends</h1>
-        <p class="muted">Send real-time messages, notes, and study questions to your friends in the shared chat stream.</p>
+        <p class="muted">Send real-time messages, notes, and study questions using a Study Code or the open lounge.</p>
         <div class="card">
-          <label>Your Name / Handle</label>
-          <input id="chatSenderName" placeholder="Enter your name (e.g. Alex)" oninput="saveChatName()">
-          <div class="chat-container-box">
-            <div class="chat-messages" id="chatMessagesBox">
-              <p class="muted" style="text-align:center;margin:auto">Loading messages...</p>
+          <div class="row">
+            <div>
+              <label>Your Name / Handle</label>
+              <input id="chatSenderName" placeholder="Enter your name" oninput="saveChatPrefs()">
             </div>
-            <div class="chat-input-area">
-              <input id="chatMessageInput" placeholder="Type a message to your friends..." onkeydown="if(event.key==='Enter')sendFriendMessage()">
-              <button class="primary" onclick="sendFriendMessage()" style="margin:0">Send</button>
+            <div>
+              <label>Study Code (Optional — leave blank for Public Lounge)</label>
+              <div style="display:flex;gap:8px;align-items:center">
+                <input id="chatRoomCode" placeholder="e.g. A1B2C3" style="text-transform:uppercase" onkeydown="if(event.key==='Enter') joinChatRoom()">
+                <button class="secondary" style="margin:0;white-space:nowrap" onclick="joinChatRoom()">Connect Code</button>
+              </div>
             </div>
           </div>
-          <button class="secondary" onclick="loadFriendMessages()" style="margin-top:10px">🔄 Refresh Chat</button>
+
+          <div id="chatBox" class="chat-stream">
+            <p class="muted" style="margin:auto">Loading messages...</p>
+          </div>
+
+          <div style="display:flex;gap:10px">
+            <input id="chatInput" placeholder="Type a message to your friends..." onkeydown="if(event.key==='Enter') sendFriendMessage()">
+            <button class="primary" style="margin:0" onclick="sendFriendMessage()">Send</button>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:12px;margin-top:10px;flex-wrap:wrap">
+            <button class="secondary" id="refreshChatBtn" onclick="loadFriendChat(true)">🔄 Refresh Chat</button>
+            <button class="secondary" onclick="createCodeForChat()">➕ Generate New Study Code</button>
+            <span id="chatStatus" class="smalltext" style="color:#35d9ae"></span>
+          </div>
         </div>
       </section>
 
-      <!-- ADD-ON: LIVE STUDY ROOM -->
+      <!-- ADD-ON: LIVE COLLABORATIVE STUDY ROOM (QUIZ + INTEGRATED ROOM CHAT) -->
       <section id="studyroom" class="page">
-        <h1>Collaborative Study Room</h1><p class="muted">Create a room and share its code or link. Room members see the current timed MCQ challenge and synchronized responses.</p>
+        <h1>Collaborative Study Room</h1><p class="muted">Create a room and share its code or link. Room members can chat live and compete in timed MCQ challenges.</p>
         <div class="card">
-          <label>Your Display Name (for tracking who asks questions)</label>
+          <label>Your Display Name (for chat and questions)</label>
           <input id="roomMemberName" placeholder="Enter your name (e.g. Alex)" oninput="saveRoomMemberName()">
           <button class="primary" onclick="createStudyRoom()">Create Study Room</button>
-          <input id="roomCode" placeholder="Enter room code">
+          <input id="roomCode" placeholder="Enter room code" style="text-transform:uppercase">
           <button class="secondary" onclick="joinStudyRoom()">Join Room</button>
           <div id="roomStatus"></div>
           <div id="roomQuiz"></div>
         </div>
+
+        <!-- Integrated Study Room Live Chat -->
+        <div class="card" id="roomChatCard" style="display:none">
+          <div class="panel-heading">
+            <h2>💬 Room Live Chat (<span id="roomChatBadge"></span>)</h2>
+            <button class="small" id="refreshRoomChatBtn" onclick="syncRoom(true)">🔄 Refresh Chat</button>
+          </div>
+          <div id="roomChatBox" class="chat-stream" style="height:260px">
+            <p class="muted" style="margin:auto">No messages in this study room yet. Say hello!</p>
+          </div>
+          <div style="display:flex;gap:10px">
+            <input id="roomChatInput" placeholder="Chat with friends in this study room..." onkeydown="if(event.key==='Enter') sendRoomChatMessage()">
+            <button class="primary" style="margin:0" onclick="sendRoomChatMessage()">Send</button>
+          </div>
+        </div>
+
         <div class="card">
           <h2>Build a Live MCQ Challenge</h2>
           <p class="muted">Add questions along with their correct answer key so members receive instant auto-grading feedback when they submit answers.</p>
@@ -716,11 +746,13 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
           <button class="secondary" onclick="clearRoomQuestions()">Clear all questions</button>
         </div>
       </section>
+
       <!-- ADD-ON: POMODORO TIMER -->
       <section id="focus" class="page">
         <h1>Pomodoro Focus Timer</h1><p class="muted">Connect a session to a study task, focus for 25 or 50 minutes, then take a short or long break.</p>
         <div class="card"><label>Study task</label><select id="focusTask"><option value="">Choose a task (optional)</option></select><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="secondary" onclick="setPomodoro(25)">25 min focus</button><button class="secondary" onclick="setPomodoro(50)">50 min focus</button><button class="secondary" onclick="setPomodoro(5)">5 min break</button><button class="secondary" onclick="setPomodoro(15)">15 min break</button></div><div id="pomodoroClock" style="font-size:64px;font-weight:800;text-align:center;padding:22px">25:00</div><div style="display:flex;gap:10px;justify-content:center"><button class="primary" onclick="startPomodoro()">Start</button><button class="secondary" onclick="pausePomodoro()">Pause</button><button class="secondary" onclick="resetPomodoro()">Reset</button></div><div id="pomodoroStatus" class="muted" style="text-align:center;margin-top:12px">Ready to focus.</div></div>
       </section>
+
       <!-- ADD-ON: EXAM DAY CHECKLIST -->
       <section id="checklist" class="page">
         <h1>Exam-Day Checklist</h1><p class="muted">Enter your exam date to prepare a checklist for the final 48 hours and exam day.</p>
@@ -746,6 +778,13 @@ function showPage(id) {
   if (id === 'planner') loadSmartTasks();
   if (id === 'progress') loadExamProgressTracker();
   if (id === 'analytics') renderAnalyticsDashboard();
+  if (id === 'chat') {
+    loadFriendChat(true);
+    if (!chatPollHandle) chatPollHandle = setInterval(() => loadFriendChat(false), 2500);
+  } else if (chatPollHandle) {
+    clearInterval(chatPollHandle);
+    chatPollHandle = null;
+  }
 }
 document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => showPage(b.dataset.page)));
 
@@ -1157,7 +1196,6 @@ function renderAnalyticsDashboard() {
   document.getElementById('anaQuizCount').textContent = history.length;
   document.getElementById('anaTasksDone').textContent = completedTasks;
 
-  // Subject performance map
   const subjMap = {};
   history.forEach(q => {
     const s = q.subject || 'General';
@@ -1191,7 +1229,6 @@ function renderAnalyticsDashboard() {
     }).join('');
   }
 
-  // Trend chart
   const trendBox = document.getElementById('anaTrendChart');
   const recent = history.slice(-7);
   if (!recent.length) {
@@ -1206,7 +1243,6 @@ function renderAnalyticsDashboard() {
     `).join('');
   }
 
-  // Flagged topics needing revision
   const weakList = [];
   history.forEach(q => {
     if (q.percentage < 70) {
@@ -1442,7 +1478,6 @@ function submitMCQs() {
   });
   const total = mcqData.length, percentage = Math.round((score / total) * 100);
 
-  // Save to Performance Analytics history
   const hist = getStore('sm_quiz_history', []);
   hist.push({ subject: currentMcqMeta.subject || 'General', portion: currentMcqMeta.portion || 'Topic', score, total, percentage, date: new Date().toISOString() });
   setStore('sm_quiz_history', hist);
@@ -1465,10 +1500,137 @@ loadProfile();
 loadSmartTasks();
 
 // ==================================================
-// Added study tools: flashcards, references, friend chat, study rooms, Pomodoro, checklist
+// SHARED CHAT RENDER HELPER (USED BY BOTH CHAT WITH FRIENDS & STUDY ROOM)
+// ==================================================
+function renderChatMessages(box, msgs, myName, emptyText, forceScroll = false) {
+  if (!box) return;
+  if (!msgs || !msgs.length) {
+    box.innerHTML = `<p class="muted" style="margin:auto">${emptyText}</p>`;
+    return;
+  }
+  const wasAtBottom = box.scrollHeight - box.scrollTop <= box.clientHeight + 70;
+  box.innerHTML = msgs.map(m => {
+    const isMe = myName && (m.sender || '').trim().toLowerCase() === myName.toLowerCase();
+    return `
+      <div class="chat-bubble ${isMe ? 'me' : 'other'}">
+        <div class="chat-sender">${escapeHtml(m.sender || 'Friend')}</div>
+        <div class="chat-text">${escapeHtml(m.text || '')}</div>
+        <div class="chat-time">${escapeHtml(m.time || '')}</div>
+      </div>`;
+  }).join('');
+  if (wasAtBottom || forceScroll) {
+    box.scrollTop = box.scrollHeight;
+  }
+}
+
+// ==================================================
+// FUNCTION 1: CHAT WITH FRIENDS (STUDY CODE + REFRESH FIX)
+// ==================================================
+let chatPollHandle = null;
+
+function saveChatPrefs() {
+  const name = document.getElementById('chatSenderName')?.value || '';
+  const code = (document.getElementById('chatRoomCode')?.value || '').trim().toUpperCase();
+  localStorage.setItem('sm_chat_name', name);
+  localStorage.setItem('sm_chat_room', code);
+}
+
+function getActiveChatRoom() {
+  const code = (document.getElementById('chatRoomCode')?.value || '').trim().toUpperCase();
+  return code || 'PUBLIC';
+}
+
+function joinChatRoom() {
+  saveChatPrefs();
+  loadFriendChat(true);
+}
+
+async function createCodeForChat() {
+  try {
+    const d = await api('/api/study-rooms', { method: 'POST', body: JSON.stringify({}) });
+    document.getElementById('chatRoomCode').value = d.code;
+    saveChatPrefs();
+    await loadFriendChat(true);
+    const status = document.getElementById('chatStatus');
+    if (status) status.textContent = `Created & connected to Study Code: ${d.code}`;
+  } catch (e) {
+    alert(e.message);
+  }
+}
+
+async function loadFriendChat(manual = false) {
+  const box = document.getElementById('chatBox');
+  const status = document.getElementById('chatStatus');
+  const btn = document.getElementById('refreshChatBtn');
+  if (!box) return;
+
+  if (manual && btn) {
+    btn.disabled = true;
+    btn.textContent = 'Refreshing...';
+  }
+
+  try {
+    const room = getActiveChatRoom();
+    const d = await api(`/api/friend-chat?room=${encodeURIComponent(room)}&_t=${Date.now()}`);
+    const msgs = d.messages || [];
+    const myName = (document.getElementById('chatSenderName')?.value || '').trim();
+    renderChatMessages(
+      box,
+      msgs,
+      myName,
+      `No messages in <b>${escapeHtml(room)}</b> yet. Send the first message!`,
+      manual
+    );
+
+    if (manual && status) {
+      status.textContent = `Synced at ${new Date().toLocaleTimeString()} · Code: ${room}`;
+      setTimeout(() => { if (status) status.textContent = ''; }, 3500);
+    }
+  } catch (e) {
+    box.innerHTML = `<div class="notice error">${escapeHtml(e.message)}</div>`;
+  } finally {
+    if (manual && btn) {
+      btn.disabled = false;
+      btn.textContent = '🔄 Refresh Chat';
+    }
+  }
+}
+
+async function sendFriendMessage() {
+  const input = document.getElementById('chatInput');
+  const senderInput = document.getElementById('chatSenderName');
+  const text = input.value.trim();
+  const sender = (senderInput?.value || '').trim() || 'Friend';
+  if (!text) return;
+
+  input.value = '';
+  try {
+    await api('/api/friend-chat', {
+      method: 'POST',
+      body: JSON.stringify({
+        room: getActiveChatRoom(),
+        sender,
+        text
+      })
+    });
+    await loadFriendChat(true);
+  } catch (e) {
+    alert(e.message);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const nameEl = document.getElementById('chatSenderName');
+  const roomEl = document.getElementById('chatRoomCode');
+  if (nameEl) nameEl.value = localStorage.getItem('sm_chat_name') || localStorage.getItem('sm_room_member_name') || '';
+  if (roomEl) roomEl.value = localStorage.getItem('sm_chat_room') || '';
+});
+
+// ==================================================
+// FUNCTION 2: COLLABORATIVE STUDY ROOM (QUIZ + INTEGRATED ROOM CHAT)
 // ==================================================
 let flashcardQueue = [], flashcardIndex = 0, currentRoomCode = '', roomPollHandle = null;
-let friendChatPollHandle = null;
+let pomoSeconds = 25*60, pomoRemaining = pomoSeconds, pomoInterval = null;
 
 async function loadFlashcards(){try{const d=await api('/api/flashcards');flashcardQueue=d.due_cards||[];flashcardIndex=0;renderFlashcard();document.getElementById('fcStatus').textContent=`${d.cards.length} saved · ${flashcardQueue.length} due for review`; }catch(e){document.getElementById('fcReview').textContent=e.message;}}
 function renderFlashcard(){const el=document.getElementById('fcReview');if(!flashcardQueue.length){el.innerHTML='<p class="muted">No cards due right now. Add cards or come back on the scheduled review date.</p>';return;}if(flashcardIndex>=flashcardQueue.length)flashcardIndex=0;const c=flashcardQueue[flashcardIndex];el.innerHTML=`<div class="tool-item"><small>Card ${flashcardIndex+1} of ${flashcardQueue.length}</small><h2>${escapeHtml(c.front)}</h2><button class="secondary" onclick="document.getElementById('fcAnswer').hidden=false">Show Answer</button><div id="fcAnswer" class="flashcard-answer" hidden>${escapeHtml(c.back)}</div><div class="tool-actions"><button class="secondary" onclick="rateFlashcard('Hard')">Hard</button><button class="secondary" onclick="rateFlashcard('Good')">Good</button><button class="primary" onclick="rateFlashcard('Easy')">Easy</button></div></div>`;}
@@ -1478,75 +1640,75 @@ async function loadReferences(){try{const q=document.getElementById('refSearch')
 async function addReference(){try{await api('/api/reference-library',{method:'POST',body:JSON.stringify({title:document.getElementById('refTitle').value,category:document.getElementById('refCategory').value,content:document.getElementById('refContent').value})});['refTitle','refCategory','refContent'].forEach(id=>document.getElementById(id).value='');loadReferences();}catch(e){alert(e.message);}}
 async function deleteReference(id){try{await api('/api/reference-library/'+encodeURIComponent(id),{method:'DELETE'});loadReferences();}catch(e){alert(e.message);}}
 
-/* Friend Chat Functions */
-function saveChatName() {
-  const name = document.getElementById('chatSenderName').value.trim();
-  localStorage.setItem('sm_chat_name', name || 'Anonymous');
+async function createStudyRoom(){
+  try{
+    const d=await api('/api/study-rooms',{method:'POST',body:JSON.stringify({})});
+    currentRoomCode=d.code;
+    document.getElementById('roomCode').value=d.code;
+    document.getElementById('roomStatus').innerHTML=`<p>Room code: <b>${d.code}</b></p><p>Share link: <a href="${d.share_url}" target="_blank" rel="noopener">${d.share_url}</a></p>`;
+    startRoomPolling();
+  }catch(e){alert(e.message);}
 }
-async function loadFriendMessages() {
-  try {
-    const d = await api('/api/friend-chat');
-    const msgs = d.messages || [];
-    const box = document.getElementById('chatMessagesBox');
-    const myName = localStorage.getItem('sm_chat_name') || document.getElementById('chatSenderName').value.trim() || 'Anonymous';
-    if (!msgs.length) {
-      box.innerHTML = '<p class="muted" style="text-align:center;margin:auto">No messages yet. Say hello to your friends!</p>';
-      return;
-    }
-    box.innerHTML = msgs.map(m => {
-      const isMine = m.sender === myName;
-      return `<div class="chat-bubble ${isMine ? 'mine' : 'theirs'}">
-        <b>${escapeHtml(m.sender)}</b>
-        <span>${escapeHtml(m.message)}</span>
-        <time>${escapeHtml(m.timestamp)}</time>
-      </div>`;
-    }).join('');
-    box.scrollTop = box.scrollHeight;
-  } catch (e) {
-    console.error(e);
-  }
+function joinStudyRoom(){
+  currentRoomCode=document.getElementById('roomCode').value.trim().toUpperCase();
+  if(!currentRoomCode)return alert('Enter a room code.');
+  startRoomPolling();
 }
-async function sendFriendMessage() {
-  const sender = localStorage.getItem('sm_chat_name') || document.getElementById('chatSenderName').value.trim() || 'Anonymous';
-  const input = document.getElementById('chatMessageInput');
-  const message = input.value.trim();
-  if (!message) return;
+function startRoomPolling(){
+  if(roomPollHandle)clearInterval(roomPollHandle);
+  syncRoom(true);
+  roomPollHandle=setInterval(()=>syncRoom(false),2000);
+}
+function roomMemberId(){let id=localStorage.getItem('sm_room_member');if(!id){id=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'member-'+Date.now()+'-'+Math.random().toString(36).slice(2);localStorage.setItem('sm_room_member',id);}return id;}
+function saveRoomMemberName(){const name=document.getElementById('roomMemberName').value.trim();localStorage.setItem('sm_room_member_name',name||'Member');}
+document.addEventListener('DOMContentLoaded',()=>{const savedName=localStorage.getItem('sm_room_member_name');if(savedName&&document.getElementById('roomMemberName'))document.getElementById('roomMemberName').value=savedName;});
+
+async function sendRoomChatMessage() {
+  if (!currentRoomCode) return alert('Create or join a study room first.');
+  const input = document.getElementById('roomChatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  const sender = document.getElementById('roomMemberName').value.trim() || localStorage.getItem('sm_room_member_name') || 'Member';
+  input.value = '';
   try {
-    await api('/api/friend-chat', {
+    await api('/api/study-rooms/' + encodeURIComponent(currentRoomCode), {
       method: 'POST',
-      body: JSON.stringify({ sender, message })
+      body: JSON.stringify({ action: 'send_chat', sender, text })
     });
-    input.value = '';
-    loadFriendMessages();
+    await syncRoom(true);
   } catch (e) {
     alert(e.message);
   }
 }
-function startFriendChatPolling() {
-  if (friendChatPollHandle) clearInterval(friendChatPollHandle);
-  loadFriendMessages();
-  friendChatPollHandle = setInterval(loadFriendMessages, 3000);
-}
 
-async function createStudyRoom(){try{const d=await api('/api/study-rooms',{method:'POST',body:JSON.stringify({})});currentRoomCode=d.code;document.getElementById('roomCode').value=d.code;document.getElementById('roomStatus').innerHTML=`<p>Room code: <b>${d.code}</b></p><p>Share link: <a href="${d.share_url}" target="_blank" rel="noopener">${d.share_url}</a></p>`;startRoomPolling();}catch(e){alert(e.message);}}
-function joinStudyRoom(){currentRoomCode=document.getElementById('roomCode').value.trim().toUpperCase();if(!currentRoomCode)return alert('Enter a room code.');startRoomPolling();}
-function startRoomPolling(){if(roomPollHandle)clearInterval(roomPollHandle);syncRoom();roomPollHandle=setInterval(syncRoom,2000);}
-function roomMemberId(){let id=localStorage.getItem('sm_room_member');if(!id){id=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'member-'+Date.now()+'-'+Math.random().toString(36).slice(2);localStorage.setItem('sm_room_member',id);}return id;}
-function saveRoomMemberName(){const name=document.getElementById('roomMemberName').value.trim();localStorage.setItem('sm_room_member_name',name||'Member');}
-document.addEventListener('DOMContentLoaded',()=>{
-  const savedName=localStorage.getItem('sm_room_member_name');
-  if(savedName&&document.getElementById('roomMemberName'))document.getElementById('roomMemberName').value=savedName;
-  const savedChatName=localStorage.getItem('sm_chat_name');
-  if(savedChatName&&document.getElementById('chatSenderName'))document.getElementById('chatSenderName').value=savedChatName;
-});
-
-async function syncRoom(){
+async function syncRoom(manual = false){
   if(!currentRoomCode)return;
+  const btn = document.getElementById('refreshRoomChatBtn');
+  if (manual && btn) {
+    btn.disabled = true;
+    btn.textContent = 'Refreshing...';
+  }
   try{
-    const d=await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode));
+    const d=await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode)+'?_t='+Date.now());
     const quiz=d&&d.quiz?d.quiz:null;
     const questions=quiz&&Array.isArray(quiz.questions)?quiz.questions:[];
     document.getElementById('roomStatus').innerHTML=`<p>Connected to room <b>${escapeHtml(currentRoomCode)}</b>. Share this code with your study group.</p>`;
+
+    // Show & sync the integrated room chat
+    const chatCard = document.getElementById('roomChatCard');
+    const chatBadge = document.getElementById('roomChatBadge');
+    const chatBox = document.getElementById('roomChatBox');
+    if (chatCard) chatCard.style.display = 'block';
+    if (chatBadge) chatBadge.textContent = 'Code: ' + currentRoomCode;
+    const myRoomName = (document.getElementById('roomMemberName')?.value || '').trim();
+    renderChatMessages(
+      chatBox,
+      d.messages || [],
+      myRoomName,
+      `No messages in room <b>${escapeHtml(currentRoomCode)}</b> yet. Say hello to your friends!`,
+      manual
+    );
+
     renderRoomQuestionBuilder(quiz);
     if(!questions.length){
       document.getElementById('roomQuiz').innerHTML='<p class="muted">No questions added yet. Add questions below to build your challenge.</p>';
@@ -1626,6 +1788,11 @@ async function syncRoom(){
       </div>`;
   }catch(e){
     document.getElementById('roomStatus').textContent=e.message;
+  } finally {
+    if (manual && btn) {
+      btn.disabled = false;
+      btn.textContent = '🔄 Refresh Chat';
+    }
   }
 }
 function renderRoomQuestionBuilder(quiz){
@@ -1663,7 +1830,6 @@ async function addRoomQuestion(){
 async function startRoomQuiz(){if(!currentRoomCode)return alert('Create or join a room first.');const minutes=Math.max(1,Math.min(180,Number(document.getElementById('roomDuration').value)||5));try{await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode),{method:'POST',body:JSON.stringify({action:'start_quiz',title:document.getElementById('roomQuizTitle').value||'Study Challenge',duration:minutes})});await syncRoom();}catch(e){alert(e.message);}}
 async function clearRoomQuestions(){if(!currentRoomCode)return alert('Create or join a room first.');if(!confirm('Clear every question in this room?'))return;try{await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode),{method:'POST',body:JSON.stringify({action:'clear_questions'})});await syncRoom();}catch(e){alert(e.message);}}
 async function submitRoomAnswer(questionId,index){if(!currentRoomCode)return;try{await api('/api/study-rooms/'+encodeURIComponent(currentRoomCode)+'/answers',{method:'POST',body:JSON.stringify({question_id:questionId,answer:index,member:roomMemberId()})});syncRoom();}catch(e){alert(e.message);}}
-let pomoSeconds = 25*60, pomoRemaining = pomoSeconds, pomoInterval = null;
 function setPomodoro(minutes){pausePomodoro();pomoSeconds=minutes*60;pomoRemaining=pomoSeconds;renderPomodoro();document.getElementById('pomodoroStatus').textContent=minutes<=15?'Break selected.':'Focus session selected.';}
 function renderPomodoro(){const m=String(Math.floor(pomoRemaining/60)).padStart(2,'0'),s=String(pomoRemaining%60).padStart(2,'0');document.getElementById('pomodoroClock').textContent=`${m}:${s}`;document.title=`${m}:${s} · SmartStudyMate`; }
 function startPomodoro(){if(pomoInterval)return;pomoInterval=setInterval(()=>{if(pomoRemaining>0){pomoRemaining--;renderPomodoro();}else{pausePomodoro();document.getElementById('pomodoroStatus').textContent='Session complete! Take a break or start the next focus session.';alert('Pomodoro session complete!');}},1000);document.getElementById('pomodoroStatus').textContent='Timer running.';}
@@ -1673,18 +1839,8 @@ async function loadFocusTasks(){try{const d=await api('/api/tasks');const sel=do
 async function loadExamChecklist(){const examDate=document.getElementById('checkExamDate').value;if(!examDate)return alert('Select your exam date.');try{const d=await api('/api/exam-checklist',{method:'POST',body:JSON.stringify({exam_date:examDate})});document.getElementById('checklistStatus').textContent=d.is_48_hour_window?'You are within the final 48-hour preparation window.':'Checklist prepared for your exam date.';document.getElementById('checklistItems').innerHTML=(d&&d.checklist&&Array.isArray(d.checklist.items)?d.checklist.items:[]).map((it,i)=>`<label class="check-row"><input type="checkbox" ${it.done?'checked':''} onchange="updateChecklistItem(${i},this.checked)"><span>${escapeHtml(it.label)}</span></label>`).join('');}catch(e){alert(e.message);}}
 async function updateChecklistItem(index,done){try{await api('/api/exam-checklist',{method:'PUT',body:JSON.stringify({exam_date:document.getElementById('checkExamDate').value,index,done})});}catch(e){alert(e.message);}}
 
-// Load add-on views on navigation
-document.querySelectorAll('nav button').forEach(b=>{
-  b.addEventListener('click',()=>{
-    const pageId = b.dataset.page;
-    if(pageId==='flashcards') loadFlashcards();
-    if(pageId==='references') loadReferences();
-    if(pageId==='focus') loadFocusTasks();
-    if(pageId==='friendchat') startFriendChatPolling();
-  });
-});
-const roomFromLink=new URLSearchParams(location.search).get('room');if(roomFromLink){document.getElementById('roomCode').value=roomFromLink;currentRoomCode=roomFromLink.toUpperCase();startRoomPolling();}
-
+document.querySelectorAll('nav button').forEach(b=>{b.addEventListener('click',()=>{if(b.dataset.page==='flashcards')loadFlashcards();if(b.dataset.page==='references')loadReferences();if(b.dataset.page==='focus')loadFocusTasks();});});
+const roomFromLink=new URLSearchParams(location.search).get('room');if(roomFromLink){document.getElementById('roomCode').value=roomFromLink;currentRoomCode=roomFromLink.toUpperCase();showPage('studyroom');startRoomPolling();}
 </script>
 
 <script>
