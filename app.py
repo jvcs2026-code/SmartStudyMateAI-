@@ -883,8 +883,137 @@ def reference_library_delete(entry_id):
     write_json_file(REFERENCE_FILE, updated); return jsonify({"message": "Deleted."})
 
 # ==================================================
-# FRIEND CHAT API (SUPPORTS PUBLIC + STUDY CODE ROOMS)
+# WHATSAPP-STYLE MULTI-CONTACT & STUDY ROOM CHAT API
 # ==================================================
+WHATSAPP_CHAT_FILE = os.path.join(BASE_DIR, "whatsapp_chats.json")
+
+DEFAULT_WHATSAPP_CHATS = {
+    "PUBLIC": {
+        "id": "PUBLIC",
+        "name": "🌐 Public Study Lounge",
+        "avatar": "🌐",
+        "status": "Online · Open to all students",
+        "messages": [
+            {"id": "msg_pub_1", "sender": "SmartStudy Bot", "message": "Welcome to the Public Study Lounge! Share doubts, tips, or create a private Study Code room.", "timestamp": "09:00 AM", "status": "read"}
+        ]
+    },
+    "study_group": {
+        "id": "study_group",
+        "name": "📚 Class 12 Board Group",
+        "avatar": "👥",
+        "status": "Online · 4 members",
+        "messages": [
+            {"id": "msg_1", "sender": "Alex", "message": "Hey everyone! Did anyone finish the Python functions worksheet?", "timestamp": "10:14 AM", "status": "read"},
+            {"id": "msg_2", "sender": "You", "message": "Working on it right now. Question 4 is a bit tricky.", "timestamp": "10:15 AM", "status": "read"}
+        ]
+    },
+    "ai_bot": {
+        "id": "ai_bot",
+        "name": "🤖 SmartStudy AI Assistant",
+        "avatar": "🤖",
+        "status": "Online · Instant AI Replies",
+        "messages": [
+            {"id": "msg_ai_1", "sender": "SmartStudy AI", "message": "Hello! Ask me any quick study doubt right here in WhatsApp mode.", "timestamp": "09:00 AM", "status": "read"}
+        ]
+    }
+}
+
+def load_whatsapp_chats():
+    data = read_json_file(WHATSAPP_CHAT_FILE, None)
+    if not data or not isinstance(data, dict):
+        write_json_file(WHATSAPP_CHAT_FILE, DEFAULT_WHATSAPP_CHATS)
+        return dict(DEFAULT_WHATSAPP_CHATS)
+    return data
+
+@app.route("/api/whatsapp/chats", methods=["GET", "POST"])
+def whatsapp_chats_list():
+    chats = load_whatsapp_chats()
+    if request.method == "POST":
+        data = request.get_json(silent=True) or {}
+        code = str(data.get("code", "")).strip().upper()
+        name = str(data.get("name", "")).strip() or f"🔑 Study Room ({code})"
+        if not code:
+            code = uuid.uuid4().hex[:6].upper()
+            name = f"🔑 Study Room ({code})"
+        if code not in chats:
+            chats[code] = {
+                "id": code,
+                "name": name[:60],
+                "avatar": "🔑",
+                "status": f"Study Code: {code} · Active",
+                "messages": [
+                    {"id": str(uuid.uuid4()), "sender": "System", "message": f"Joined Study Room {code}. Share this code with friends!", "timestamp": datetime.now().strftime("%I:%M %p"), "status": "read"}
+                ]
+            }
+            write_json_file(WHATSAPP_CHAT_FILE, chats)
+        return jsonify({"chat": chats[code]}), 201
+
+    summary = []
+    for cid, chat in chats.items():
+        msgs = chat.get("messages", [])
+        last_msg = msgs[-1]["message"] if msgs else "No messages yet"
+        last_time = msgs[-1]["timestamp"] if msgs else ""
+        summary.append({
+            "id": chat["id"],
+            "name": chat["name"],
+            "avatar": chat.get("avatar", "💬"),
+            "status": chat.get("status", "Online"),
+            "last_message": last_msg,
+            "last_time": last_time
+        })
+    return jsonify({"chats": summary})
+
+@app.route("/api/whatsapp/chats/<chat_id>", methods=["GET", "POST"])
+def whatsapp_chat_detail(chat_id):
+    chats = load_whatsapp_chats()
+    if chat_id not in chats:
+        chats[chat_id] = {
+            "id": chat_id,
+            "name": f"🔑 Study Room ({chat_id})",
+            "avatar": "🔑",
+            "status": f"Study Code: {chat_id} · Active",
+            "messages": []
+        }
+
+    if request.method == "GET":
+        return jsonify(chats[chat_id])
+
+    data = request.get_json(silent=True) or {}
+    sender = str(data.get("sender", "You")).strip()[:50] or "You"
+    message = str(data.get("message", "")).strip()
+    if not message:
+        return jsonify({"error": "Message cannot be empty."}), 400
+
+    new_msg = {
+        "id": str(uuid.uuid4()),
+        "sender": sender,
+        "message": message[:2000],
+        "timestamp": datetime.now().strftime("%I:%M %p"),
+        "status": "read"
+    }
+    chats[chat_id]["messages"].append(new_msg)
+
+    # Auto-reply if messaging SmartStudy AI Assistant
+    if chat_id == "ai_bot" and sender != "SmartStudy AI":
+        ai_text = "Got it! Let me know if you'd like a quick summary or practice MCQ on this topic."
+        if client is not None:
+            try:
+                resp = generate_with_retry(f"You are SmartStudy AI on WhatsApp. Reply concisely (max 3 sentences, plain text, no markdown asterisks) to this student message: {message}")
+                if resp.text:
+                    ai_text = resp.text.strip()
+            except Exception:
+                pass
+        chats[chat_id]["messages"].append({
+            "id": str(uuid.uuid4()),
+            "sender": "SmartStudy AI",
+            "message": ai_text[:2000],
+            "timestamp": datetime.now().strftime("%I:%M %p"),
+            "status": "read"
+        })
+
+    write_json_file(WHATSAPP_CHAT_FILE, chats)
+    return jsonify({"message": "Sent", "data": new_msg}), 201
+
 @app.route("/api/friend-chat", methods=["GET", "POST"])
 def friend_chat_api():
     chats = read_json_file(CHAT_FILE, {})
@@ -939,7 +1068,6 @@ def study_room(code):
     room = rooms[code]
     room.setdefault("messages", [])
 
-    # Upgrade and normalize older room data without deleting saved questions.
     quiz = room.get("quiz")
     if quiz and isinstance(quiz, dict):
         if "questions" not in quiz:
@@ -989,7 +1117,6 @@ def study_room(code):
             room["messages"] = room["messages"][-150:]
             room["updated_at"] = datetime.now().isoformat(timespec="seconds")
             write_json_file(ROOM_FILE, rooms)
-            # Also sync with friend_chats.json for this room code
             chats = read_json_file(CHAT_FILE, {})
             if isinstance(chats, list):
                 chats = {"PUBLIC": chats}
@@ -1036,7 +1163,6 @@ def study_room(code):
         room["updated_at"] = datetime.now().isoformat(timespec="seconds")
         write_json_file(ROOM_FILE, rooms)
 
-    # Merge any messages posted via Chat With Friends under the same room code
     chats = read_json_file(CHAT_FILE, {})
     if isinstance(chats, dict) and code in chats:
         existing_ids = {m.get("id") for m in room["messages"]}
