@@ -963,10 +963,12 @@ def whatsapp_chats_list():
         })
     return jsonify({"chats": summary})
 
-@app.route("/api/whatsapp/chats/<chat_id>", methods=["GET", "POST"])
+@app.route("/api/whatsapp/chats/<chat_id>", methods=["GET", "POST", "DELETE"])
 def whatsapp_chat_detail(chat_id):
     chats = load_whatsapp_chats()
     if chat_id not in chats:
+        if request.method == "DELETE":
+            return jsonify({"error": "Chat not found."}), 404
         chats[chat_id] = {
             "id": chat_id,
             "name": f"🔑 Study Room ({chat_id})",
@@ -974,6 +976,19 @@ def whatsapp_chat_detail(chat_id):
             "status": f"Study Code: {chat_id} · Active",
             "messages": []
         }
+
+    if request.method == "DELETE":
+        mode = request.args.get("mode", "clear")
+        if mode == "delete_room":
+            if chat_id in ("PUBLIC", "study_group", "ai_bot"):
+                return jsonify({"error": "Default channels cannot be removed. Use Clear Messages instead."}), 400
+            chats.pop(chat_id, None)
+            write_json_file(WHATSAPP_CHAT_FILE, chats)
+            return jsonify({"message": "Study room deleted."})
+        else:
+            chats[chat_id]["messages"] = []
+            write_json_file(WHATSAPP_CHAT_FILE, chats)
+            return jsonify({"message": "Chat messages cleared."})
 
     if request.method == "GET":
         return jsonify(chats[chat_id])
@@ -1013,6 +1028,19 @@ def whatsapp_chat_detail(chat_id):
 
     write_json_file(WHATSAPP_CHAT_FILE, chats)
     return jsonify({"message": "Sent", "data": new_msg}), 201
+
+
+@app.route("/api/whatsapp/chats/<chat_id>/messages/<msg_id>", methods=["DELETE"])
+def whatsapp_delete_single_message(chat_id, msg_id):
+    chats = load_whatsapp_chats()
+    if chat_id not in chats:
+        return jsonify({"error": "Chat not found."}), 404
+    before = len(chats[chat_id].get("messages", []))
+    chats[chat_id]["messages"] = [m for m in chats[chat_id].get("messages", []) if m.get("id") != msg_id]
+    if len(chats[chat_id]["messages"]) == before:
+        return jsonify({"error": "Message not found."}), 404
+    write_json_file(WHATSAPP_CHAT_FILE, chats)
+    return jsonify({"message": "Message deleted."})
 
 @app.route("/api/friend-chat", methods=["GET", "POST"])
 def friend_chat_api():
