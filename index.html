@@ -120,6 +120,9 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .wa-input-area{padding:10px 16px;background:#202c33;display:flex;align-items:center;gap:10px}
 .wa-input-area input{flex:1;background:#2a3942;border:0;padding:10px 14px;border-radius:8px;color:#e9edef;outline:none;font-size:14px}
 .wa-send-btn{background:#00a884;color:#fff;border:0;width:40px;height:40px;border-radius:50%;cursor:pointer;display:grid;place-items:center;font-size:16px;margin:0;padding:0;flex-shrink:0}
+.wa-del-msg{opacity:0;background:transparent;border:0;color:#ff7b74;cursor:pointer;font-size:12px;padding:0 0 0 6px;margin:0;transition:opacity .15s}
+.wa-bubble:hover .wa-del-msg{opacity:1}
+.wa-header-actions{display:flex;gap:6px;align-items:center}
 
 /* Chat Bubbles (Study Room) */
 .chat-stream{height:350px;overflow-y:auto;background:#070d20;border:1px solid var(--line);border-radius:12px;padding:14px;margin:14px 0;display:flex;flex-direction:column;gap:10px}
@@ -703,7 +706,11 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
                 <div class="wa-header-title" id="activeChatName">Select a chat</div>
                 <div class="wa-header-status" id="activeChatStatus">Choose a contact or group from the left</div>
               </div>
-              <button class="small" style="margin:0;background:#2a3942;border:0;color:#e9edef" onclick="fetchWaMessages(true)">🔄 Sync</button>
+              <div class="wa-header-actions">
+                <button class="small" style="margin:0;background:#2a3942;border:0;color:#e9edef" onclick="fetchWaMessages(true)" title="Sync messages">🔄 Sync</button>
+                <button class="small" id="waClearBtn" style="margin:0;background:#2a3942;border:0;color:#ffbd2e;display:none" onclick="clearCurrentWaChat()" title="Clear all messages">🧹 Clear</button>
+                <button class="small" id="waDeleteRoomBtn" style="margin:0;background:rgba(255,80,110,.2);border:1px solid rgba(255,80,110,.4);color:#ff7b74;display:none" onclick="deleteCurrentWaRoom()" title="Delete this chat room">🗑️ Delete</button>
+              </div>
             </div>
             <div class="wa-messages" id="waMessagesBox">
               <div style="margin:auto;text-align:center;color:#8696a0">Select a conversation to start messaging</div>
@@ -927,11 +934,21 @@ async function fetchWaMessages(forceScroll = false) {
     document.getElementById('activeChatName').textContent = chat.name;
     document.getElementById('activeChatStatus').textContent = chat.status;
 
+    const isDefaultRoom = ['PUBLIC', 'study_group', 'ai_bot'].includes(currentWaChatId);
+    document.getElementById('waClearBtn').style.display = 'inline-block';
+    document.getElementById('waDeleteRoomBtn').style.display = isDefaultRoom ? 'none' : 'inline-block';
+
     const box = document.getElementById('waMessagesBox');
     const wasAtBottom = box.scrollHeight - box.scrollTop <= box.clientHeight + 70;
     const myName = (localStorage.getItem('wa_sender') || document.getElementById('waSenderName').value || 'You').trim();
+    const msgs = chat.messages || [];
 
-    box.innerHTML = (chat.messages || []).map(m => {
+    if (!msgs.length) {
+      box.innerHTML = '<div style="margin:auto;text-align:center;color:#8696a0">No messages in this chat yet.</div>';
+      return;
+    }
+
+    box.innerHTML = msgs.map(m => {
       const isMine = m.sender === 'You' || (myName && m.sender.toLowerCase() === myName.toLowerCase());
       const ticks = m.status === 'read' ? '<span class="wa-ticks">✓✓</span>' : '<span class="wa-ticks">✓</span>';
       return `
@@ -941,6 +958,7 @@ async function fetchWaMessages(forceScroll = false) {
           <div class="wa-meta">
             <span>${escapeHtml(m.timestamp)}</span>
             ${isMine ? ticks : ''}
+            <button class="wa-del-msg" onclick="deleteSingleWaMessage('${escapeHtml(m.id)}')" title="Delete message">🗑️</button>
           </div>
         </div>
       `;
@@ -950,6 +968,50 @@ async function fetchWaMessages(forceScroll = false) {
     }
   } catch (e) {
     console.error(e);
+  }
+}
+
+async function deleteSingleWaMessage(msgId) {
+  if (!currentWaChatId || !msgId) return;
+  try {
+    await api(`/api/whatsapp/chats/${encodeURIComponent(currentWaChatId)}/messages/${encodeURIComponent(msgId)}`, {
+      method: 'DELETE'
+    });
+    await fetchWaMessages(false);
+    await loadWhatsAppChats();
+  } catch (e) {
+    alert(e.message);
+  }
+}
+
+async function clearCurrentWaChat() {
+  if (!currentWaChatId) return;
+  if (!confirm('Clear all messages in this chat?')) return;
+  try {
+    await api(`/api/whatsapp/chats/${encodeURIComponent(currentWaChatId)}?mode=clear`, {
+      method: 'DELETE'
+    });
+    await fetchWaMessages(true);
+    await loadWhatsAppChats();
+  } catch (e) {
+    alert(e.message);
+  }
+}
+
+async function deleteCurrentWaRoom() {
+  if (!currentWaChatId) return;
+  if (!confirm(`Delete Study Room "${currentWaChatId}" permanently?`)) return;
+  try {
+    await api(`/api/whatsapp/chats/${encodeURIComponent(currentWaChatId)}?mode=delete_room`, {
+      method: 'DELETE'
+    });
+    currentWaChatId = null;
+    document.getElementById('waClearBtn').style.display = 'none';
+    document.getElementById('waDeleteRoomBtn').style.display = 'none';
+    document.getElementById('waInputArea').style.display = 'none';
+    await loadWhatsAppChats();
+  } catch (e) {
+    alert(e.message);
   }
 }
 
