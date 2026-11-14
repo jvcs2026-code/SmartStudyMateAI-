@@ -808,15 +808,14 @@ def cbse_papers():
         }), 503
 
 
-
 # ==================================================
-# 15. NEW STUDY TOOLS: FLASHCARDS, REFERENCE LIBRARY, ROOMS & CHECKLISTS
+# 15. STUDY TOOLS: FLASHCARDS, REFERENCE LIBRARY, ROOMS, CHAT & CHECKLISTS
 # ==================================================
 FLASHCARD_FILE = os.path.join(BASE_DIR, "flashcards.json")
 REFERENCE_FILE = os.path.join(BASE_DIR, "reference_library.json")
 ROOM_FILE = os.path.join(BASE_DIR, "study_rooms.json")
+CHAT_FILE = os.path.join(BASE_DIR, "friend_chats.json")
 CHECKLIST_FILE = os.path.join(BASE_DIR, "exam_checklists.json")
-FRIEND_CHAT_FILE = os.path.join(BASE_DIR, "friend_chats.json")
 
 def read_json_file(path, default):
     try:
@@ -883,18 +882,63 @@ def reference_library_delete(entry_id):
     if len(updated) == len(entries): return jsonify({"error": "Entry not found."}), 404
     write_json_file(REFERENCE_FILE, updated); return jsonify({"message": "Deleted."})
 
+# ==================================================
+# FRIEND CHAT API (SUPPORTS PUBLIC + STUDY CODE ROOMS)
+# ==================================================
+@app.route("/api/friend-chat", methods=["GET", "POST"])
+def friend_chat_api():
+    chats = read_json_file(CHAT_FILE, {})
+    if isinstance(chats, list):
+        chats = {"PUBLIC": chats}
+
+    data = request.get_json(silent=True) or {}
+    raw_room = request.args.get("room") if request.method == "GET" else data.get("room")
+    room_code = str(raw_room or "PUBLIC").strip().upper() or "PUBLIC"
+
+    if request.method == "GET":
+        return jsonify({
+            "room": room_code,
+            "messages": chats.get(room_code, [])[-150:]
+        })
+
+    sender = str(data.get("sender", "Friend")).strip()[:40] or "Friend"
+    text = str(data.get("text", "")).strip()
+    if not text:
+        return jsonify({"error": "Message cannot be empty."}), 400
+
+    msg = {
+        "id": str(uuid.uuid4()),
+        "sender": sender,
+        "text": text[:1000],
+        "time": datetime.now().strftime("%I:%M %p")
+    }
+    chats.setdefault(room_code, []).append(msg)
+    write_json_file(CHAT_FILE, chats)
+    return jsonify({"message": msg, "messages": chats[room_code][-150:]}), 201
+
+# ==================================================
+# COLLABORATIVE STUDY ROOMS (QUIZZES + INTEGRATED ROOM CHAT)
+# ==================================================
 @app.route("/api/study-rooms", methods=["POST"])
 def create_study_room():
     rooms = read_json_file(ROOM_FILE, {})
     code = uuid.uuid4().hex[:6].upper()
-    rooms[code] = {"code": code, "quiz": None, "updated_at": datetime.now().isoformat(timespec="seconds")}
-    write_json_file(ROOM_FILE, rooms); return jsonify({"code": code, "share_url": request.host_url.rstrip("/") + "/?room=" + code}), 201
+    rooms[code] = {
+        "code": code,
+        "quiz": None,
+        "messages": [],
+        "updated_at": datetime.now().isoformat(timespec="seconds")
+    }
+    write_json_file(ROOM_FILE, rooms)
+    return jsonify({"code": code, "share_url": request.host_url.rstrip("/") + "/?room=" + code}), 201
 
 @app.route("/api/study-rooms/<code>", methods=["GET", "POST"])
 def study_room(code):
     code = code.upper(); rooms = read_json_file(ROOM_FILE, {})
     if code not in rooms: return jsonify({"error": "Study room not found."}), 404
     room = rooms[code]
+    room.setdefault("messages", [])
+
     # Upgrade and normalize older room data without deleting saved questions.
     quiz = room.get("quiz")
     if quiz and isinstance(quiz, dict):
@@ -925,9 +969,34 @@ def study_room(code):
         room["quiz"] = quiz
         rooms[code] = room
         write_json_file(ROOM_FILE, rooms)
+
     if request.method == "POST":
         data = request.get_json(silent=True) or {}
         action = data.get("action", "add_question")
+
+        if action == "send_chat":
+            sender = str(data.get("sender", "Member")).strip()[:40] or "Member"
+            text = str(data.get("text", "")).strip()
+            if not text:
+                return jsonify({"error": "Message cannot be empty."}), 400
+            msg = {
+                "id": str(uuid.uuid4()),
+                "sender": sender,
+                "text": text[:1000],
+                "time": datetime.now().strftime("%I:%M %p")
+            }
+            room["messages"].append(msg)
+            room["messages"] = room["messages"][-150:]
+            room["updated_at"] = datetime.now().isoformat(timespec="seconds")
+            write_json_file(ROOM_FILE, rooms)
+            # Also sync with friend_chats.json for this room code
+            chats = read_json_file(CHAT_FILE, {})
+            if isinstance(chats, list):
+                chats = {"PUBLIC": chats}
+            chats.setdefault(code, []).append(msg)
+            write_json_file(CHAT_FILE, chats)
+            return jsonify({"message": msg, "messages": room["messages"]}), 201
+
         quiz = room.get("quiz") or {"title": "Study Challenge", "questions": [], "ends_at": None, "started": False}
         quiz.setdefault("questions", [])
         if action == "add_question":
@@ -966,6 +1035,16 @@ def study_room(code):
         room["quiz"] = quiz
         room["updated_at"] = datetime.now().isoformat(timespec="seconds")
         write_json_file(ROOM_FILE, rooms)
+
+    # Merge any messages posted via Chat With Friends under the same room code
+    chats = read_json_file(CHAT_FILE, {})
+    if isinstance(chats, dict) and code in chats:
+        existing_ids = {m.get("id") for m in room["messages"]}
+        for m in chats[code]:
+            if m.get("id") not in existing_ids:
+                room["messages"].append(m)
+        room["messages"] = room["messages"][-150:]
+
     response_payload = dict(room)
     response_payload["server_now"] = datetime.now().isoformat()
     return jsonify(response_payload)
@@ -986,31 +1065,6 @@ def submit_study_room_answer(code):
     question.setdefault("responses", {})[member] = answer
     write_json_file(ROOM_FILE, rooms)
     return jsonify({"message": "Answer submitted.", "response_count": len(question["responses"])})
-
-# ==================================================
-# 16. FRIEND CHAT API (NEW)
-# ==================================================
-@app.route("/api/friend-chat", methods=["GET", "POST"])
-def friend_chat_api():
-    chats = read_json_file(FRIEND_CHAT_FILE, [])
-    if request.method == "GET":
-        return jsonify({"messages": chats[-100:]}) # return last 100 messages
-    
-    data = request.get_json(silent=True) or {}
-    sender = str(data.get("sender", "Anonymous")).strip()[:50]
-    message = str(data.get("message", "")).strip()
-    if not message:
-        return jsonify({"error": "Message cannot be empty."}), 400
-    
-    msg_obj = {
-        "id": str(uuid.uuid4()),
-        "sender": sender,
-        "message": message[:2000],
-        "timestamp": datetime.now().strftime("%I:%M %p")
-    }
-    chats.append(msg_obj)
-    write_json_file(FRIEND_CHAT_FILE, chats[-500:]) # keep last 500 max on disk
-    return jsonify({"message": "Sent", "data": msg_obj}), 201
 
 @app.route("/api/exam-checklist", methods=["GET", "POST"])
 def exam_checklist():
@@ -1035,7 +1089,7 @@ def update_exam_checklist():
     checklist[exam_date]["items"][index]["done"] = done; write_json_file(CHECKLIST_FILE, checklist); return jsonify({"checklist": checklist[exam_date]})
 
 # ==================================================
-# 17. START APPLICATION
+# 16. START APPLICATION
 # ==================================================
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True)
