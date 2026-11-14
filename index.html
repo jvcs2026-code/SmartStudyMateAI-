@@ -57,32 +57,6 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .paper-row a{margin-right:14px}
 .paper-row:last-child{border:0}
 
-/* Nebula Hero */
-.nebula-hero{background:linear-gradient(145deg,#0c1633,#070e20);border:1px solid rgba(38,150,255,.3);border-radius:18px;padding:28px;text-align:center;position:relative;overflow:hidden;box-shadow:0 16px 40px rgba(0,0,0,.4);margin-bottom:20px}
-.nebula-hero::before{content:"";position:absolute;width:350px;height:350px;background:radial-gradient(circle,rgba(22,140,255,.18),transparent 70%);top:-120px;left:50%;transform:translateX(-50%);border-radius:50%;pointer-events:none}
-.nebula-orb{width:75px;height:75px;margin:0 auto 16px;background:radial-gradient(circle at 35% 35%,#ff62e3,#3f0db2 65%,#0b1638);border-radius:50%;box-shadow:0 0 30px rgba(180,60,255,.5),inset 0 0 12px rgba(255,255,255,.4);display:grid;place-items:center;font-size:28px}
-.nebula-title{font-size:30px;font-weight:800;letter-spacing:-.5px;margin:0 0 8px}
-.nebula-subtitle{color:var(--muted);font-size:14px;margin-bottom:24px}
-.nebula-action-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:15px}
-.nebula-action-card{background:linear-gradient(145deg,rgba(16,28,60,.8),rgba(10,18,40,.9));border:1px solid rgba(60,130,240,.22);border-radius:13px;padding:16px;text-align:left;cursor:pointer;transition:all .25s ease}
-.nebula-action-card:hover{border-color:#24bfff;transform:translateY(-2px);box-shadow:0 8px 20px rgba(22,140,255,.15)}
-.nebula-action-card h3{font-size:14px;margin:0 0 6px;color:#fff}
-.nebula-action-card p{font-size:12px;margin:0;color:var(--muted);line-height:1.4}
-.dashboard-bottom{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.progress-ring{width:110px;height:110px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#168cff 0 75%,#111c3a 75%);position:relative;margin:10px auto}
-.progress-ring:before{content:"";position:absolute;inset:9px;border-radius:50%;background:#0c1328}
-.progress-ring strong{position:relative;font-size:22px;font-weight:700}
-.progress-bars{height:110px;display:flex;align-items:end;justify-content:space-around;gap:6px;padding:8px}
-.progress-bars i{display:block;width:12px;border-radius:4px 4px 2px 2px;background:linear-gradient(#168cff,#704bff);box-shadow:0 0 10px rgba(22,140,255,.3)}
-.document-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
-.document-left{display:flex;align-items:center;gap:12px}
-.document-icon{width:34px;height:36px;border-radius:6px;background:#e84b65;display:grid;place-items:center;font-size:10px;font-weight:800;color:white}
-.document-row:nth-child(3) .document-icon{background:#168cff}
-.document-row:nth-child(4) .document-icon{background:#704bff}
-.upgrade-box{background:linear-gradient(145deg,#121d3f,#0a1126);border:1px solid rgba(82,56,255,.35);border-radius:12px;padding:14px;margin-top:15px}
-.upgrade-box p{font-size:11px;color:#b4c7ec;margin:0 0 10px}
-.upgrade-box button{width:100%;margin:0;padding:8px;font-size:12px}
-
 /* Progress Tracker & Analytics */
 .progress-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .progress-card{background:linear-gradient(145deg,#101e40,#0a1329);border:1px solid var(--line);border-radius:12px;padding:18px}
@@ -116,7 +90,38 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .answer-box{margin-top:8px;padding:10px 12px;background:rgba(53,217,174,.09);border-left:3px solid #35d9ae;border-radius:6px;font-size:13px;color:#d6fff3;display:none}
 .show-answers .answer-box{display:block}
 
-/* Chat Bubbles */
+/* WhatsApp Web Chat Styles */
+.wa-container{display:grid;grid-template-columns:310px minmax(0,1fr);height:540px;background:#111b21;border:1px solid #222d34;border-radius:14px;overflow:hidden;margin-top:14px;box-shadow:0 12px 32px rgba(0,0,0,.55)}
+.wa-sidebar{background:#111b21;border-right:1px solid #222d34;display:flex;flex-direction:column;min-height:0}
+.wa-search-bar{padding:8px 12px;background:#111b21;border-bottom:1px solid #222d34}
+.wa-search-bar input{background:#202c33;border:0;color:#e9edef;padding:8px 12px;border-radius:8px;font-size:13px;width:100%}
+.wa-chat-list{flex:1;overflow-y:auto}
+.wa-chat-item{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;border-bottom:1px solid #222d34;transition:background .2s}
+.wa-chat-item:hover,.wa-chat-item.active{background:#2a3942}
+.wa-chat-avatar{width:42px;height:42px;border-radius:50%;background:#00a884;display:grid;place-items:center;font-size:20px;flex-shrink:0}
+.wa-chat-info{flex:1;min-width:0}
+.wa-chat-info-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
+.wa-chat-name{font-weight:600;font-size:14px;color:#e9edef;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wa-chat-time{font-size:11px;color:#8696a0}
+.wa-chat-last{font-size:12px;color:#8696a0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wa-main{display:flex;flex-direction:column;background:#0b141a;min-height:0}
+.wa-header{padding:10px 16px;background:#202c33;display:flex;align-items:center;gap:12px;border-left:1px solid #222d34}
+.wa-header-avatar{width:40px;height:40px;border-radius:50%;background:#00a884;display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.wa-header-meta{flex:1;min-width:0}
+.wa-header-title{font-weight:600;font-size:15px;color:#e9edef}
+.wa-header-status{font-size:12px;color:#8696a0}
+.wa-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:8px;background:radial-gradient(circle,#0f1c24 0%,#0b141a 100%)}
+.wa-bubble{max-width:68%;padding:8px 12px;border-radius:8px;font-size:13.5px;line-height:1.4;position:relative;word-wrap:break-word}
+.wa-bubble.incoming{background:#202c33;color:#e9edef;align-self:flex-start;border-top-left-radius:0}
+.wa-bubble.outgoing{background:#005c4b;color:#e9edef;align-self:flex-end;border-top-right-radius:0}
+.wa-sender{font-size:11px;font-weight:700;color:#53bdeb;margin-bottom:2px}
+.wa-meta{display:inline-flex;align-items:center;gap:4px;float:right;margin-left:12px;margin-top:4px;font-size:10px;color:#8696a0}
+.wa-ticks{color:#53bdeb;font-weight:bold}
+.wa-input-area{padding:10px 16px;background:#202c33;display:flex;align-items:center;gap:10px}
+.wa-input-area input{flex:1;background:#2a3942;border:0;padding:10px 14px;border-radius:8px;color:#e9edef;outline:none;font-size:14px}
+.wa-send-btn{background:#00a884;color:#fff;border:0;width:40px;height:40px;border-radius:50%;cursor:pointer;display:grid;place-items:center;font-size:16px;margin:0;padding:0;flex-shrink:0}
+
+/* Chat Bubbles (Study Room) */
 .chat-stream{height:350px;overflow-y:auto;background:#070d20;border:1px solid var(--line);border-radius:12px;padding:14px;margin:14px 0;display:flex;flex-direction:column;gap:10px}
 .chat-bubble{max-width:76%;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.08);line-height:1.4}
 .chat-bubble.me{align-self:flex-end;background:linear-gradient(120deg,#168cff,#5238ff)}
@@ -125,19 +130,6 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .chat-bubble.me .chat-sender{color:#e0f4ff}
 .chat-text{font-size:14px;color:#fff;word-break:break-word}
 .chat-time{font-size:10px;color:rgba(255,255,255,.65);text-align:right;margin-top:4px}
-
-@media(max-width:1100px){.nebula-action-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-bottom{grid-template-columns:1fr}}
-@media(max-width:820px){.app-layout{grid-template-columns:1fr}aside{padding:12px;border-right:0;border-bottom:1px solid var(--line)}nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}main{padding:18px}.browser-window{height:100vh;border-radius:0}.progress-stats,.row-3{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:480px){.row,.row-3,.nebula-action-grid{grid-template-columns:1fr}.progress-stats{grid-template-columns:1fr 1fr}.nebula-title{font-size:24px}}
-@media print{
-  body{background:#fff;color:#000;padding:0}
-  .browser-window{border:0;box-shadow:none;height:auto;background:#fff}
-  .window-header,aside,button,.no-print{display:none!important}
-  .app-layout{display:block}
-  main{padding:0;background:#fff;color:#000;overflow:visible}
-  .card,.paper-sheet,.result-block{background:#fff!important;color:#000!important;border:1px solid #ccc!important;box-shadow:none!important}
-  p,.muted,.smalltext,.paper-meta{color:#222!important}
-}
 
 /* ===== SmartStudyMate AI: reference dashboard theme ===== */
 :root{--bg:#080720;--panel:#111034;--card-bg:#111034;--text:#f5f2ff;--muted:#b7b2dc;--line:rgba(139,103,255,.24);--accent:#a52cff}
@@ -206,7 +198,8 @@ main{padding:0 30px 28px;overflow-y:auto;background:radial-gradient(ellipse at 8
 .feature-copy{display:flex;flex-direction:column;gap:8px;padding-right:24px}
 .feature-copy b{font-size:18px}.feature-copy small{font-size:14px;line-height:1.5;color:#d2cbed}
 .feature-arrow{position:absolute;right:18px;bottom:16px;width:38px;height:38px;display:grid;place-items:center;border-radius:50%;background:#4b1d91;color:white;font-size:24px}
-.redesigned-bottom{grid-template-columns: .9fr 1.1fr;gap:24px}
+.dashboard-bottom{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.redesigned-bottom{grid-template-columns:.9fr 1.1fr;gap:24px}
 .activity-panel,.progress-panel{min-width:0;padding:23px 26px;border-radius:20px;border:1px solid #49318c;background:linear-gradient(145deg,#111032,#0b0a27);box-shadow:0 8px 28px #02011666}
 .panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid #28234d}
 .panel-heading h2{font-size:18px;margin:0}
@@ -220,9 +213,9 @@ main{padding:0 30px 28px;overflow-y:auto;background:radial-gradient(ellipse at 8
 .activity-icon{width:44px;height:44px;flex:0 0 44px;border-radius:11px;display:grid;place-items:center;font-size:23px;color:#fff}
 .notes-activity{background:linear-gradient(145deg,#28d6a9,#079b8c)}.planner-activity{background:linear-gradient(145deg,#ffbd68,#eb4d9b)}.paper-activity{background:linear-gradient(145deg,#26d6f4,#1472db)}
 .progress-overview{display:grid;grid-template-columns:180px minmax(0,1fr);gap:15px;align-items:center;padding:12px 0 8px}
-.progress-ring{width:128px;height:128px;margin:0 auto;background:conic-gradient(#08d7ed 0 75%,#272050 75%);box-shadow:0 0 20px #05c5ed22}
-.progress-ring:before{inset:9px;background:#111032}
-.progress-ring strong{font-size:30px}
+.progress-ring{width:128px;height:128px;margin:0 auto;border-radius:50%;display:grid;place-items:center;position:relative;background:conic-gradient(#08d7ed 0 75%,#272050 75%);box-shadow:0 0 20px #05c5ed22}
+.progress-ring:before{content:"";position:absolute;inset:9px;border-radius:50%;background:#111032}
+.progress-ring strong{position:relative;font-size:30px}
 .progress-ring small{position:relative;z-index:1;font-size:9px;color:#c9c3e6;margin-top:-30px}
 .weekly-chart{height:135px;display:flex;align-items:flex-end;justify-content:space-around;gap:9px;padding:10px 2px 0;border-left:1px solid #242044}
 .week-bar{height:100%;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:7px}
@@ -238,9 +231,6 @@ h1{color:#fff}
 input,select,textarea{background:#090821;border-color:#40336e;color:#fff}
 button.primary{background:linear-gradient(100deg,#c43cff,#6417d4);box-shadow:0 4px 14px #8c28d744}
 button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6ddff}
-@media(max-width:1150px){.app-layout{grid-template-columns:250px minmax(0,1fr)}aside{padding-left:13px;padding-right:13px}.feature-cards{gap:12px}.feature-card{padding:18px 14px;gap:12px}.progress-overview{grid-template-columns:135px 1fr}.progress-ring{width:112px;height:112px}}
-@media(max-width:850px){.app-layout{grid-template-columns:1fr;overflow:auto}aside{padding:10px 14px;gap:8px}.logo-area{min-height:55px;padding-bottom:8px}.brand-mark{width:42px;height:42px;font-size:30px}nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}nav button{min-height:40px;font-size:12px;padding:8px}main{padding:0 16px 22px}.app-topbar{height:76px}.welcome-hero{min-height:280px}.welcome-copy{width:65%}.hero-art{right:-12%;opacity:.8}.feature-cards{grid-template-columns:1fr}.feature-card{min-height:110px}.redesigned-bottom{grid-template-columns:1fr}}
-@media(max-width:520px){.welcome-hero{padding:25px 20px;min-height:360px;align-items:flex-start}.welcome-copy{width:100%}.welcome-copy p{font-size:15px;max-width:85%}.hero-art{width:100%;right:-25%;top:145px;bottom:-30px;opacity:.5;transform:scale(.8)}.global-search{width:100%;height:46px}.topbar-actions{gap:4px}.notification-button{display:none}.progress-overview{grid-template-columns:1fr}.weekly-chart{border-left:0}.progress-metrics{gap:5px}.progress-metrics>div{grid-template-columns:30px 1fr;padding:6px}.metric-icon{font-size:20px}.progress-metrics small{font-size:9px}.activity-panel,.progress-panel{padding:18px 14px}}
 
 /* Additional SmartStudyMate tools */
 #flashcards .card,#references .card,#studyroom .card,#focus .card,#checklist .card,#chat .card{margin:18px 0}
@@ -251,6 +241,19 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
 .tool-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .check-row{display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1px solid #40336e}
 .check-row input{width:auto!important}
+
+@media(max-width:1150px){.app-layout{grid-template-columns:250px minmax(0,1fr)}aside{padding-left:13px;padding-right:13px}.feature-cards{gap:12px}.feature-card{padding:18px 14px;gap:12px}.progress-overview{grid-template-columns:135px 1fr}.progress-ring{width:112px;height:112px}}
+@media(max-width:850px){.app-layout{grid-template-columns:1fr;overflow:auto}aside{padding:10px 14px;gap:8px}.logo-area{min-height:55px;padding-bottom:8px}.brand-mark{width:42px;height:42px;font-size:30px}nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}nav button{min-height:40px;font-size:12px;padding:8px}main{padding:0 16px 22px}.app-topbar{height:76px}.welcome-hero{min-height:280px}.welcome-copy{width:65%}.hero-art{right:-12%;opacity:.8}.feature-cards{grid-template-columns:1fr}.feature-card{min-height:110px}.redesigned-bottom{grid-template-columns:1fr}.wa-container{grid-template-columns:1fr}.wa-sidebar{display:none}}
+@media(max-width:520px){.welcome-hero{padding:25px 20px;min-height:360px;align-items:flex-start}.welcome-copy{width:100%}.welcome-copy p{font-size:15px;max-width:85%}.hero-art{width:100%;right:-25%;top:145px;bottom:-30px;opacity:.5;transform:scale(.8)}.global-search{width:100%;height:46px}.topbar-actions{gap:4px}.notification-button{display:none}.progress-overview{grid-template-columns:1fr}.weekly-chart{border-left:0}.progress-metrics{gap:5px}.progress-metrics>div{grid-template-columns:30px 1fr;padding:6px}.metric-icon{font-size:20px}.progress-metrics small{font-size:9px}.activity-panel,.progress-panel{padding:18px 14px}}
+@media print{
+  body{background:#fff;color:#000;padding:0}
+  .browser-window{border:0;box-shadow:none;height:auto;background:#fff}
+  .window-header,aside,button,.no-print{display:none!important}
+  .app-layout{display:block}
+  main{padding:0;background:#fff;color:#000;overflow:visible}
+  .card,.paper-sheet,.result-block{background:#fff!important;color:#000!important;border:1px solid #ccc!important;box-shadow:none!important}
+  p,.muted,.smalltext,.paper-meta{color:#222!important}
+}
 </style>
 </head>
 <body>
@@ -278,7 +281,7 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
           <button data-page="library">📖 Textbook Library</button>
           <button data-page="flashcards">🗂️ Flashcards</button>
           <button data-page="references">🧮 Formula & Code Library</button>
-          <button data-page="chat">💬 Chat With Friends</button>
+          <button data-page="chat">💬 WhatsApp Study Chat</button>
           <button data-page="studyroom">👥 Collaborative Study Room</button>
           <button data-page="focus">⏱️ Pomodoro Focus</button>
           <button data-page="checklist">✅ Exam-Day Checklist</button>
@@ -657,38 +660,58 @@ button.secondary,button.small{background:#21194b;border-color:#48317c;color:#e6d
         <div class="card"><input id="refSearch" placeholder="Search saved references…" oninput="loadReferences()"><div id="refResults"></div></div>
       </section>
 
-      <!-- ADD-ON: CHAT WITH FRIENDS (WITH STUDY CODE SUPPORT) -->
+      <!-- WHATSAPP-STYLE CHAT WITH FRIENDS -->
       <section id="chat" class="page">
-        <h1>Chat With Friends</h1>
-        <p class="muted">Send real-time messages, notes, and study questions using a Study Code or the open lounge.</p>
-        <div class="card">
-          <div class="row">
-            <div>
-              <label>Your Name / Handle</label>
-              <input id="chatSenderName" placeholder="Enter your name" oninput="saveChatPrefs()">
+        <h1>WhatsApp Study Chat</h1>
+        <p class="muted">Chat with study groups, SmartStudy AI, or create a private Study Code room with real-time delivery ticks (✓✓).</p>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin-bottom:8px">
+          <div>
+            <label style="margin:0 0 4px;font-size:12px">Your Display Name:</label>
+            <input id="waSenderName" placeholder="Alex" style="max-width:180px;padding:7px 11px" oninput="localStorage.setItem('wa_sender', this.value)">
+          </div>
+          <div>
+            <label style="margin:0 0 4px;font-size:12px">Join / Create Study Code Room:</label>
+            <div style="display:flex;gap:6px">
+              <input id="waNewCode" placeholder="e.g. A1B2C3" style="max-width:150px;padding:7px 11px;text-transform:uppercase">
+              <button class="secondary" style="margin:0;padding:7px 12px" onclick="createOrJoinWaRoom(false)">Join Code</button>
+              <button class="primary" style="margin:0;padding:7px 12px" onclick="createOrJoinWaRoom(true)">+ New Code</button>
             </div>
-            <div>
-              <label>Study Code (Optional — leave blank for Public Lounge)</label>
-              <div style="display:flex;gap:8px;align-items:center">
-                <input id="chatRoomCode" placeholder="e.g. A1B2C3" style="text-transform:uppercase" onkeydown="if(event.key==='Enter') joinChatRoom()">
-                <button class="secondary" style="margin:0;white-space:nowrap" onclick="joinChatRoom()">Connect Code</button>
+          </div>
+        </div>
+
+        <div class="wa-container">
+          <!-- Left Contacts / Groups Sidebar -->
+          <div class="wa-sidebar">
+            <div class="wa-header" style="padding:12px 16px">
+              <div class="wa-header-avatar">💬</div>
+              <div class="wa-header-title">Chats</div>
+            </div>
+            <div class="wa-search-bar">
+              <input id="waSearch" placeholder="Search chats or codes..." oninput="filterWaChats()">
+            </div>
+            <div class="wa-chat-list" id="waChatList">
+              <div style="padding:20px;text-align:center;color:#8696a0">Loading chats...</div>
+            </div>
+          </div>
+
+          <!-- Right Main Conversation Pane -->
+          <div class="wa-main">
+            <div class="wa-header">
+              <div class="wa-header-avatar" id="activeChatAvatar">💬</div>
+              <div class="wa-header-meta">
+                <div class="wa-header-title" id="activeChatName">Select a chat</div>
+                <div class="wa-header-status" id="activeChatStatus">Choose a contact or group from the left</div>
               </div>
+              <button class="small" style="margin:0;background:#2a3942;border:0;color:#e9edef" onclick="fetchWaMessages(true)">🔄 Sync</button>
             </div>
-          </div>
-
-          <div id="chatBox" class="chat-stream">
-            <p class="muted" style="margin:auto">Loading messages...</p>
-          </div>
-
-          <div style="display:flex;gap:10px">
-            <input id="chatInput" placeholder="Type a message to your friends..." onkeydown="if(event.key==='Enter') sendFriendMessage()">
-            <button class="primary" style="margin:0" onclick="sendFriendMessage()">Send</button>
-          </div>
-
-          <div style="display:flex;align-items:center;gap:12px;margin-top:10px;flex-wrap:wrap">
-            <button class="secondary" id="refreshChatBtn" onclick="loadFriendChat(true)">🔄 Refresh Chat</button>
-            <button class="secondary" onclick="createCodeForChat()">➕ Generate New Study Code</button>
-            <span id="chatStatus" class="smalltext" style="color:#35d9ae"></span>
+            <div class="wa-messages" id="waMessagesBox">
+              <div style="margin:auto;text-align:center;color:#8696a0">Select a conversation to start messaging</div>
+            </div>
+            <div class="wa-input-area" id="waInputArea" style="display:none">
+              <input id="waMessageInput" placeholder="Type a message" onkeydown="if(event.key==='Enter')sendWhatsAppMessage()">
+              <button class="wa-send-btn" onclick="sendWhatsAppMessage()" aria-label="Send">➤</button>
+            </div>
           </div>
         </div>
       </section>
@@ -779,11 +802,10 @@ function showPage(id) {
   if (id === 'progress') loadExamProgressTracker();
   if (id === 'analytics') renderAnalyticsDashboard();
   if (id === 'chat') {
-    loadFriendChat(true);
-    if (!chatPollHandle) chatPollHandle = setInterval(() => loadFriendChat(false), 2500);
-  } else if (chatPollHandle) {
-    clearInterval(chatPollHandle);
-    chatPollHandle = null;
+    loadWhatsAppChats();
+  } else if (waPollHandle) {
+    clearInterval(waPollHandle);
+    waPollHandle = null;
   }
 }
 document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => showPage(b.dataset.page)));
@@ -814,6 +836,141 @@ async function api(url, options = {}) {
   try { data = await response.json(); } catch {}
   if (!response.ok) throw Error(data.error || 'Request failed. Please try again.');
   return data;
+}
+
+/* ==========================================
+   WHATSAPP STUDY CHAT LOGIC
+   ========================================== */
+let currentWaChatId = null;
+let waPollHandle = null;
+let allWaChats = [];
+
+document.addEventListener('DOMContentLoaded', () => {
+  const savedName = localStorage.getItem('wa_sender') || localStorage.getItem('sm_room_member_name');
+  if (savedName && document.getElementById('waSenderName')) {
+    document.getElementById('waSenderName').value = savedName;
+  }
+});
+
+async function loadWhatsAppChats() {
+  try {
+    const res = await api('/api/whatsapp/chats?_t=' + Date.now());
+    allWaChats = res.chats || [];
+    renderWaChatList(allWaChats);
+    if (!currentWaChatId && allWaChats.length > 0) {
+      selectWaChat(allWaChats[0].id);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function createOrJoinWaRoom(generateNew) {
+  const codeInput = document.getElementById('waNewCode');
+  const code = generateNew ? '' : codeInput.value.trim().toUpperCase();
+  if (!generateNew && !code) return alert('Enter a Study Code or click + New Code.');
+  try {
+    const res = await api('/api/whatsapp/chats', {
+      method: 'POST',
+      body: JSON.stringify({ code })
+    });
+    if (res.chat) {
+      codeInput.value = res.chat.id;
+      await loadWhatsAppChats();
+      selectWaChat(res.chat.id);
+    }
+  } catch (e) {
+    alert(e.message);
+  }
+}
+
+function renderWaChatList(chats) {
+  const list = document.getElementById('waChatList');
+  if (!chats.length) {
+    list.innerHTML = '<div style="padding:20px;text-align:center;color:#8696a0">No chats found</div>';
+    return;
+  }
+  list.innerHTML = chats.map(c => `
+    <div class="wa-chat-item ${currentWaChatId === c.id ? 'active' : ''}" onclick="selectWaChat('${escapeHtml(c.id)}')">
+      <div class="wa-chat-avatar">${escapeHtml(c.avatar || '💬')}</div>
+      <div class="wa-chat-info">
+        <div class="wa-chat-info-top">
+          <span class="wa-chat-name">${escapeHtml(c.name)}</span>
+          <span class="wa-chat-time">${escapeHtml(c.last_time || '')}</span>
+        </div>
+        <div class="wa-chat-last">${escapeHtml(c.last_message || '')}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterWaChats() {
+  const q = document.getElementById('waSearch').value.toLowerCase();
+  const filtered = allWaChats.filter(c => c.name.toLowerCase().includes(q) || c.id.toLowerCase().includes(q));
+  renderWaChatList(filtered);
+}
+
+async function selectWaChat(chatId) {
+  currentWaChatId = chatId;
+  renderWaChatList(allWaChats);
+  document.getElementById('waInputArea').style.display = 'flex';
+  if (waPollHandle) clearInterval(waPollHandle);
+  await fetchWaMessages(true);
+  waPollHandle = setInterval(() => fetchWaMessages(false), 3000);
+}
+
+async function fetchWaMessages(forceScroll = false) {
+  if (!currentWaChatId) return;
+  try {
+    const chat = await api(`/api/whatsapp/chats/${encodeURIComponent(currentWaChatId)}?_t=${Date.now()}`);
+    document.getElementById('activeChatAvatar').textContent = chat.avatar || '💬';
+    document.getElementById('activeChatName').textContent = chat.name;
+    document.getElementById('activeChatStatus').textContent = chat.status;
+
+    const box = document.getElementById('waMessagesBox');
+    const wasAtBottom = box.scrollHeight - box.scrollTop <= box.clientHeight + 70;
+    const myName = (localStorage.getItem('wa_sender') || document.getElementById('waSenderName').value || 'You').trim();
+
+    box.innerHTML = (chat.messages || []).map(m => {
+      const isMine = m.sender === 'You' || (myName && m.sender.toLowerCase() === myName.toLowerCase());
+      const ticks = m.status === 'read' ? '<span class="wa-ticks">✓✓</span>' : '<span class="wa-ticks">✓</span>';
+      return `
+        <div class="wa-bubble ${isMine ? 'outgoing' : 'incoming'}">
+          ${!isMine ? `<div class="wa-sender">${escapeHtml(m.sender)}</div>` : ''}
+          <span>${escapeHtml(m.message)}</span>
+          <div class="wa-meta">
+            <span>${escapeHtml(m.timestamp)}</span>
+            ${isMine ? ticks : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+    if (wasAtBottom || forceScroll) {
+      box.scrollTop = box.scrollHeight;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function sendWhatsAppMessage() {
+  if (!currentWaChatId) return;
+  const sender = (localStorage.getItem('wa_sender') || document.getElementById('waSenderName').value || 'You').trim() || 'You';
+  const input = document.getElementById('waMessageInput');
+  const message = input.value.trim();
+  if (!message) return;
+
+  input.value = '';
+  try {
+    await api(`/api/whatsapp/chats/${encodeURIComponent(currentWaChatId)}`, {
+      method: 'POST',
+      body: JSON.stringify({ sender, message })
+    });
+    await fetchWaMessages(true);
+    await loadWhatsAppChats();
+  } catch (e) {
+    alert(e.message);
+  }
 }
 
 /* ==========================================
@@ -1500,7 +1657,7 @@ loadProfile();
 loadSmartTasks();
 
 // ==================================================
-// SHARED CHAT RENDER HELPER (USED BY BOTH CHAT WITH FRIENDS & STUDY ROOM)
+// SHARED CHAT RENDER HELPER (STUDY ROOM)
 // ==================================================
 function renderChatMessages(box, msgs, myName, emptyText, forceScroll = false) {
   if (!box) return;
@@ -1522,109 +1679,6 @@ function renderChatMessages(box, msgs, myName, emptyText, forceScroll = false) {
     box.scrollTop = box.scrollHeight;
   }
 }
-
-// ==================================================
-// FUNCTION 1: CHAT WITH FRIENDS (STUDY CODE + REFRESH FIX)
-// ==================================================
-let chatPollHandle = null;
-
-function saveChatPrefs() {
-  const name = document.getElementById('chatSenderName')?.value || '';
-  const code = (document.getElementById('chatRoomCode')?.value || '').trim().toUpperCase();
-  localStorage.setItem('sm_chat_name', name);
-  localStorage.setItem('sm_chat_room', code);
-}
-
-function getActiveChatRoom() {
-  const code = (document.getElementById('chatRoomCode')?.value || '').trim().toUpperCase();
-  return code || 'PUBLIC';
-}
-
-function joinChatRoom() {
-  saveChatPrefs();
-  loadFriendChat(true);
-}
-
-async function createCodeForChat() {
-  try {
-    const d = await api('/api/study-rooms', { method: 'POST', body: JSON.stringify({}) });
-    document.getElementById('chatRoomCode').value = d.code;
-    saveChatPrefs();
-    await loadFriendChat(true);
-    const status = document.getElementById('chatStatus');
-    if (status) status.textContent = `Created & connected to Study Code: ${d.code}`;
-  } catch (e) {
-    alert(e.message);
-  }
-}
-
-async function loadFriendChat(manual = false) {
-  const box = document.getElementById('chatBox');
-  const status = document.getElementById('chatStatus');
-  const btn = document.getElementById('refreshChatBtn');
-  if (!box) return;
-
-  if (manual && btn) {
-    btn.disabled = true;
-    btn.textContent = 'Refreshing...';
-  }
-
-  try {
-    const room = getActiveChatRoom();
-    const d = await api(`/api/friend-chat?room=${encodeURIComponent(room)}&_t=${Date.now()}`);
-    const msgs = d.messages || [];
-    const myName = (document.getElementById('chatSenderName')?.value || '').trim();
-    renderChatMessages(
-      box,
-      msgs,
-      myName,
-      `No messages in <b>${escapeHtml(room)}</b> yet. Send the first message!`,
-      manual
-    );
-
-    if (manual && status) {
-      status.textContent = `Synced at ${new Date().toLocaleTimeString()} · Code: ${room}`;
-      setTimeout(() => { if (status) status.textContent = ''; }, 3500);
-    }
-  } catch (e) {
-    box.innerHTML = `<div class="notice error">${escapeHtml(e.message)}</div>`;
-  } finally {
-    if (manual && btn) {
-      btn.disabled = false;
-      btn.textContent = '🔄 Refresh Chat';
-    }
-  }
-}
-
-async function sendFriendMessage() {
-  const input = document.getElementById('chatInput');
-  const senderInput = document.getElementById('chatSenderName');
-  const text = input.value.trim();
-  const sender = (senderInput?.value || '').trim() || 'Friend';
-  if (!text) return;
-
-  input.value = '';
-  try {
-    await api('/api/friend-chat', {
-      method: 'POST',
-      body: JSON.stringify({
-        room: getActiveChatRoom(),
-        sender,
-        text
-      })
-    });
-    await loadFriendChat(true);
-  } catch (e) {
-    alert(e.message);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const nameEl = document.getElementById('chatSenderName');
-  const roomEl = document.getElementById('chatRoomCode');
-  if (nameEl) nameEl.value = localStorage.getItem('sm_chat_name') || localStorage.getItem('sm_room_member_name') || '';
-  if (roomEl) roomEl.value = localStorage.getItem('sm_chat_room') || '';
-});
 
 // ==================================================
 // FUNCTION 2: COLLABORATIVE STUDY ROOM (QUIZ + INTEGRATED ROOM CHAT)
@@ -1694,7 +1748,6 @@ async function syncRoom(manual = false){
     const questions=quiz&&Array.isArray(quiz.questions)?quiz.questions:[];
     document.getElementById('roomStatus').innerHTML=`<p>Connected to room <b>${escapeHtml(currentRoomCode)}</b>. Share this code with your study group.</p>`;
 
-    // Show & sync the integrated room chat
     const chatCard = document.getElementById('roomChatCard');
     const chatBadge = document.getElementById('roomChatBadge');
     const chatBox = document.getElementById('roomChatBox');
